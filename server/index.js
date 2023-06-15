@@ -14,6 +14,11 @@ app.use((req, res, next) => {
   next();
 });
 
+
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 mongoose
   .connect('mongodb+srv://username:certificate@cluster0.ctqdit2.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true,
@@ -26,25 +31,30 @@ mongoose
     console.error('Error connecting to MongoDB:', error);
   });
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
-  isUser: {
-    type: Boolean,
-    default: true,
-  },
-});
+  const userSchema = new mongoose.Schema({
+    username: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    isUser: {
+      type: Boolean,
+      default: true,
+    },
+    image: {
+      type: String,
+      default: null,
+    },
+  });
+  
 
 const User = mongoose.model('User', userSchema);
 
@@ -117,6 +127,36 @@ app.get('/api/user/:username', async (req, res) => {
     res.json(user);
   } catch (error) {
     console.error('Error retrieving user:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
+  const { username } = req.body;
+  const image = req.file;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      res.json({ error: 'User not found' });
+      return;
+    }
+
+    if (!image) {
+      res.json({ error: 'No image uploaded' });
+      return;
+    }
+
+    // Convert image to base64
+    const base64Image = image.buffer.toString('base64');
+
+    // Save base64 image to user document
+    user.image = base64Image;
+    await user.save();
+
+    res.json({ message: 'Image uploaded successfully' });
+  } catch (error) {
+    console.error('Error uploading image:', error);
     res.status(500).json({ error: 'An error occurred' });
   }
 });

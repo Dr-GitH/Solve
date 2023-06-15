@@ -92,7 +92,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/admin/*" element={<AdminPortal loggedInUser={loggedInUser} />} />
         <Route path="/user/:username" element={<UserPortal loggedInUser={loggedInUser} />} />
-        <Route path="/user/:username/upload-certificate" element={<UploadCertificate />} />
+        <Route path="/user/:username/upload-certificate" element={<UploadCertificate loggedInUser={loggedInUser} />} />
         <Route path="/user/:username/view-certificate" element={<ViewCertificate />} />
         <Route path="/login" element={<LoginForm handleLogin={handleLogin} />} />
         <Route path="/signup" element={<SignUpForm handleSignUp={handleSignUp} />} />
@@ -153,12 +153,50 @@ function UserPortal({ loggedInUser }) {
   );
 }
 
-function UploadCertificate() {
-  // Logic for uploading certificate
+function UploadCertificate({loggedInUser}) {
+  const [image, setImage] = useState(null);
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!loggedInUser) {
+      alert('User not logged in');
+      return;
+    }
+
+    if (!image) {
+      alert('Please select an image');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('username', loggedInUser.username);
+
+    try {
+      await axios.post('http://localhost:5000/api/uploadImage', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      alert('Image uploaded successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Error uploading image');
+    }
+  };
+
   return (
     <div>
       <h3>Upload Certificate</h3>
-      {/* Your upload certificate form or component */}
+      <form onSubmit={handleSubmit}>
+        <input type="file" accept="image/jpeg" onChange={handleImageUpload} />
+        <br />
+        <button type="submit">Upload</button>
+      </form>
     </div>
   );
 }
