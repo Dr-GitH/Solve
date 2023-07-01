@@ -49,14 +49,28 @@ mongoose
       type: Boolean,
       default: true,
     },
-    image: {
-      type: String,
-      default: null,
-    },
   });
   
 
 const User = mongoose.model('User', userSchema);
+
+const imageSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  imageName: {
+    type: String,
+    required: true,
+  },
+  imageData: {
+    type: String,
+    required: true,
+  },
+});
+
+const Image = mongoose.model('Image', imageSchema);
+
 
 app.post('/api/checkUsername', async (req, res) => {
   const { username } = req.body;
@@ -150,9 +164,15 @@ app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
     // Convert image to base64
     const base64Image = image.buffer.toString('base64');
 
-    // Save base64 image to user document
-    user.image = base64Image;
-    await user.save();
+    // Create a new image document
+    const newImage = new Image({
+      user: user._id,
+      imageName: image.originalname,
+      imageData: base64Image,
+    });
+
+    // Save the new image
+    await newImage.save();
 
     res.json({ message: 'Image uploaded successfully' });
   } catch (error) {
@@ -160,6 +180,8 @@ app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
     res.status(500).json({ error: 'An error occurred' });
   }
 });
+
+
 
 const port = 5000;
 app.listen(port, () => {
