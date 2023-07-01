@@ -202,7 +202,7 @@ function UploadCertificate({loggedInUser}) {
 }
 
 function ViewCertificate() {
-  // Logic for viewing certificate
+
   return (
     <div>
       <h3>View Certificate</h3>
