@@ -250,11 +250,12 @@ function ViewCertificate({ loggedInUser }) {
   return (
     <div>
       <h3>View Certificate</h3>
-      {imageNames.map((imageName, index) => (
+      {imageNames.map((image, index) => (
         <div key={index}>
-          <a href={`http://localhost:5000/api/images/${loggedInUser?.username}/${imageName}`} target="_blank" rel="noopener noreferrer">
-            {imageName}
+          <a href={`http://localhost:5000/api/images/${loggedInUser?.username}/${image.name}`} target="_blank" rel="noopener noreferrer">
+            {image.name}
           </a>
+          <p>{image.detail}</p> 
         </div>
       ))}
     </div>

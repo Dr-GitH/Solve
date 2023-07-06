@@ -186,7 +186,10 @@ app.get('/api/images/:username', async (req, res) => {
 
     const images = await Image.find({ user: user._id });
 
-    const imageNames = images.map((image) => image.imageName);
+    const imageNames = images.map((image) => ({
+      name: image.imageName,
+      detail: `Semester-${image.selectedOption}`,
+    }));
 
     res.json({ imageNames });
   } catch (error) {
