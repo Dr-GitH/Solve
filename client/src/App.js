@@ -208,16 +208,16 @@ function ViewCertificate({ loggedInUser }) {
   useEffect(() => {
     const fetchImageNames = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/images/${loggedInUser.username}`);
-        setImageNames(response.data.imageNames);
+        if (loggedInUser) {
+          const response = await axios.get(`http://localhost:5000/api/images/${loggedInUser.username}`);
+          setImageNames(response.data.imageNames);
+        }
       } catch (error) {
         console.error(error);
       }
     };
 
-    if (loggedInUser) {
-      fetchImageNames();
-    }
+    fetchImageNames();
   }, [loggedInUser]);
 
   return (
@@ -225,7 +225,7 @@ function ViewCertificate({ loggedInUser }) {
       <h3>View Certificate</h3>
       {imageNames.map((imageName, index) => (
         <div key={index}>
-          <a href={`http://localhost:5000/api/images/${loggedInUser.username}/${imageName}`} target="_blank" rel="noopener noreferrer">
+          <a href={`http://localhost:5000/api/images/${loggedInUser?.username}/${imageName}`} target="_blank" rel="noopener noreferrer">
             {imageName}
           </a>
         </div>
@@ -233,6 +233,7 @@ function ViewCertificate({ loggedInUser }) {
     </div>
   );
 }
+
 
 
 function LoginForm({ handleLogin }) {
