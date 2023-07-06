@@ -93,7 +93,7 @@ function App() {
         <Route path="/admin/*" element={<AdminPortal loggedInUser={loggedInUser} />} />
         <Route path="/user/:username" element={<UserPortal loggedInUser={loggedInUser} />} />
         <Route path="/user/:username/upload-certificate" element={<UploadCertificate loggedInUser={loggedInUser} />} />
-        <Route path="/user/:username/view-certificate" element={<ViewCertificate />} />
+        <Route path="/user/:username/view-certificate" element={<ViewCertificate loggedInUser={loggedInUser} />} />
         <Route path="/login" element={<LoginForm handleLogin={handleLogin} />} />
         <Route path="/signup" element={<SignUpForm handleSignUp={handleSignUp} />} />
         <Route path="*" element={<NotFound />} />
@@ -153,7 +153,7 @@ function UserPortal({ loggedInUser }) {
   );
 }
 
-function UploadCertificate({loggedInUser}) {
+function UploadCertificate({ loggedInUser }) {
   const [image, setImage] = useState(null);
 
   const handleImageUpload = (e) => {
@@ -172,7 +172,7 @@ function UploadCertificate({loggedInUser}) {
     if (!image) {
       alert('Please select an image');
       return;
-    }
+       }
 
     const formData = new FormData();
     formData.append('image', image);
@@ -183,12 +183,12 @@ function UploadCertificate({loggedInUser}) {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('Image uploaded successfully');
+      setImage(null); // Clear the selected image after successful upload
     } catch (error) {
       console.error(error);
       alert('Error uploading image');
     }
   };
-
   return (
     <div>
       <h3>Upload Certificate</h3>
@@ -201,15 +201,39 @@ function UploadCertificate({loggedInUser}) {
   );
 }
 
-function ViewCertificate() {
+
+function ViewCertificate({ loggedInUser }) {
+  const [imageNames, setImageNames] = useState([]);
+
+  useEffect(() => {
+    const fetchImageNames = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/images/${loggedInUser.username}`);
+        setImageNames(response.data.imageNames);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (loggedInUser) {
+      fetchImageNames();
+    }
+  }, [loggedInUser]);
 
   return (
     <div>
       <h3>View Certificate</h3>
-      {/* Your view certificate logic or component */}
+      {imageNames.map((imageName, index) => (
+        <div key={index}>
+          <a href={`http://localhost:5000/api/images/${loggedInUser.username}/${imageName}`} target="_blank" rel="noopener noreferrer">
+            {imageName}
+          </a>
+        </div>
+      ))}
     </div>
   );
 }
+
 
 function LoginForm({ handleLogin }) {
   const [username, setUsername] = useState('');

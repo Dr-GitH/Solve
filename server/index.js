@@ -146,42 +146,72 @@ app.get('/api/user/:username', async (req, res) => {
 });
 
 app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
-  const { username } = req.body;
-  const image = req.file;
-
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username: req.body.username });
+
     if (!user) {
-      res.json({ error: 'User not found' });
-      return;
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    if (!image) {
-      res.json({ error: 'No image uploaded' });
-      return;
-    }
-
-    // Convert image to base64
-    const base64Image = image.buffer.toString('base64');
-
-    // Create a new image document
-    const newImage = new Image({
+    const image = new Image({
       user: user._id,
-      imageName: image.originalname,
-      imageData: base64Image,
+      imageName: req.file.originalname,
+      imageData: req.file.buffer.toString('base64'),
     });
 
-    // Save the new image
-    await newImage.save();
+    await image.save();
 
     res.json({ message: 'Image uploaded successfully' });
   } catch (error) {
-    console.error('Error uploading image:', error);
-    res.status(500).json({ error: 'An error occurred' });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
 
+app.get('/api/images/:username', async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const images = await Image.find({ user: user._id });
+
+    const imageNames = images.map((image) => image.imageName);
+
+    res.json({ imageNames });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+app.get('/api/images/:username/:imageName', async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const image = await Image.findOne({ user: user._id, imageName: req.params.imageName });
+
+    if (!image) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+
+    const imageData = Buffer.from(image.imageData, 'base64');
+
+    res.set('Content-Type', 'image/jpeg');
+    res.send(imageData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 const port = 5000;
 app.listen(port, () => {
