@@ -4,10 +4,11 @@ import bcrypt from 'bcryptjs';
 import axios from 'axios';
 
 function App() {
+
   const [loggedInUser, setLoggedInUser] = useState(
     JSON.parse(localStorage.getItem('loggedInUser')) || null
   );
-  
+
   const navigate = useNavigate();
 
   const handleSignUp = async (username, password) => {
@@ -41,10 +42,10 @@ function App() {
       setLoggedInUser(user.data);
 
       if (user.data.isAdmin) {
-        // Navigate to admin portal
+        
         navigate('/admin');
       } else {
-        // Navigate to user portal with username as route parameter
+        
         navigate(`/user/${username}`);
       }
     } catch (error) {
