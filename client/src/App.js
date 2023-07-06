@@ -4,7 +4,10 @@ import bcrypt from 'bcryptjs';
 import axios from 'axios';
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(
+    JSON.parse(localStorage.getItem('loggedInUser')) || null
+  );
+  
   const navigate = useNavigate();
 
   const handleSignUp = async (username, password) => {
@@ -33,6 +36,8 @@ function App() {
         return;
       }
 
+      localStorage.setItem('loggedInUser', JSON.stringify(user.data));
+
       setLoggedInUser(user.data);
 
       if (user.data.isAdmin) {
@@ -49,6 +54,9 @@ function App() {
   };
 
   const handleLogout = () => {
+
+    localStorage.removeItem('loggedInUser');
+
     setLoggedInUser(null);
     navigate('/');
   };
@@ -135,10 +143,10 @@ function UserPortal({ loggedInUser }) {
   const username = loggedInUser ? loggedInUser.username : '';
 
   useEffect(() => {
-    if (!loggedInUser || loggedInUser.isAdmin) {
-      navigate('/');
-    }
-  }, [loggedInUser, navigate]);
+  if (!loggedInUser || loggedInUser.isAdmin) {
+    navigate('/');
+  }
+}, [loggedInUser, navigate]);
 
   return (
     <div>
