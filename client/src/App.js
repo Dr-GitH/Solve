@@ -164,10 +164,15 @@ function UserPortal({ loggedInUser }) {
 
 function UploadCertificate({ loggedInUser }) {
   const [image, setImage] = useState(null);
+  const [selectedOption, setSelectedOption] = useState('s1'); 
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setImage(file);
+  };
+
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -181,27 +186,40 @@ function UploadCertificate({ loggedInUser }) {
     if (!image) {
       alert('Please select an image');
       return;
-       }
+    }
 
     const formData = new FormData();
     formData.append('image', image);
     formData.append('username', loggedInUser.username);
+    formData.append('option', selectedOption); 
 
     try {
       await axios.post('http://localhost:5000/api/uploadImage', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('Image uploaded successfully');
-      setImage(null); // Clear the selected image after successful upload
+      setImage(null); 
     } catch (error) {
       console.error(error);
       alert('Error uploading image');
     }
   };
+
   return (
     <div>
       <h3>Upload Certificate</h3>
       <form onSubmit={handleSubmit}>
+        <select value={selectedOption} onChange={handleOptionChange}>
+          <option value="s1">s1</option>
+          <option value="s2">s2</option>
+          <option value="s3">s3</option>
+          <option value="s4">s4</option>
+          <option value="s5">s5</option>
+          <option value="s6">s6</option>
+          <option value="s7">s7</option>
+          <option value="s8">s8</option>
+        </select>
+        <br />
         <input type="file" accept="image/jpeg" onChange={handleImageUpload} />
         <br />
         <button type="submit">Upload</button>

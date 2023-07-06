@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use((req, res, next) => {
-  
+
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -65,6 +65,10 @@ const imageSchema = new mongoose.Schema({
     required: true,
   },
   imageData: {
+    type: String,
+    required: true,
+  },
+  selectedOption: {
     type: String,
     required: true,
   },
@@ -148,6 +152,7 @@ app.get('/api/user/:username', async (req, res) => {
 
 app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
   try {
+    const { username, option } = req.body;
     const user = await User.findOne({ username: req.body.username });
 
     if (!user) {
@@ -158,6 +163,7 @@ app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
       user: user._id,
       imageName: req.file.originalname,
       imageData: req.file.buffer.toString('base64'),
+      selectedOption: option,
     });
 
     await image.save();
