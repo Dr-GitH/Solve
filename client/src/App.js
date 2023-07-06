@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Outlet, useNavigate } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
+import './App.css';
 
 function App() {
 

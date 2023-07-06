@@ -1,0 +1,125 @@
+/* app.css */
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Navigation */
+  nav {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+  }
+  
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav ul li {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px;
+  }
+  
+  nav ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Page Header */
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  /* Forms */
+  form {
+    margin-bottom: 20px;
+  }
+  
+  form input[type="text"],
+  form input[type="password"],
+  form select {
+    width: 200px;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  form button[type="submit"] {
+    padding: 5px 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  form button[type="submit"]:hover {
+    background-color: #555;
+  }
+  
+  /* Image Upload */
+  .upload-container {
+    margin-top: 20px;
+  }
+  
+  .upload-container select {
+    margin-bottom: 10px;
+  }
+  
+  .upload-container input[type="file"] {
+    margin-bottom: 10px;
+  }
+  
+  /* Certificate List */
+  .certificate-list {
+    margin-top: 20px;
+  }
+  
+  .certificate-list a {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .certificate-list a:hover {
+    text-decoration: underline;
+  }
+  
+  .certificate-list p {
+    color: #666;
+    margin: 0;
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: red;
+    margin-bottom: 10px;
+  }
+  
+  /* Success Message */
+  .success-message {
+    color: green;
+    margin-bottom: 10px;
+  }
+  
