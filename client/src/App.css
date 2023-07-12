@@ -55,8 +55,26 @@ body {
   /* Forms */
   form {
     margin-bottom: 20px;
+    margin-left: 50px;
+    margin-top: 200px;
   }
-  
+  /*  Some Work*/
+  .LoginPage{
+    margin-bottom: 20px;
+    margin-left: 50px;
+    text-align: center;
+    margin-top: 200px;
+  }
+  .DropDown{
+    margin-bottom: 20px;
+    margin-left: 50px;
+    text-align: center;
+    margin-top: 200px;
+  }
+  .Date{
+    padding:20px;
+  }
+
   form input[type="text"],
   form input[type="password"],
   form select {

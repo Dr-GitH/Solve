@@ -287,6 +287,7 @@ function UploadCertificate({ loggedInUser }) {
     <div>
       <h3>Upload Certificate</h3>
       <form onSubmit={handleSubmit}>
+        <div className="DropDown">
         <select name="dropdown1" value={dropdownValues.dropdown1} onChange={handleOptionChange}>
           <option value="s1">s1</option>
           <option value="s2">s2</option>
@@ -302,7 +303,9 @@ function UploadCertificate({ loggedInUser }) {
           <option value="NCC/NSS">NCC/NSS</option>
           <option value="SPORTS">SPORTS</option>
           <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option>
-          </select><p>{dropdownValues.dropdown2}</p></> 
+          </select>
+          <p>{dropdownValues.dropdown2}</p></> 
+          </div>
 <h2>Enter Certificate Details</h2>
   <div>
     <label htmlFor="name">Name:</label>
@@ -315,7 +318,7 @@ function UploadCertificate({ loggedInUser }) {
       required
     />
   </div>
-  <div>
+  <div className="Date">
     <label htmlFor="issueDate">Date:</label>
     <input
       type="date"
@@ -370,7 +373,7 @@ function ViewCertificate({ loggedInUser }) {
   }, [loggedInUser]);
 
   return (
-    <div>
+    <div className='ShowResults'>
       <h3>View Certificate</h3>
       {imageNames.map((image, index) => (
         <div key={index}>
@@ -396,9 +399,9 @@ function LoginForm({ handleLogin }) {
   };
 
   return (
-    <div>
+    <div >
       <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <br />
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -421,7 +424,7 @@ function SignUpForm({ handleSignUp }) {
   return (
     <div>
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <br />
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
