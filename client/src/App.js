@@ -106,6 +106,7 @@ function App() {
         <Route path="/user/:username/view-certificate" element={<ViewCertificate loggedInUser={loggedInUser} />} />
         <Route path="/login" element={<LoginForm handleLogin={handleLogin} />} />
         <Route path="/signup" element={<SignUpForm handleSignUp={handleSignUp} />} />
+        <Route path="/admin/users" element={<UsersPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -120,6 +121,19 @@ function Home() {
     </div>
   );
 }
+
+
+function UsersPage() {
+ 
+
+  return (
+    <div>
+      <h2>Users</h2>
+      
+    </div>
+  );
+}
+
 
 function AdminPortal({ loggedInUser }) {
   const navigate = useNavigate();
@@ -136,8 +150,14 @@ function AdminPortal({ loggedInUser }) {
       {loggedInUser && (
         <p>Welcome, {loggedInUser.username}!</p>
       )}
+      <ul>
+        <li>
+          <Link to="/admin/users">Users</Link>
+        </li>
+      </ul>
     </div>
   );
+  
 }
 
 function UserPortal({ loggedInUser }) {
@@ -228,6 +248,7 @@ function UploadCertificate({ loggedInUser }) {
     </div>
   );
 }
+
 
 
 function ViewCertificate({ loggedInUser }) {
