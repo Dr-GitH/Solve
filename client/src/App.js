@@ -4,6 +4,8 @@ import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import './App.css';
 
+import HomePage from './scenes/homePage';
+
 function App() {
 
   const [loggedInUser, setLoggedInUser] = useState(
@@ -116,8 +118,7 @@ function App() {
 function Home() {
   return (
     <div>
-      <h1>Home</h1>
-      <p>Welcome to the home page!</p>
+      <HomePage />
     </div>
   );
 }
