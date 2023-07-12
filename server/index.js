@@ -223,6 +223,19 @@ app.get('/api/images/:username/:imageName', async (req, res) => {
   }
 });
 
+
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find({ isAdmin: false }, 'username');
+    res.json({ users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
 const port = 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

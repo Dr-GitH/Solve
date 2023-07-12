@@ -124,12 +124,32 @@ function Home() {
 
 
 function UsersPage() {
- 
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/users');
+      const filteredUsers = response.data.users.filter((user) => !user.isAdmin);
+      setUsers(filteredUsers);
+    } catch (error) {
+      console.error(error);
+    
+    }
+  };
+  
 
   return (
     <div>
       <h2>Users</h2>
-      
+      <ul>
+        {users.map((user) => (
+          <li key={user._id}>{user.username}</li>
+        ))}
+      </ul>
     </div>
   );
 }
