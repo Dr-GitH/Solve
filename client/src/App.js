@@ -340,31 +340,31 @@ function ViewCertificate({ loggedInUser }) {
   const [imageNames, setImageNames] = useState([]);
 
   useEffect(() => {
-    const fetchImageNames = async () => {
-      try {
-        if (loggedInUser) {
-          const response = await axios.get(`http://localhost:5000/api/images/${loggedInUser.username}`);
-          setImageNames(response.data.imageNames);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    fetchCertificate();
+  }, []);
 
-    fetchImageNames();
-  }, [loggedInUser]);
+  const fetchCertificate = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/user/${loggedInUser.username}`);
+      const { imageNames } = response.data;
+      setImageNames(imageNames || []);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
-      <h3>View Certificate</h3>
-      {imageNames.map((image, index) => (
-        <div key={index}>
-          <a href={`http://localhost:5000/api/images/${loggedInUser?.username}/${image.name}`} target="_blank" rel="noopener noreferrer">
-            {image.name}
-          </a>
-          <p>{image.detail}</p> 
-        </div>
-      ))}
+      <h2>View Certificate</h2>
+      {imageNames.length ? (
+        <ul>
+          {imageNames.map((imageName, index) => (
+            <li key={index}>{imageName}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No images found.</p>
+      )}
     </div>
   );
 }

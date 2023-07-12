@@ -8,13 +8,11 @@ app.use(express.json());
 app.use(cors());
 
 app.use((req, res, next) => {
-
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
-
 
 const multer = require('multer');
 const storage = multer.memoryStorage();
@@ -32,29 +30,27 @@ mongoose
     console.error('Error connecting to MongoDB:', error);
   });
 
-  const userSchema = new mongoose.Schema({
-    username: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    isUser: {
-      type: Boolean,
-      default: true,
-    },
-  });
-  
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  isUser: {
+    type: Boolean,
+    default: true,
+  },
+});
 
 const User = mongoose.model('User', userSchema);
-
 
 const imageSchema = new mongoose.Schema({
   username: String,
@@ -70,7 +66,6 @@ const imageSchema = new mongoose.Schema({
 });
 
 const Image = mongoose.model('Image', imageSchema);
-
 
 app.post('/api/checkUsername', async (req, res) => {
   const { username } = req.body;
@@ -138,7 +133,12 @@ app.get('/api/user/:username', async (req, res) => {
       return;
     }
 
-    res.json(user);
+    const certificates = await Image.find({ username });
+    const imageNames = certificates.map((certificate) => certificate.imageName);
+
+    console.log('Image Names:', imageNames);
+
+    res.json({ imageNames });
   } catch (error) {
     console.error('Error retrieving user:', error);
     res.status(500).json({ error: 'An error occurred' });
@@ -168,58 +168,9 @@ app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
     res.json({ message: 'Image uploaded successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Error uploading image' });
   }
 });
-
-
-app.get('/api/images/:username', async (req, res) => {
-  try {
-    const user = await User.findOne({ username: req.params.username });
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    const images = await Image.find({ user: user._id });
-
-    const imageNames = images.map((image) => ({
-      name: image.imageName,
-      detail: `Semester-${image.selectedOption}`,
-    }));
-
-    res.json({ imageNames });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-
-app.get('/api/images/:username/:imageName', async (req, res) => {
-  try {
-    const user = await User.findOne({ username: req.params.username });
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    const image = await Image.findOne({ user: user._id, imageName: req.params.imageName });
-
-    if (!image) {
-      return res.status(404).json({ message: 'Image not found' });
-    }
-
-    const imageData = Buffer.from(image.imageData, 'base64');
-
-    res.set('Content-Type', 'image/jpeg');
-    res.send(imageData);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
 
 app.get('/api/users', async (req, res) => {
   try {
@@ -230,8 +181,6 @@ app.get('/api/users', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-
 
 const port = 5000;
 app.listen(port, () => {
