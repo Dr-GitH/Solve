@@ -55,23 +55,18 @@ mongoose
 
 const User = mongoose.model('User', userSchema);
 
+
 const imageSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+  username: String,
+  dropdown1: String,
+  dropdown2: String,
+  certificateDetails: {
+    name: String,
+    issueDate: String,
+    issuer: String
   },
-  imageName: {
-    type: String,
-    required: true,
-  },
-  imageData: {
-    type: String,
-    required: true,
-  },
-  selectedOption: {
-    type: String,
-    required: true,
-  },
+  imageName: String,
+  imageData: String,
 });
 
 const Image = mongoose.model('Image', imageSchema);
@@ -152,18 +147,20 @@ app.get('/api/user/:username', async (req, res) => {
 
 app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
   try {
-    const { username, option } = req.body;
-    const user = await User.findOne({ username: req.body.username });
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    const { username, dropdown1, dropdown2, name, issueDate, issuer } = req.body;
+    const { originalname, buffer } = req.file;
 
     const image = new Image({
-      user: user._id,
-      imageName: req.file.originalname,
-      imageData: req.file.buffer.toString('base64'),
-      selectedOption: option,
+      username,
+      dropdown1,
+      dropdown2,
+      certificateDetails: {
+        name,
+        issueDate,
+        issuer
+      },
+      imageName: originalname,
+      imageData: buffer.toString('base64'),
     });
 
     await image.save();

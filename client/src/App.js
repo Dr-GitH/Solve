@@ -204,48 +204,36 @@ function UserPortal({ loggedInUser }) {
   );
 }
 
+
+
 function UploadCertificate({ loggedInUser }) {
   const [image, setImage] = useState(null);
-  
-  const[dropdownValues,setDropdownValues]=useState({
-    dropdown1:'',
-    dropdown2:''
+  const [dropdownValues, setDropdownValues] = useState({
+    dropdown1: 's1',
+    dropdown2: ''
   });
-  //const [selectedOption, setSelectedOption] = useState('s1'); 
-  
-  
-    const [certificateData, setCertificateData] = useState({
-      name: '',
-      issueDate: '',
-      issuer: '',
-    });
-  
+  const [certificateData, setCertificateData] = useState({
+    name: '',
+    issueDate: '',
+    issuer: ''
+  });
 
-   
-  
-    const handleCertSubmit = (event) => {
-      event.preventDefault();
-    
-      
-    };
+  const handleOptionChange = (event) => {
+    const { name, value } = event.target;
+    setDropdownValues((prevValues) => ({
+      ...prevValues,
+      [name]: value
+    }));
+  };
 
-    const handleOptionChange = (event) => {
-      const { name, value } = event.target;
-      setDropdownValues((prevValues) => ({
-        ...prevValues,
-        [name]: value,
-      }));
-    };
-     
-    const handleCertChange = (event) => {
-      const { name, value } = event.target;
-      setCertificateData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    };
+  const handleCertChange = (event) => {
+    const { name, value } = event.target;
+    setCertificateData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
 
-  
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -267,16 +255,18 @@ function UploadCertificate({ loggedInUser }) {
     const formData = new FormData();
     formData.append('image', image);
     formData.append('username', loggedInUser.username);
-    formData.append('option', dropdownValues.dropdown1); 
-    formData.append('category',dropdownValues.dropdown2);
-    formData.append('Certificate Details',certificateData);
+    formData.append('dropdown1', dropdownValues.dropdown1);
+    formData.append('dropdown2', dropdownValues.dropdown2);
+    formData.append('name', certificateData.name);
+    formData.append('issueDate', certificateData.issueDate);
+    formData.append('issuer', certificateData.issuer);
 
     try {
       await axios.post('http://localhost:5000/api/uploadImage', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('Image uploaded successfully');
-      setImage(null); 
+      setImage(null);
     } catch (error) {
       console.error(error);
       alert('Error uploading image');
@@ -287,7 +277,7 @@ function UploadCertificate({ loggedInUser }) {
     <div>
       <h3>Upload Certificate</h3>
       <form onSubmit={handleSubmit}>
-        <div className="DropDown">
+      
         <select name="dropdown1" value={dropdownValues.dropdown1} onChange={handleOptionChange}>
           <option value="s1">s1</option>
           <option value="s2">s2</option>
@@ -298,60 +288,53 @@ function UploadCertificate({ loggedInUser }) {
           <option value="s7">s7</option>
           <option value="s8">s8</option>
         </select>
-        <><select name="dropdown2" value={dropdownValues.dropdown2} onChange={handleOptionChange}>
+        <select name="dropdown2" value={dropdownValues.dropdown2} onChange={handleOptionChange}>
           <option value="">Select an option</option>
           <option value="NCC/NSS">NCC/NSS</option>
           <option value="SPORTS">SPORTS</option>
           <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option>
-          </select>
-          <p>{dropdownValues.dropdown2}</p></> 
-          </div>
-<h2>Enter Certificate Details</h2>
-  <div>
-    <label htmlFor="name">Name:</label>
-    <input
-      type="text"
-      id="name"
-      name="name"
-      value={certificateData.name}
-      onChange={handleCertChange}
-      required
-    />
-  </div>
-  <div className="Date">
-    <label htmlFor="issueDate">Date:</label>
-    <input
-      type="date"
-      id="issueDate"
-      name="issueDate"
-      value={certificateData.issueDate}
-      onChange={handleCertChange}
-      required
-    />
-  </div>
-  <div>
-    <label htmlFor="issuer">Issuer:</label>
-    <input
-      type="text"
-      id="issuer"
-      name="issuer"
-      value={certificateData.issuer}
-      onChange={handleCertChange}
-      required
-    />
-  </div>
-
-
-      
+        </select>
+        <div>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={certificateData.name}
+            onChange={handleCertChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="issueDate">Date:</label>
+          <input
+            type="date"
+            id="issueDate"
+            name="issueDate"
+            value={certificateData.issueDate}
+            onChange={handleCertChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="issuer">Issuer:</label>
+          <input
+            type="text"
+            id="issuer"
+            name="issuer"
+            value={certificateData.issuer}
+            onChange={handleCertChange}
+            required
+          />
+        </div>
         <br />
         <input type="file" accept="image/jpeg" onChange={handleImageUpload} />
         <br />
         <button type="submit">Upload</button>
       </form>
     </div>
-  );
-}
-
+  )
+};
 
 
 function ViewCertificate({ loggedInUser }) {
