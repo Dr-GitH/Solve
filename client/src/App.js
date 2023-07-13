@@ -223,16 +223,14 @@ function AdminPortal({ loggedInUser }) {
         <p>Welcome, {loggedInUser.username}!</p>
       )}
       <ul>
-
-      <li>
-        <Link to={`/admin/user/${loggedInUser.username}`}>User: {loggedInUser.username}</Link>
-      </li>
-
+        <li>
+          <Link to="/admin/users">Users</Link>
+        </li>
       </ul>
     </div>
   );
-  
 }
+
 
 function UserPortal({ loggedInUser }) {
   const navigate = useNavigate();
