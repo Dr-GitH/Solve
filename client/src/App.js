@@ -110,7 +110,7 @@ function App() {
         <Route path="/login" element={<LoginForm handleLogin={handleLogin} />} />
         <Route path="/signup" element={<SignUpForm handleSignUp={handleSignUp} />} />
         <Route path="/admin/users" element={<UsersPage />} />
-        <Route path="/admin/user/:username" element={<UserPage />} />
+        <Route path="/admin/user/:username" element={<UserPage navigate={navigate} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -158,16 +158,53 @@ function UsersPage() {
 }
 
 
-function UserPage() {
+function UserPage({ navigate }) {
   const { username } = useParams();
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
+  const fetchImages = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/user/${username}`);
+      const { imageData } = response.data;
+      setImages(imageData || []);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleBack = () => {
+    navigate('/admin/users');
+  };
 
   return (
     <div>
       <h2>User: {username}</h2>
-      {/* Add user details or any other content */}
+      <button onClick={handleBack}>Back</button>
+      {images.length ? (
+        <ul>
+          {images.map((image, index) => (
+            <li key={index}>
+              <h3>Image Name: {image.imageName}</h3>
+              <p>Dropdown 1: {image.dropdown1}</p>
+              <p>Dropdown 2: {image.dropdown2}</p>
+              <p>Certificate Details:</p>
+              <p>Name: {image.certificateDetails.name}</p>
+              <p>Issue Date: {image.certificateDetails.issueDate}</p>
+              <p>Issuer: {image.certificateDetails.issuer}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No images found.</p>
+      )}
     </div>
   );
 }
+
 
 
 function AdminPortal({ loggedInUser }) {
