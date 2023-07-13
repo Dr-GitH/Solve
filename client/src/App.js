@@ -199,6 +199,11 @@ function UserPage({ navigate }) {
     navigate('/admin/users');
   };
 
+  const handleImageClick = (imageName) => {
+    window.open(`http://localhost:5000/api/image/${username}/${imageName}`);
+  };
+
+
   return (
     <div>
       <h2>User: {username}</h2>
@@ -207,13 +212,14 @@ function UserPage({ navigate }) {
         <ul>
           {images.map((image, index) => (
             <li key={index}>
-              <h3>Image Name: {image.imageName}</h3>
+              <p>Image Name: <span className="image-link" onClick={() => handleImageClick(image.imageName)}>{image.imageName}</span></p>
               <p>Dropdown 1: {image.dropdown1}</p>
               <p>Dropdown 2: {image.dropdown2}</p>
               <p>Certificate Details:</p>
               <p>Name: {image.certificateDetails.name}</p>
               <p>Issue Date: {image.certificateDetails.issueDate}</p>
               <p>Issuer: {image.certificateDetails.issuer}</p>
+              <p>Status: {image.status}</p>
             </li>
           ))}
         </ul>
