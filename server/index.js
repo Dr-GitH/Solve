@@ -53,7 +53,6 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 const imageSchema = new mongoose.Schema({
-
   username: String,
   dropdown1: String,
   dropdown2: String,
@@ -226,6 +225,31 @@ app.get('/api/users', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+
+app.put('/api/user/:username/image/:imageName', async (req, res) => {
+  const { username, imageName } = req.params;
+  const { status } = req.body;
+
+  try {
+    const image = await Image.findOneAndUpdate(
+      { username, imageName },
+      { $set: { status } },
+      { new: true }
+    );
+
+    if (!image) {
+      res.status(404).json({ error: 'Image not found' });
+      return;
+    }
+
+    res.json({ message: 'Status updated successfully' });
+  } catch (error) {
+    console.error('Error updating status:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
 
 const port = 5000;
 app.listen(port, () => {

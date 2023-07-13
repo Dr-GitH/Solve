@@ -110,7 +110,7 @@ function App() {
         <Route path="/login" element={<LoginForm handleLogin={handleLogin} />} />
         <Route path="/signup" element={<SignUpForm handleSignUp={handleSignUp} />} />
         <Route path="/admin/users" element={<UsersPage />} />
-        <Route path="/admin/user/:username" element={<UserPage navigate={navigate} />} />
+        <Route path="/admin/user/:username" element={<UserPage navigate={navigate} loggedInUser={loggedInUser} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -177,7 +177,7 @@ function UsersPage() {
 }
 
 
-function UserPage({ navigate }) {
+function UserPage({ navigate, loggedInUser }) {
   const { username } = useParams();
   const [images, setImages] = useState([]);
 
@@ -203,6 +203,15 @@ function UserPage({ navigate }) {
     window.open(`http://localhost:5000/api/image/${username}/${imageName}`);
   };
 
+  const handleStatusChange = async (imageName, status) => {
+    try {
+      await axios.put(`http://localhost:5000/api/user/${username}/image/${imageName}`, { status });
+      fetchImages(); // Fetch the updated images after status change
+    } catch (error) {
+      console.error(error);
+      alert('Error updating status');
+    }
+  };
 
   return (
     <div>
@@ -220,6 +229,20 @@ function UserPage({ navigate }) {
               <p>Issue Date: {image.certificateDetails.issueDate}</p>
               <p>Issuer: {image.certificateDetails.issuer}</p>
               <p>Status: {image.status}</p>
+              {loggedInUser && loggedInUser.isAdmin && (
+                <div>
+                  <label htmlFor={`status-select-${index}`}>Status:</label>
+                  <select
+                    id={`status-select-${index}`}
+                    value={image.status}
+                    onChange={(e) => handleStatusChange(image.imageName, e.target.value)}
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="accepted">Accepted</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -229,6 +252,7 @@ function UserPage({ navigate }) {
     </div>
   );
 }
+
 
 
 
