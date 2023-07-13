@@ -340,7 +340,7 @@ function UploadCertificate({ loggedInUser }) {
 
 
 function ViewCertificate({ loggedInUser }) {
-  const [imageNames, setImageNames] = useState([]);
+  const [imageData, setImageData] = useState([]);
 
   useEffect(() => {
     fetchCertificate();
@@ -349,20 +349,33 @@ function ViewCertificate({ loggedInUser }) {
   const fetchCertificate = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/api/user/${loggedInUser.username}`);
-      const { imageNames } = response.data;
-      setImageNames(imageNames || []);
+      const { imageData } = response.data;
+      setImageData(imageData || []);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const handleImageClick = (imageName) => {
+    window.open(`http://localhost:5000/api/image/${loggedInUser.username}/${imageName}`);
+  };
+
+  
   return (
     <div>
       <h2>View Certificate</h2>
-      {imageNames.length ? (
+      {imageData.length ? (
         <ul>
-          {imageNames.map((imageName, index) => (
-            <li key={index}>{imageName}</li>
+          {imageData.map((image, index) => (
+            <li key={index}>
+              <p>Image Name: <span className="image-link" onClick={() => handleImageClick(image.imageName)}>{image.imageName}</span></p>
+              <p>Dropdown 1: {image.dropdown1}</p>
+              <p>Dropdown 2: {image.dropdown2}</p>
+              <p>Certificate Details:</p>
+              <p>Name: {image.certificateDetails.name}</p>
+              <p>Issue Date: {image.certificateDetails.issueDate}</p>
+              <p>Issuer: {image.certificateDetails.issuer}</p>
+            </li>
           ))}
         </ul>
       ) : (
@@ -371,7 +384,6 @@ function ViewCertificate({ loggedInUser }) {
     </div>
   );
 }
-
 
 
 function LoginForm({ handleLogin }) {

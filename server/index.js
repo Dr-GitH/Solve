@@ -123,6 +123,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+
 app.get('/api/user/:username', async (req, res) => {
   const { username } = req.params;
 
@@ -134,16 +135,50 @@ app.get('/api/user/:username', async (req, res) => {
     }
 
     const certificates = await Image.find({ username });
-    const imageNames = certificates.map((certificate) => certificate.imageName);
+    const imageData = certificates.map((certificate) => {
+      return {
+        imageName: certificate.imageName,
+        dropdown1: certificate.dropdown1,
+        dropdown2: certificate.dropdown2,
+        certificateDetails: certificate.certificateDetails,
+        imageData: certificate.imageData.toString('base64'), // Convert image data to Base64 string
+      };
+    });
 
-    console.log('Image Names:', imageNames);
-
-    res.json({ imageNames });
+    res.json({ imageData });
   } catch (error) {
     console.error('Error retrieving user:', error);
     res.status(500).json({ error: 'An error occurred' });
   }
 });
+
+
+
+app.get('/api/image/:username/:imageName', async (req, res) => {
+  const { username, imageName } = req.params;
+
+  try {
+    const image = await Image.findOne({ username, imageName });
+    if (!image) {
+      res.status(404).json({ error: 'Image not found' });
+      return;
+    }
+
+    const imageData = Buffer.from(image.imageData, 'base64');
+
+    res.writeHead(200, {
+      'Content-Type': 'image/jpeg',
+      'Content-Length': imageData.length,
+    });
+    res.end(imageData);
+  } catch (error) {
+    console.error('Error retrieving image:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+
+
 
 app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
   try {
@@ -171,6 +206,7 @@ app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
     res.status(500).json({ message: 'Error uploading image' });
   }
 });
+
 
 app.get('/api/users', async (req, res) => {
   try {
