@@ -192,14 +192,16 @@ function UserPortal({ loggedInUser }) {
 }, [loggedInUser, navigate]);
 
   return (
-    <div>
-      <h1>User Portal</h1>
-      <h2>{`User Portal - ${username}`}</h2>
-      <p>Welcome, {username}!</p>
-      <Link to={`/user/${username}/upload-certificate`}>Upload Certificate</Link>
+    <div className="CompletePortal">
+      
+      <h1>Welcome, {username}!</h1>
+      <h1>Please Choose</h1>
+      <div className="portalView">
+      <Link className="portalView"to={`/user/${username}/upload-certificate`}>Upload Certificate</Link>
       <br />
-      <Link to={`/user/${username}/view-certificate`}>View Certificate</Link>
+      <Link className="portalView2"to={`/user/${username}/view-certificate`}>View Certificate</Link>
       <Outlet />
+      </div>
     </div>
   );
 }
@@ -274,7 +276,7 @@ function UploadCertificate({ loggedInUser }) {
   };
 
   return (
-    <div>
+    <div className="CertificateForm"> 
       <h3>Upload Certificate</h3>
       <form onSubmit={handleSubmit}>
       
@@ -382,8 +384,9 @@ function LoginForm({ handleLogin }) {
   };
 
   return (
-    <div >
-      <h1>Login</h1>
+       <div >
+      <div className="LoginHead">
+      <h1>Login</h1></div>
       <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <br />
@@ -406,7 +409,8 @@ function SignUpForm({ handleSignUp }) {
 
   return (
     <div>
-      <h1>Sign Up</h1>
+      <div className="LoginHead">
+      <h1>Sign Up</h1></div>
       <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <br />

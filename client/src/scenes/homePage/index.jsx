@@ -7,8 +7,12 @@ const HomePage = () => {
             <div>
             </div>
             <div className='container'>
-                <h1>Homieeee</h1>
-                <img src={logo} alt="Logo" /> 
+            
+                <img src={logo} alt="Logo" width="1400" height="550" /> 
+                <div className="HomepageHeading">
+                <h1>Welcome to Rajagiri Activity Point Management System</h1>
+                <h1>Please Login or Sign Up to Continue</h1>
+                </div>
             </div>
         </div>
     );

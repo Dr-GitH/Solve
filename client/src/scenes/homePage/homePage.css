@@ -3,3 +3,17 @@
     margin:0;
     box-sizing: border-box;
 }
+body{
+    background-color: white;
+}
+H1{
+    text-align: center;
+    font-size: larger;
+    align-items: center;
+    align-content: center;
+    margin-left: 600px;
+
+}
+img{
+    margin-left: 30x
+}

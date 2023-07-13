@@ -59,7 +59,72 @@ body {
     margin-top: 200px;
   }
   /*  Some Work*/
-  .LoginPage{
+
+.CertificateForm{
+  margin-bottom: 20px;
+    margin-left: 50px;
+    text-align: center;
+    margin-top: 150px;
+}
+
+.CertificateForm input[type="text"]{
+  width: 40%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid rgb(47, 115, 142);
+  border-radius: 10px;
+}
+.CertificateForm input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #337ab7;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.CertificateForm select{
+  width: 200px; 
+  padding: 10px; 
+  font-size: 16px; 
+  border: 1px solid rgb(47, 115, 142);
+  border-radius: 10px;
+  background-color: white; 
+  color: #333; 
+}
+
+.CertificateForm input[type="date"]{
+  width: 200px; 
+  padding: 10px; 
+  margin-bottom: 9px;
+  font-size: 16px; 
+  border: 1px solid rgb(47, 115, 142);
+  border-radius: 10px; 
+  background-color: white; 
+  color: #333; 
+}
+
+
+
+.CertificateForm input[type="submit"]:hover {
+  background-color: #23527c;
+}
+.CertificateForm h3{
+  font-size: 50px;
+    margin-left: 60px;
+    margin-top: 50px;
+    padding: 0;
+}
+.CertificateForm form{
+  padding: 50px;
+}
+  
+  .LoginHead H1{
+    font-size: 50px;
+    margin-left: 60px;
+    margin-top: 50px;
+    padding: 0;
+  }
+  .LoginPage {
     margin-bottom: 20px;
     margin-left: 50px;
     text-align: center;
@@ -74,7 +139,52 @@ body {
   .Date{
     padding:20px;
   }
-
+  .portalView{
+    font-size: 50px;
+    color:grey; 
+    text-decoration: none; 
+    transition: color 0.3s;
+  }
+  .CompletePortal{
+   
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+    
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    
+    
+    p {
+      font-size: 18px;
+      line-height: 1.5;
+      color: #666;
+    }
+    
+    a {
+      color: #337ab7;
+      text-decoration: none;
+    }
+  }
+  .CompletePortal h1 {
+    font-size: 32px;
+    color: #333;
+    margin: 20px 0;
+  }
+  .portalView2{
+    font-size: 50px;
+    color: grey; 
+    text-decoration: none; 
+    transition: color 0.3s;
+  }
+  .portalView:hover{
+    color:#337ab7; 
+  text-decoration: underline;
+  }
+  .portalView2:hover{
+    color:#337ab7; 
+  text-decoration: underline;
+  }
   form input[type="text"],
   form input[type="password"],
   form select {
