@@ -53,6 +53,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 const imageSchema = new mongoose.Schema({
+
   username: String,
   dropdown1: String,
   dropdown2: String,
@@ -63,9 +64,14 @@ const imageSchema = new mongoose.Schema({
   },
   imageName: String,
   imageData: String,
+  status: {
+    type: String,
+    default: 'pending'
+  }
 });
 
 const Image = mongoose.model('Image', imageSchema);
+
 
 app.post('/api/checkUsername', async (req, res) => {
   const { username } = req.body;
@@ -141,8 +147,10 @@ app.get('/api/user/:username', async (req, res) => {
         dropdown1: certificate.dropdown1,
         dropdown2: certificate.dropdown2,
         certificateDetails: certificate.certificateDetails,
-        imageData: certificate.imageData.toString('base64'), // Convert image data to Base64 string
+        imageData: certificate.imageData.toString('base64'),
+        status: certificate.status,
       };
+
     });
 
     res.json({ imageData });
@@ -206,6 +214,7 @@ app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
     res.status(500).json({ message: 'Error uploading image' });
   }
 });
+
 
 
 app.get('/api/users', async (req, res) => {

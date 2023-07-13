@@ -445,6 +445,7 @@ function ViewCertificate({ loggedInUser }) {
               <p>Name: {image.certificateDetails.name}</p>
               <p>Issue Date: {image.certificateDetails.issueDate}</p>
               <p>Issuer: {image.certificateDetails.issuer}</p>
+              <p>Status: {image.status}</p>
             </li>
           ))}
         </ul>
