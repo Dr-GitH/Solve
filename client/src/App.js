@@ -128,6 +128,8 @@ function Home() {
 
 function UsersPage() {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchUsers();
@@ -138,16 +140,33 @@ function UsersPage() {
       const response = await axios.get('http://localhost:5000/api/users');
       const filteredUsers = response.data.users.filter((user) => !user.isAdmin);
       setUsers(filteredUsers);
+      setFilteredUsers(filteredUsers);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    const filteredUsers = users.filter((user) =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filteredUsers);
+  };
+
   return (
     <div>
       <h2>Users</h2>
+      <input
+        type="text"
+        placeholder="Search User"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
       <ul>
-        {users.map((user) => (
+        {filteredUsers.map((user) => (
           <li key={user._id}>
             <Link to={`/admin/user/${user.username}`}>{user.username}</Link>
           </li>
