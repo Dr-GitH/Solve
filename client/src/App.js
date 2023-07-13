@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Outlet, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import './App.css';
@@ -109,6 +110,7 @@ function App() {
         <Route path="/login" element={<LoginForm handleLogin={handleLogin} />} />
         <Route path="/signup" element={<SignUpForm handleSignUp={handleSignUp} />} />
         <Route path="/admin/users" element={<UsersPage />} />
+        <Route path="/admin/user/:username" element={<UserPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -138,19 +140,31 @@ function UsersPage() {
       setUsers(filteredUsers);
     } catch (error) {
       console.error(error);
-    
     }
   };
-  
 
   return (
     <div>
       <h2>Users</h2>
       <ul>
         {users.map((user) => (
-          <li key={user._id}>{user.username}</li>
+          <li key={user._id}>
+            <Link to={`/admin/user/${user.username}`}>{user.username}</Link>
+          </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+
+function UserPage() {
+  const { username } = useParams();
+
+  return (
+    <div>
+      <h2>User: {username}</h2>
+      {/* Add user details or any other content */}
     </div>
   );
 }
@@ -172,9 +186,11 @@ function AdminPortal({ loggedInUser }) {
         <p>Welcome, {loggedInUser.username}!</p>
       )}
       <ul>
-        <li>
-          <Link to="/admin/users">Users</Link>
-        </li>
+
+      <li>
+        <Link to={`/admin/user/${loggedInUser.username}`}>User: {loggedInUser.username}</Link>
+      </li>
+
       </ul>
     </div>
   );
