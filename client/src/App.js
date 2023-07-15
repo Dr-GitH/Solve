@@ -17,7 +17,7 @@ function App() {
 
   const handleSignUp = async (username, password) => {
     try {
-      const checkUsername = await axios.post('http://localhost:5000/api/checkUsername', { username });
+      const checkUsername = await axios.post('http://localhost:3080/api/checkUsername', { username });
       if (checkUsername.data.message === 'Username already exists') {
         alert('Username already exists');
         return;
@@ -25,7 +25,7 @@ function App() {
 
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
-      const newUser = await axios.post('http://localhost:5000/api/signup', { username, password: hashedPassword });
+      const newUser = await axios.post('http://localhost:3080/api/signup', { username, password: hashedPassword });
       alert(newUser.data.message);
     } catch (error) {
       console.error(error);
@@ -35,7 +35,7 @@ function App() {
 
   const handleLogin = async (username, password) => {
     try {
-      const user = await axios.post('http://localhost:5000/api/login', { username, password });
+      const user = await axios.post('http://localhost:3080/api/login', { username, password });
       if (user.data.error) {
         alert('User not found or invalid password');
         return;
@@ -137,7 +137,7 @@ function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users');
+      const response = await axios.get('http://localhost:3080/api/users');
       const filteredUsers = response.data.users.filter((user) => !user.isAdmin);
       setUsers(filteredUsers);
       setFilteredUsers(filteredUsers);
@@ -187,7 +187,7 @@ function UserPage({ navigate, loggedInUser }) {
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/user/${username}`);
+      const response = await axios.get(`http://localhost:3080/api/user/${username}`);
       const { imageData } = response.data;
       setImages(imageData || []);
     } catch (error) {
@@ -200,12 +200,12 @@ function UserPage({ navigate, loggedInUser }) {
   };
 
   const handleImageClick = (imageName) => {
-    window.open(`http://localhost:5000/api/image/${username}/${imageName}`);
+    window.open(`http://localhost:3080/api/image/${username}/${imageName}`);
   };
 
   const handleStatusChange = async (imageName, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/user/${username}/image/${imageName}`, { status });
+      await axios.put(`http://localhost:3080/api/user/${username}/image/${imageName}`, { status });
       fetchImages(); // Fetch the updated images after status change
     } catch (error) {
       console.error(error);
@@ -364,7 +364,7 @@ function UploadCertificate({ loggedInUser }) {
     formData.append('issuer', certificateData.issuer);
 
     try {
-      await axios.post('http://localhost:5000/api/uploadImage', formData, {
+      await axios.post('http://localhost:3080/api/uploadImage', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('Image uploaded successfully');
@@ -448,7 +448,7 @@ function ViewCertificate({ loggedInUser }) {
 
   const fetchCertificate = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/user/${loggedInUser.username}`);
+      const response = await axios.get(`http://localhost:3080/api/user/${loggedInUser.username}`);
       const { imageData } = response.data;
       setImageData(imageData || []);
     } catch (error) {
@@ -457,7 +457,7 @@ function ViewCertificate({ loggedInUser }) {
   };
 
   const handleImageClick = (imageName) => {
-    window.open(`http://localhost:5000/api/image/${loggedInUser.username}/${imageName}`);
+    window.open(`http://localhost:3080/api/image/${loggedInUser.username}/${imageName}`);
   };
 
   
@@ -497,9 +497,10 @@ function LoginForm({ handleLogin }) {
   };
 
   return (
-       <div >
-      <div className="LoginHead">
-      <h1>Login</h1></div>
+    <div className="card" >
+      {/* <div className="LoginHead">
+        <h1>Login</h1> </div> */}
+      <h2 class="card-heading">LOGIN</h2>
       <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <br />

@@ -117,8 +117,25 @@ body {
 .CertificateForm form{
   padding: 50px;
 }
+
+.card{
+  background: rgba(34, 44, 60, 0.66);
+  height: 420px;
+  width: 310px;
+  border-radius: 9px;
+  margin: 12rem auto 8.1rem;
+  padding: 20px;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+}
+
+.card-heading{
+  text-align: center;
+  font-size: 50px;
+}
+
+
   
-  .LoginHead H1{
+  /* .LoginHead H1{
     font-size: 50px;
     margin-left: 60px;
     margin-top: 50px;
@@ -129,7 +146,7 @@ body {
     margin-left: 50px;
     text-align: center;
     margin-top: 200px;
-  }
+  } */
   .DropDown{
     margin-bottom: 20px;
     margin-left: 50px;
