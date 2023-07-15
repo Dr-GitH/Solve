@@ -126,6 +126,10 @@ function Home() {
   return (
     <div>
       <HomePage />
+      <div className='homeButton'>
+        <Link to="/login" className='link'>Login</Link>
+        <Link to="/signup" className='link'>Sign Up</Link>
+      </div>
     </div>
   );
 }

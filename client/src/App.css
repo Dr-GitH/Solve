@@ -288,3 +288,23 @@ form button[type="submit"]:hover {
     margin-bottom: 10px;
   }
   
+  .homeButton{
+    display: flex;
+    justify-content: center;
+  }
+
+  .link{
+    background-color: white;
+    color: black;
+    border: 2px solid rgb(0, 153, 170);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width: 150px;
+  }
+
+  .link:hover, .link:active {
+    background-color: rgb(0, 153, 170);
+    color: white;
+  }
