@@ -251,7 +251,7 @@ app.put('/api/user/:username/image/:imageName', async (req, res) => {
 });
 
 
-const port = 5000;
+const port = 3080;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
