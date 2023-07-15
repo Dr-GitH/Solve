@@ -500,7 +500,7 @@ function LoginForm({ handleLogin }) {
     <div className="card" >
       {/* <div className="LoginHead">
         <h1>Login</h1> </div> */}
-      <h2 class="card-heading">LOGIN</h2>
+      <h2 className="card-heading">LOGIN</h2>
       <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <br />
@@ -522,9 +522,10 @@ function SignUpForm({ handleSignUp }) {
   };
 
   return (
-    <div>
-      <div className="LoginHead">
-      <h1>Sign Up</h1></div>
+    <div className="card">
+      {/* <div className="LoginHead">
+      <h1>Sign Up</h1></div> */}
+      <h2 className="card-heading">SIGN UP</h2>
       <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <br />

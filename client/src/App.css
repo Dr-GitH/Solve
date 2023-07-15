@@ -5,6 +5,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    height: 100%;
   }
   
   .container {
@@ -119,7 +120,7 @@ body {
 }
 
 .card{
-  background: rgba(34, 44, 60, 0.66);
+  background: #0D2241;
   height: 420px;
   width: 310px;
   border-radius: 9px;
@@ -131,8 +132,45 @@ body {
 .card-heading{
   text-align: center;
   font-size: 50px;
+  color: white;
 }
 
+.card input{
+  border-radius:5px;
+  height:20px;
+  width: 200px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+input:focus{
+  outline: none;
+}
+
+
+/* form input[type="text"],
+form input[type="password"],
+form select {
+  width: 200px;
+  padding: 5px;
+  margin-bottom: 10px;
+} */
+
+.card button[type="submit"] {
+  padding: 10px 10px;
+  background-color: #02800b;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 3px;
+}
+
+form button[type="submit"]:hover {
+  background-color: #0c2f0b;
+}
 
   
   /* .LoginHead H1{
@@ -147,6 +185,7 @@ body {
     text-align: center;
     margin-top: 200px;
   } */
+
   .DropDown{
     margin-bottom: 20px;
     margin-left: 50px;
@@ -201,25 +240,6 @@ body {
   .portalView2:hover{
     color:#337ab7; 
   text-decoration: underline;
-  }
-  form input[type="text"],
-  form input[type="password"],
-  form select {
-    width: 200px;
-    padding: 5px;
-    margin-bottom: 10px;
-  }
-  
-  form button[type="submit"] {
-    padding: 5px 10px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  form button[type="submit"]:hover {
-    background-color: #555;
   }
   
   /* Image Upload */
