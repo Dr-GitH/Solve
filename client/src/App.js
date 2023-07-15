@@ -86,23 +86,10 @@ function App() {
                 </li>
               )}
             </>
-          ) : (
-            <>
-              {location.pathname !== "/" && (
-              <>
-                <li>
-                  <Link to="/login">Login</Link>
-                </li>
-                <li>
-                  <Link to="/signup">Sign Up</Link>
-                </li>
-              </>
-            )}
-            </>
-          )}
+          ) : null}
         </ul>
         {loggedInUser && (
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogout} className='logoutButton'>Logout</button>
         )}
       </nav>
 
@@ -123,16 +110,25 @@ function App() {
 }
 
 function Home() {
+  const [loggedInUser] = useState(
+    JSON.parse(localStorage.getItem('loggedInUser')) || null
+  );
   return (
     <div>
       <HomePage />
       <div className='homeButton'>
-        <Link to="/login" className='link'>Login</Link>
-        <Link to="/signup" className='link'>Sign Up</Link>
+        {!loggedInUser ? (
+          <>
+            <Link to="/login" className='link'>Login</Link>
+            <Link to="/signup" className='link'>Sign Up</Link>
+          </>
+        ) : null
+        }
       </div>
     </div>
   );
 }
+
 
 
 function UsersPage() {
