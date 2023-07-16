@@ -34,10 +34,11 @@ function App() {
     }
   };
 
-  const handleLogin = async (username, password) => {
+  const handleLogin = async (username, password, onSuccess, onFailure) => {
     try {
       const user = await axios.post('http://localhost:3080/api/login', { username, password });
       if (user.data.error) {
+        onFailure();
         alert('User not found or invalid password');
         return;
       }
@@ -45,7 +46,7 @@ function App() {
       localStorage.setItem('loggedInUser', JSON.stringify(user.data));
 
       setLoggedInUser(user.data);
-
+      onSuccess();
       if (user.data.isAdmin) {
         
         navigate('/admin');
@@ -65,6 +66,7 @@ function App() {
 
     setLoggedInUser(null);
     navigate('/');
+    window.location.reload();
   };
 
   return (
@@ -72,7 +74,7 @@ function App() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">APMS</Link>
           </li>
           {loggedInUser ? (
             <>
@@ -495,12 +497,27 @@ function ViewCertificate({ loggedInUser }) {
 
 
 function LoginForm({ handleLogin }) {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [failedAttempts, setFailedAttempts] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleLogin(username, password);
+    handleLogin(username, password,handleLoginSuccess,handleLoginFailure);
+  };
+
+  const handleLoginSuccess = () => {
+    setFailedAttempts(0);
+  };
+
+  const handleLoginFailure = () => {
+    setFailedAttempts((prevAttempts) => prevAttempts + 1);
+
+    if (failedAttempts + 1 >= 3) {
+      alert('Maximum login attempts exceeded. Please try again later.');
+      navigate('/');
+    }
   };
 
   return (
@@ -525,6 +542,18 @@ function SignUpForm({ handleSignUp }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters long.');
+      return;
+    }
+    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password)) {
+      alert('Password must contain at least one uppercase letter and one lowercase letter.');
+      return;
+    }
+    if(!/(?=.*\d)/.test(password)){
+      alert('Password must contain a digit.');
+      return;
+    }
     handleSignUp(username, password);
   };
 
@@ -540,6 +569,7 @@ function SignUpForm({ handleSignUp }) {
         <br />
         <button type="submit">Sign Up</button>
       </form>
+      <div className='conditions'>Password must contain 8 characters, at least one upper-case letter, one lower-case letter, and one digit.</div>
     </div>
   );
 }

@@ -353,3 +353,15 @@ form button[type="submit"]:hover {
     background-color: rgb(0, 153, 170);
     color: white;
   }
+
+  .conditions {
+    padding-top: 10%;
+    padding-left: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: rgb(176, 174, 174);
+    font-size: 15px; /* Adjust the font size as per your preference */
+  }
+  
