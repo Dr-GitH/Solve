@@ -74,7 +74,7 @@ function App() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">APMS</Link>
           </li>
           {loggedInUser ? (
             <>
@@ -567,6 +567,7 @@ function SignUpForm({ handleSignUp }) {
         <br />
         <button type="submit">Sign Up</button>
       </form>
+      <div className='conditions'>Password must contain 8 characters, at least one upper-case letter, one lower-case letter, and one digit.</div>
     </div>
   );
 }
