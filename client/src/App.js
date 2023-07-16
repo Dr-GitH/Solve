@@ -540,6 +540,18 @@ function SignUpForm({ handleSignUp }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters long.');
+      return;
+    }
+    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password)) {
+      alert('Password must contain at least one uppercase letter and one lowercase letter.');
+      return;
+    }
+    if(!/(?=.*\d)/.test(password)){
+      alert('Password must contain a digit.');
+      return;
+    }
     handleSignUp(username, password);
   };
 
