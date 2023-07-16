@@ -6,6 +6,14 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
+    background-image: url(./assets/background.jpg);
+    background-size: cover;
+    /* position: fixed; 
+    top: 0; 
+    left: 0; 
+    min-width: 100%;
+    min-height: 100%; */
+
   }
   
   .container {
@@ -54,11 +62,15 @@ body {
   }
   
   /* Forms */
-  form {
+
+  /* might need to change it back to not comment */
+
+  /* form {
     margin-bottom: 20px;
     margin-left: 50px;
     margin-top: 200px;
-  }
+  } */
+
   /*  Some Work*/
 
 .CertificateForm{
@@ -163,9 +175,9 @@ form select {
   cursor: pointer;
   width: 100px;
   height: 30px;
-  display: block;
+  /* display: block;
   margin: 0 auto;
-  border-radius: 3px;
+  border-radius: 3px; */
 }
 
 form button[type="submit"]:hover {
