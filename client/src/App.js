@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Outlet, useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import './App.css';
@@ -14,6 +14,7 @@ function App() {
   );
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignUp = async (username, password) => {
     try {
@@ -85,19 +86,10 @@ function App() {
                 </li>
               )}
             </>
-          ) : (
-            <>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-              <li>
-                <Link to="/signup">Sign Up</Link>
-              </li>
-            </>
-          )}
+          ) : null}
         </ul>
         {loggedInUser && (
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogout} className='logoutButton'>Logout</button>
         )}
       </nav>
 
@@ -118,12 +110,25 @@ function App() {
 }
 
 function Home() {
+  const [loggedInUser] = useState(
+    JSON.parse(localStorage.getItem('loggedInUser')) || null
+  );
   return (
     <div>
       <HomePage />
+      <div className='homeButton'>
+        {!loggedInUser ? (
+          <>
+            <Link to="/login" className='link'>Login</Link>
+            <Link to="/signup" className='link'>Sign Up</Link>
+          </>
+        ) : null
+        }
+      </div>
     </div>
   );
 }
+
 
 
 function UsersPage() {

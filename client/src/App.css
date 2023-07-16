@@ -5,6 +5,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    height: max-content;
     height: 100%;
     background-image: url(./assets/background.jpg);
     background-size: cover;
@@ -27,12 +28,25 @@ body {
     background-color: #333;
     color: #fff;
     padding: 10px;
+    display: flex;
+  justify-content: space-between;
   }
-  
+  .logoutButton{
+    background-color: white;
+    color: black;
+    border: 2px solid rgb(0, 153, 170);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width: 150px;
+  }
+
   nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: inline-block;
   }
   
   nav ul li {
@@ -43,13 +57,13 @@ body {
   nav ul li a {
     color: #fff;
     text-decoration: none;
-    padding: 5px;
+    padding: 10px;
   }
   
   nav ul li a:hover {
-    text-decoration: underline;
+    background-color: rgb(0, 153, 170);;
   }
-  
+ 
   /* Page Header */
   h1 {
     font-size: 24px;
@@ -197,7 +211,6 @@ form button[type="submit"]:hover {
     text-align: center;
     margin-top: 200px;
   } */
-
   .DropDown{
     margin-bottom: 20px;
     margin-left: 50px;
@@ -300,3 +313,23 @@ form button[type="submit"]:hover {
     margin-bottom: 10px;
   }
   
+  .homeButton{
+    display: flex;
+    justify-content: center;
+  }
+
+  .link{
+    background-color: white;
+    color: black;
+    border: 2px solid rgb(0, 153, 170);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width: 150px;
+  }
+
+  .link:hover, .link:active {
+    background-color: rgb(0, 153, 170);
+    color: white;
+  }
