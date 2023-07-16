@@ -381,8 +381,9 @@ function UploadCertificate({ loggedInUser }) {
   };
 
   return (
-    <div className="CertificateForm"> 
-      <h3>Upload Certificate</h3>
+    <div className="certcard">
+      <h2 className="cert-heading">Certificate</h2>
+      <div className="CertificateForm"> 
       <form onSubmit={handleSubmit}>
       
         <select name="dropdown1" value={dropdownValues.dropdown1} onChange={handleOptionChange}>
@@ -439,6 +440,7 @@ function UploadCertificate({ loggedInUser }) {
         <br />
         <button type="submit">Upload</button>
       </form>
+    </div>
     </div>
   )
 };

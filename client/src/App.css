@@ -79,7 +79,7 @@ body {
 
   /* might need to change it back to not comment */
 
-  form {
+  .LoginPage {
     /* margin-bottom: 20px; */
     margin-left: 50px;
     /* margin-top: 200px; */
@@ -87,19 +87,35 @@ body {
 
   /*  Some Work*/
 
+  .certcard{
+    margin:100px 100px;
+    background-color: #C0C0C0;
+    height: 700px;
+    text-align: center;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+  }
+
+  .cert-heading{
+    font-family: "Luminari", fantasy;
+    font-size: 70px;
+    padding-top: 15px;
+  }
+
 .CertificateForm{
   margin-bottom: 20px;
-    margin-left: 50px;
-    text-align: center;
-    margin-top: 150px;
+  text-align: left;
 }
 
 .CertificateForm input[type="text"]{
-  width: 40%;
+  /* width: 40%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid rgb(47, 115, 142);
-  border-radius: 10px;
+  border-radius: 10px; */
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000000;
+
 }
 .CertificateForm input[type="submit"] {
   padding: 10px 20px;
@@ -110,8 +126,9 @@ body {
   cursor: pointer;
 }
 .CertificateForm select{
+  outline: none;
   width: 200px; 
-  padding: 10px; 
+  padding: 10px;
   font-size: 16px; 
   border: 1px solid rgb(47, 115, 142);
   border-radius: 10px;
