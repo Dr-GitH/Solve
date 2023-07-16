@@ -240,53 +240,115 @@ form button[type="submit"]:hover {
   .Date{
     padding:20px;
   }
-  .portalView{
-    font-size: 50px;
-    color:grey; 
-    text-decoration: none; 
-    transition: color 0.3s;
-  }
-  .CompletePortal{
-   
-      font-family: Arial, sans-serif;
-      background-color: #f1f1f1;
-    
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    
-    
-    p {
-      font-size: 18px;
-      line-height: 1.5;
-      color: #666;
-    }
-    
-    a {
-      color: #337ab7;
-      text-decoration: none;
-    }
-  }
-  .CompletePortal h1 {
-    font-size: 32px;
-    color: #333;
-    margin: 20px 0;
-  }
-  .portalView2{
-    font-size: 50px;
-    color: grey; 
-    text-decoration: none; 
-    transition: color 0.3s;
-  }
-  .portalView:hover{
-    color:#337ab7; 
-  text-decoration: underline;
-  }
-  .portalView2:hover{
-    color:#337ab7; 
-  text-decoration: underline;
-  }
+
+  /* User Portal */
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:600,300);
+  .frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 400px;
+    margin-top: -200px;
+    margin-left: -200px;
+    border-radius: 2px;
+    box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
+    background: rgb(0, 83, 92);
+    background: -webkit-linear-gradient(bottom left, rgb(0, 153, 170) 0%, #ca7c4e 100%);
+    background: -moz-linear-gradient(bottom left, rgb(0, 153, 170) 0%, #ca7c4e 100%);
+    background: -o-linear-gradient(bottom left, rgb(0, 153, 170) 0%, #ca7c4e 100%);
+    background: linear-gradient(to top right, rgb(0, 153, 170) 0%, #ca7c4e 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EEBE6C', endColorstr='#CA7C4E',GradientType=1);
+    color: #786450;
+    font-family: 'Open Sans', Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+ }
+  .center {
+    position: absolute;
+    top: 50px;
+    left: 40px;
+    height: 299px;
+    width: 320px;
+    background: #fff;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.3);
+ }
+  .profile {
+    float: left;
+    width: 200px;
+    height: 320px;
+    text-align: center;
+ }
   
+ 
+  .profile .name {
+    font-size: 25px;
+    font-weight: 600;
+    margin-top: 40px;
+    
+ }
+  .profile .job {
+    font-size: 11px;
+    line-height: 15px;
+ }
+  .profile .actions {
+    margin-top: 60px;
+ }
+  .profile .actions .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 30px;
+    margin: 10px auto 10px auto;
+    background: none;
+    border: 1px solid rgb(0, 153, 170);
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+    color: rgb(0, 153, 170);
+
+ }
+  .profile .actions .btn:hover {
+    background: rgb(0, 153, 170);
+    color: #fff;
+ }
+  .stats {
+    float: left;
+ }
+  .stats .box {
+    box-sizing: border-box;
+    width: 120px;
+    height: 99px;
+    background: #f5e8df;
+    text-align: center;
+    padding-top: 28px;
+    transition: all 0.4s ease-in-out;
+ }
+  .stats .box:hover {
+    background: #e1cfc2;
+    cursor: pointer;
+ }
+  .stats .box:nth-child(2) {
+    margin: 1px 0;
+ }
+  .stats span {
+    display: block;
+ }
+  .stats .value {
+    font-size: 18px;
+    font-weight: 600;
+ }
+  .stats .parameter {
+    font-size: 11px;
+ }
+  
+  
+
   /* Image Upload */
   .upload-container {
     margin-top: 20px;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Outlet, useNavigate } from 'react-router-dom';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import './App.css';
@@ -14,7 +14,7 @@ function App() {
   );
 
   const navigate = useNavigate();
-  const location = useLocation();
+
 
   const handleSignUp = async (username, password) => {
     try {
@@ -299,15 +299,32 @@ function UserPortal({ loggedInUser }) {
 }, [loggedInUser, navigate]);
 
   return (
-    <div className="CompletePortal">
-      
-      <h1>Welcome, {username}!</h1>
-      <h1>Please Choose</h1>
-      <div className="portalView">
-      <Link className="portalView"to={`/user/${username}/upload-certificate`}>Upload Certificate</Link>
-      <br />
-      <Link className="portalView2"to={`/user/${username}/view-certificate`}>View Certificate</Link>
-      <Outlet />
+    <div class="frame">
+      <div class="center">
+        <div class="profile">
+			    <div class="name">{username}</div>
+    			<div class="job">Student</div>
+			
+			    <div class="actions">
+				    <Link className="btn"to={`/user/${username}/upload-certificate`}>Upload</Link>
+           <Link className="btn"to={`/user/${username}/view-certificate`}>View </Link>
+			    </div>
+		    </div>
+		
+		    <div class="stats">
+			    <div class="box">
+				    <span class="value">23</span>
+				    <span class="parameter">Certificates</span>
+			    </div>
+			    <div class="box">
+				    <span class="value">20</span>
+				    <span class="parameter">Approved</span>
+			    </div>
+			    <div class="box">
+				    <span class="value">146</span>
+				    <span class="parameter">Activity Points</span>
+			    </div>
+		    </div>
       </div>
     </div>
   );
