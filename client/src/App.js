@@ -231,13 +231,17 @@ function AdminPortal({ loggedInUser }) {
   return (
     <div>
       <h2>Welcome, {loggedInUser.username}</h2>
-      <input
+      <div className='users_body'>
+      <div className='searchBody'>
+      <div className='search__container'>
+      <input className="search__input"
         type="text"
         placeholder="Search User"
         value={searchTerm}
         onChange={handleSearch}
       />
-      <div className='users_body'>
+      </div>
+      </div>
         <article className='leaderboard'>
           <header>
             <h1 className='leaderboard__title'><span className='leaderboard__title--top'>Students</span></h1>
