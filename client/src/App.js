@@ -130,9 +130,11 @@ function App() {
     <nav className="page__menu menu">
       <div className='menu__wrapper'>
         <ul className="menu__list r-list">
-            <li className="menu__group">
+        {loggedInUser ? null : (
+              <li className="menu__group">
                 <Link to="/" className="menu__link r-link text-underlined">APMS</Link>
-            </li>
+              </li>
+            )}
             {loggedInUser ? (
                 <>
                 {loggedInUser.isAdmin ? (
@@ -162,7 +164,7 @@ function App() {
         <Route path="/user/:username/view-certificate" element={<ViewCertificate loggedInUser={loggedInUser} />} />
         <Route path="/login" element={<LoginForm handleLogin={handleLogin} />} />
         <Route path="/signup" element={<SignUpForm handleSignUp={handleSignUp} />} />
-        <Route path="/admin/users" element={<UsersPage />} />
+        
         <Route path="/admin/user/:username" element={<UserPage navigate={navigate} loggedInUser={loggedInUser} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -192,14 +194,18 @@ function Home() {
 
 
 
-function UsersPage() {
+function AdminPortal({ loggedInUser }) {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if(!loggedInUser||!loggedInUser.isAdmin){
+      navigate('/');
+    }
     fetchUsers();
-  }, []);
+  }, [loggedInUser,navigate]);
 
   const fetchUsers = async () => {
     try {
@@ -224,7 +230,7 @@ function UsersPage() {
 
   return (
     <div>
-      <h2>Users</h2>
+      <h2>Welcome, {loggedInUser.username}</h2>
       <input
         type="text"
         placeholder="Search User"
@@ -327,33 +333,6 @@ function UserPage({ navigate, loggedInUser }) {
       ) : (
         <p>No images found.</p>
       )}
-    </div>
-  );
-}
-
-
-
-
-function AdminPortal({ loggedInUser }) {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loggedInUser || !loggedInUser.isAdmin) {
-      navigate('/');
-    }
-  }, [loggedInUser, navigate]);
-
-  return (
-    <div>
-      <h1>Admin Portal</h1>
-      {loggedInUser && (
-        <p>Welcome, {loggedInUser.username}!</p>
-      )}
-      <ul>
-        <li>
-          <Link to="/admin/users">Users</Link>
-        </li>
-      </ul>
     </div>
   );
 }
