@@ -6,7 +6,7 @@ import axios from 'axios';
 import './App.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import $ from 'jquery';
 import HomePage from './scenes/homePage';
 
 function App() {
@@ -347,30 +347,30 @@ function UserPortal({ loggedInUser }) {
 }, [loggedInUser, navigate]);
 
   return (
-    <div class="frame">
-      <div class="center">
-        <div class="profile">
-			    <div class="name">{username}</div>
-    			<div class="job">Student</div>
+    <div className="frame">
+      <div className="center">
+        <div className="profile">
+			    <div className="name">{username}</div>
+    			<div className="job">Student</div>
 			
-			    <div class="actions">
+			    <div className="actions">
 				    <Link className="btn"to={`/user/${username}/upload-certificate`}>Upload</Link>
            <Link className="btn"to={`/user/${username}/view-certificate`}>View </Link>
 			    </div>
 		    </div>
 		
-		    <div class="stats">
-			    <div class="box">
-				    <span class="value">23</span>
-				    <span class="parameter">Certificates</span>
+		    <div className="stats">
+			    <div className="box">
+				    <span className="value">23</span>
+				    <span className="parameter">Certificates</span>
 			    </div>
-			    <div class="box">
-				    <span class="value">20</span>
-				    <span class="parameter">Approved</span>
+			    <div className="box">
+				    <span className="value">20</span>
+				    <span className="parameter">Approved</span>
 			    </div>
-			    <div class="box">
-				    <span class="value">146</span>
-				    <span class="parameter">Activity Points</span>
+			    <div className="box">
+				    <span className="value">146</span>
+				    <span className="parameter">Activity Points</span>
 			    </div>
 		    </div>
       </div>
