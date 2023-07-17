@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import $ from 'jquery';
 import HomePage from './scenes/homePage';
+import ribbon from './assets/ribbon.png';
 
 function App() {
 
@@ -485,6 +486,7 @@ function UploadCertificate({ loggedInUser }) {
 
   return (
     <div className="certcard">
+      <img src={ribbon}/>
       <h2 className="cert-heading">Certificate</h2>
       <div className="CertificateForm"> 
       <form onSubmit={handleSubmit}>
@@ -517,23 +519,23 @@ function UploadCertificate({ loggedInUser }) {
           />
         </div>
         <div>
-          <label htmlFor="issueDate">Date:</label>
-          <input
-            type="date"
-            id="issueDate"
-            name="issueDate"
-            value={certificateData.issueDate}
-            onChange={handleCertChange}
-            required
-          />
-        </div>
-        <div>
           <label htmlFor="issuer">Issuer:</label>
           <input
             type="text"
             id="issuer"
             name="issuer"
             value={certificateData.issuer}
+            onChange={handleCertChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="issueDate">Date:</label>
+          <input
+            type="date"
+            id="issueDate"
+            name="issueDate"
+            value={certificateData.issueDate}
             onChange={handleCertChange}
             required
           />
