@@ -6,7 +6,7 @@ import axios from 'axios';
 import './App.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import $ from 'jquery';
+import $ from 'jquery'; 
 import HomePage from './scenes/homePage';
 import ribbon from './assets/ribbon.png';
 
@@ -111,29 +111,33 @@ function App() {
   return (
     <div>
       <ToastContainer/>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">APMS</Link>
-          </li>
-          {loggedInUser ? (
-            <>
-              {loggedInUser.isAdmin ? (
-                <li>
-                  <Link to="/admin">Admin Portal</Link>
-                </li>
-              ) : (
-                <li>
-                  <Link to={`/user/${loggedInUser.username}`}>User Portal</Link>
-                </li>
-              )}
-            </>
-          ) : null}
-        </ul>
-        {loggedInUser && (
-          <button onClick={handleLogout} className='logoutButton'>Logout</button>
+      <div className='page'>
+    <nav className="page__menu menu">
+      <div className='menu__wrapper'>
+        <ul className="menu__list r-list">
+            <li className="menu__group">
+                <Link to="/" className="menu__link r-link text-underlined">APMS</Link>
+            </li>
+            {loggedInUser ? (
+                <>
+                {loggedInUser.isAdmin ? (
+                    <li className="menu__group">
+                        <Link to="/admin" className="menu__link r-link text-underlined">Admin Portal</Link>
+                    </li>
+                ) : (
+                    <li className="menu__group">
+                        <Link to={`/user/${loggedInUser.username}`} className="menu__link r-link text-underlined">User Portal</Link>
+                    </li>
+                )}
+                </>
+            ) : null}
+            </ul>
+            {loggedInUser && (
+          <button onClick={handleLogout} className='menu__link r-link text-underlined logout-button'>Logout</button>
         )}
-      </nav>
+      </div>
+    </nav>
+    </div>
 
       <Routes>
         <Route path="/" element={<Home />} />
