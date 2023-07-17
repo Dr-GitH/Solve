@@ -66,7 +66,11 @@ const imageSchema = new mongoose.Schema({
   status: {
     type: String,
     default: 'pending'
-  }
+  },
+  activityPoints: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Image = mongoose.model('Image', imageSchema);
@@ -148,6 +152,7 @@ app.get('/api/user/:username', async (req, res) => {
         certificateDetails: certificate.certificateDetails,
         imageData: certificate.imageData.toString('base64'),
         status: certificate.status,
+        activityPoints: certificate.activityPoints, 
       };
 
     });
@@ -189,7 +194,7 @@ app.get('/api/image/:username/:imageName', async (req, res) => {
 
 app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
   try {
-    const { username, dropdown1, dropdown2, name, issueDate, issuer } = req.body;
+    const { username, dropdown1, dropdown2, name, issueDate, issuer, activityPoints } = req.body;
     const { originalname, buffer } = req.file;
 
     const image = new Image({
@@ -199,10 +204,11 @@ app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
       certificateDetails: {
         name,
         issueDate,
-        issuer
+        issuer,
       },
       imageName: originalname,
       imageData: buffer.toString('base64'),
+      activityPoints, 
     });
 
     await image.save();
@@ -243,12 +249,28 @@ app.put('/api/user/:username/image/:imageName', async (req, res) => {
       return;
     }
 
+    
+    if (status === 'accepted') {
+      if (image.dropdown2 === 'NCC/NSS') {
+        image.activityPoints = 50;
+      } else if (image.dropdown2 === 'SPORTS') {
+        image.activityPoints = 60;
+      } else if (image.dropdown2 === 'MUSIC/PERFORMING ARTS') {
+        image.activityPoints = 70;
+      }
+    } else {
+      image.activityPoints = 0; 
+    }
+
+    await image.save();
+
     res.json({ message: 'Status updated successfully' });
   } catch (error) {
     console.error('Error updating status:', error);
     res.status(500).json({ error: 'An error occurred' });
   }
 });
+
 
 
 const port = 5000;

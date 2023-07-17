@@ -194,6 +194,7 @@ function UserPage({ navigate, loggedInUser }) {
       console.error(error);
     }
   };
+    
 
   const handleBack = () => {
     navigate('/admin/users');
@@ -229,6 +230,8 @@ function UserPage({ navigate, loggedInUser }) {
               <p>Issue Date: {image.certificateDetails.issueDate}</p>
               <p>Issuer: {image.certificateDetails.issuer}</p>
               <p>Status: {image.status}</p>
+              <p>Activity Points: {image.activityPoints}</p> 
+
               {loggedInUser && loggedInUser.isAdmin && (
                 <div>
                   <label htmlFor={`status-select-${index}`}>Status:</label>
@@ -310,6 +313,8 @@ function UserPortal({ loggedInUser }) {
 
 function UploadCertificate({ loggedInUser }) {
   const [image, setImage] = useState(null);
+  const [activityPoints, setActivityPoints] = useState(0);
+
   const [dropdownValues, setDropdownValues] = useState({
     dropdown1: 's1',
     dropdown2: ''
@@ -324,10 +329,23 @@ function UploadCertificate({ loggedInUser }) {
     const { name, value } = event.target;
     setDropdownValues((prevValues) => ({
       ...prevValues,
-      [name]: value
+      [name]: value,
     }));
+  
+    let points = 0;
+    if (name === 'dropdown2') {
+      if (value === 'NCC/NSS') {
+        points = 50;
+      } else if (value === 'SPORTS') {
+        points = 60;
+      } else if (value === 'MUSIC/PERFORMING ARTS') {
+        points = 70;
+      }
+    }
+  
+    setActivityPoints(points);
   };
-
+  
   const handleCertChange = (event) => {
     const { name, value } = event.target;
     setCertificateData((prevData) => ({
@@ -343,17 +361,17 @@ function UploadCertificate({ loggedInUser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!loggedInUser) {
       alert('User not logged in');
       return;
     }
-
+  
     if (!image) {
       alert('Please select an image');
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('image', image);
     formData.append('username', loggedInUser.username);
@@ -362,10 +380,11 @@ function UploadCertificate({ loggedInUser }) {
     formData.append('name', certificateData.name);
     formData.append('issueDate', certificateData.issueDate);
     formData.append('issuer', certificateData.issuer);
-
+    formData.append('activityPoints', activityPoints); // Add activityPoints to form data
+  
     try {
       await axios.post('http://localhost:5000/api/uploadImage', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('Image uploaded successfully');
       setImage(null);
@@ -374,6 +393,7 @@ function UploadCertificate({ loggedInUser }) {
       alert('Error uploading image');
     }
   };
+  
 
   return (
     <div className="CertificateForm"> 
@@ -455,6 +475,7 @@ function ViewCertificate({ loggedInUser }) {
       console.error(error);
     }
   };
+  
 
   const handleImageClick = (imageName) => {
     window.open(`http://localhost:5000/api/image/${loggedInUser.username}/${imageName}`);
@@ -476,6 +497,9 @@ function ViewCertificate({ loggedInUser }) {
               <p>Issue Date: {image.certificateDetails.issueDate}</p>
               <p>Issuer: {image.certificateDetails.issuer}</p>
               <p>Status: {image.status}</p>
+              {image.status === 'accepted' && (
+              <p>Activity Points: {image.activityPoints}</p> 
+            )}
             </li>
           ))}
         </ul>
