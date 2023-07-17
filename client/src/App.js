@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Outlet, useNavigate } from 'react-router-dom';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import './App.css';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import $ from 'jquery';
 import HomePage from './scenes/homePage';
 
 function App() {
@@ -14,13 +16,22 @@ function App() {
   );
 
   const navigate = useNavigate();
-  const location = useLocation();
+
 
   const handleSignUp = async (username, password) => {
     try {
       const checkUsername = await axios.post('http://localhost:3080/api/checkUsername', { username });
       if (checkUsername.data.message === 'Username already exists') {
-        alert('Username already exists');
+        toast.error('Username already exists', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
         return;
       }
 
@@ -30,7 +41,16 @@ function App() {
       alert(newUser.data.message);
     } catch (error) {
       console.error(error);
-      alert('Error creating user');
+      toast.error('Error creating user', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   };
 
@@ -39,7 +59,16 @@ function App() {
       const user = await axios.post('http://localhost:3080/api/login', { username, password });
       if (user.data.error) {
         onFailure();
-        alert('User not found or invalid password');
+        toast.error('User not found or invalid password.', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
         return;
       }
 
@@ -56,7 +85,16 @@ function App() {
       }
     } catch (error) {
       console.error(error);
-      alert('Error logging in');
+      toast.error('Error logging in', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   };
 
@@ -71,6 +109,7 @@ function App() {
 
   return (
     <div>
+      <ToastContainer/>
       <nav>
         <ul>
           <li>
@@ -216,7 +255,16 @@ function UserPage({ navigate, loggedInUser }) {
       fetchImages(); // Fetch the updated images after status change
     } catch (error) {
       console.error(error);
-      alert('Error updating status');
+      toast.error('Error updating status', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   };
 
@@ -299,15 +347,32 @@ function UserPortal({ loggedInUser }) {
 }, [loggedInUser, navigate]);
 
   return (
-    <div className="CompletePortal">
-      
-      <h1>Welcome, {username}!</h1>
-      <h1>Please Choose</h1>
-      <div className="portalView">
-      <Link className="portalView"to={`/user/${username}/upload-certificate`}>Upload Certificate</Link>
-      <br />
-      <Link className="portalView2"to={`/user/${username}/view-certificate`}>View Certificate</Link>
-      <Outlet />
+    <div className="frame">
+      <div className="center">
+        <div className="profile">
+			    <div className="name">{username}</div>
+    			<div className="job">Student</div>
+			
+			    <div className="actions">
+				    <Link className="btn"to={`/user/${username}/upload-certificate`}>Upload</Link>
+           <Link className="btn"to={`/user/${username}/view-certificate`}>View </Link>
+			    </div>
+		    </div>
+		
+		    <div className="stats">
+			    <div className="box">
+				    <span className="value">23</span>
+				    <span className="parameter">Certificates</span>
+			    </div>
+			    <div className="box">
+				    <span className="value">20</span>
+				    <span className="parameter">Approved</span>
+			    </div>
+			    <div className="box">
+				    <span className="value">146</span>
+				    <span className="parameter">Activity Points</span>
+			    </div>
+		    </div>
       </div>
     </div>
   );
@@ -352,12 +417,30 @@ function UploadCertificate({ loggedInUser }) {
     e.preventDefault();
 
     if (!loggedInUser) {
-      alert('User not logged in');
+      toast.error('User not logged in', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       return;
     }
 
     if (!image) {
-      alert('Please select an image');
+      toast.warn('Please select an image', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       return;
     }
 
@@ -374,11 +457,29 @@ function UploadCertificate({ loggedInUser }) {
       await axios.post('http://localhost:3080/api/uploadImage', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      alert('Image uploaded successfully');
+      toast.success('Image uploaded successfully', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       setImage(null);
     } catch (error) {
       console.error(error);
-      alert('Error uploading image');
+      toast.error('Error uploading image', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   };
 
@@ -515,7 +616,16 @@ function LoginForm({ handleLogin }) {
     setFailedAttempts((prevAttempts) => prevAttempts + 1);
 
     if (failedAttempts + 1 >= 3) {
-      alert('Maximum login attempts exceeded. Please try again later.');
+      toast.error('Maximum login attempts exceeded. Please try again later.', {
+        position: "top-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       navigate('/');
     }
   };
@@ -543,15 +653,42 @@ function SignUpForm({ handleSignUp }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password.length < 8) {
-      alert('Password must be at least 8 characters long.');
+      toast.warn('Password must be at least 8 characters long.', {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       return;
     }
     if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password)) {
-      alert('Password must contain at least one uppercase letter and one lowercase letter.');
+      toast.warn('Password must contain at least one uppercase letter and one lowercase letter.', {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       return;
     }
     if(!/(?=.*\d)/.test(password)){
-      alert('Password must contain a digit.');
+      toast.warn('Password must contain a digit.', {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       return;
     }
     handleSignUp(username, password);
