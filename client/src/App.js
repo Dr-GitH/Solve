@@ -339,48 +339,69 @@ function AdminPortal({ loggedInUser }) {
   );
 }
 
-
 function UserPortal({ loggedInUser }) {
   const navigate = useNavigate();
   const username = loggedInUser ? loggedInUser.username : '';
+  const [totalActivityPoints, setTotalActivityPoints] = useState(0);
+  const [totalCertificates, setTotalCertificates] = useState(0);
+  const [approvedCertificates, setApprovedCertificates] = useState(0);
 
   useEffect(() => {
-  if (!loggedInUser || loggedInUser.isAdmin) {
-    navigate('/');
-  }
-}, [loggedInUser, navigate]);
+    if (!loggedInUser || loggedInUser.isAdmin) {
+      navigate('/');
+    } else {
+      fetchUserData(); 
+    }
+  }, [loggedInUser, navigate]);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3080/api/user/${username}/data`);
+      const { totalActivityPoints, totalCertificates, approvedCertificates } = response.data;
+      setTotalActivityPoints(totalActivityPoints);
+      setTotalCertificates(totalCertificates);
+      setApprovedCertificates(approvedCertificates);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="frame">
       <div className="center">
         <div className="profile">
-			    <div className="name">{username}</div>
-    			<div className="job">Student</div>
-			
-			    <div className="actions">
-				    <Link className="btn"to={`/user/${username}/upload-certificate`}>Upload</Link>
-           <Link className="btn"to={`/user/${username}/view-certificate`}>View </Link>
-			    </div>
-		    </div>
-		
-		    <div className="stats">
-			    <div className="box">
-				    <span className="value">23</span>
-				    <span className="parameter">Certificates</span>
-			    </div>
-			    <div className="box">
-				    <span className="value">20</span>
-				    <span className="parameter">Approved</span>
-			    </div>
-			    <div className="box">
-				    <span className="value">146</span>
-				    <span className="parameter">Activity Points</span>
-			    </div>
-		    </div>
+          <div className="name">{username}</div>
+          <div className="job">Student</div>
+
+          <div className="actions">
+            <Link className="btn" to={`/user/${username}/upload-certificate`}>
+              Upload
+            </Link>
+            <Link className="btn" to={`/user/${username}/view-certificate`}>
+              View
+            </Link>
+          </div>
+        </div>
+
+        <div className="stats">
+          <div className="box">
+            <span className="value">{totalCertificates}</span> 
+            <span className="parameter">Certificates</span>
+          </div>
+          <div className="box">
+            <span className="value">{approvedCertificates}</span> 
+            <span className="parameter">Approved</span>
+          </div>
+          <div className="box">
+            <span className="value">{totalActivityPoints}</span>
+            <span className="parameter">Activity Points</span>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
 
 
 
@@ -659,8 +680,7 @@ function LoginForm({ handleLogin }) {
 
   return (
     <div className="card" >
-      {/* <div className="LoginHead">
-        <h1>Login</h1> </div> */}
+      
       <h2 className="card-heading">LOGIN</h2>
       <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />

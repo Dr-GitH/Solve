@@ -271,6 +271,37 @@ app.put('/api/user/:username/image/:imageName', async (req, res) => {
   }
 });
 
+
+app.get('/api/user/:username/data', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      res.json({ error: 'User not found' });
+      return;
+    }
+
+    const totalCertificates = await Image.countDocuments({ username });
+    const approvedCertificates = await Image.countDocuments({ username, status: 'accepted' });
+    const totalActivityPoints = await Image.aggregate([
+      { $match: { username, status: 'accepted' } },
+      { $group: { _id: null, totalActivityPoints: { $sum: '$activityPoints' } } }
+    ]);
+
+    res.json({
+      totalCertificates,
+      approvedCertificates,
+      totalActivityPoints: totalActivityPoints.length ? totalActivityPoints[0].totalActivityPoints : 0
+    });
+  } catch (error) {
+    console.error('Error retrieving user data:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+
+
 const port = 3080;
 
 app.listen(port, () => {
