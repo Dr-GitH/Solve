@@ -625,8 +625,8 @@ function ViewCertificate({ loggedInUser }) {
 
   
   return (
-    <div>
-      <h2>View Certificate</h2>
+    <div className='viewcertificate'>
+      <center><h2>VIEW CERTIFICATE</h2></center>
       {imageData.length ? (
         <ul>
           <div className='certviewcard-container'>
@@ -635,17 +635,33 @@ function ViewCertificate({ loggedInUser }) {
             <ul key={index}>
               {/* <p>Image Name: <span className="image-link" onClick={() => handleImageClick(image.imageName)}>{image.imageName}</span></p> */}
               <p>Name: {image.certificateDetails.name}</p>
-              <p>Issue Date: {image.certificateDetails.issueDate}</p>
               <p>Issuer: {image.certificateDetails.issuer}</p>
-              <p>Status: {image.status}</p>
+              <p>Issue Date: {image.certificateDetails.issueDate}</p>
+              {/* <p>Status: {image.status}</p>
               <p>Semester: {image.dropdown1}</p>
-              <p>Type: {image.dropdown2}</p>
+              <p>Type: {image.dropdown2}</p> */}
+
+            
+
               {image.status === 'accepted' && (
               <p>Activity Points: {image.activityPoints}</p> 
             )}
             <button type="View">View</button>
             </ul>
-            
+            <div className="viewcertificatestatus">
+              <div className="vcbox">
+                <span className="value">{image.dropdown1}</span>
+                <span className="parameter">Semester</span> 
+              </div>
+              <div className="vcbox">
+                <span className="value">{image.dropdown2}</span>                
+                <span className="parameter">Type</span>
+              </div>
+              <div className="vcbox">
+                <span className="value">{image.status}</span>
+                <span className="parameter">Status</span>                
+              </div>
+            </div>
             </div>
           ))}
           </div>
