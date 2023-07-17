@@ -451,3 +451,24 @@ form select {
     position: absolute;
     right:5%
   }
+
+  .certviewcard-container{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .certviewcard{
+    flex: 1;
+    background-color: orangered;
+    margin: 1%;
+    flex: 0 0 calc(28% - 20px);
+    box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+  }
+
+  .certviewcard button{
+    width:100px;
+    height: 30px;
+    margin-bottom: 3%;
+  }

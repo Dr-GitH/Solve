@@ -636,21 +636,26 @@ function ViewCertificate({ loggedInUser }) {
       <h2>View Certificate</h2>
       {imageData.length ? (
         <ul>
+          <div className='certviewcard-container'>
           {imageData.map((image, index) => (
-            <li key={index}>
-              <p>Image Name: <span className="image-link" onClick={() => handleImageClick(image.imageName)}>{image.imageName}</span></p>
-              <p>Dropdown 1: {image.dropdown1}</p>
-              <p>Dropdown 2: {image.dropdown2}</p>
-              <p>Certificate Details:</p>
+            <div className='certviewcard'>
+            <ul key={index}>
+              {/* <p>Image Name: <span className="image-link" onClick={() => handleImageClick(image.imageName)}>{image.imageName}</span></p> */}
               <p>Name: {image.certificateDetails.name}</p>
               <p>Issue Date: {image.certificateDetails.issueDate}</p>
               <p>Issuer: {image.certificateDetails.issuer}</p>
               <p>Status: {image.status}</p>
+              <p>Semester: {image.dropdown1}</p>
+              <p>Type: {image.dropdown2}</p>
               {image.status === 'accepted' && (
               <p>Activity Points: {image.activityPoints}</p> 
             )}
-            </li>
+            <button type="View">View</button>
+            </ul>
+            
+            </div>
           ))}
+          </div>
         </ul>
       ) : (
         <p>No images found.</p>
