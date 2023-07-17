@@ -109,6 +109,8 @@ app.post('/api/signup', async (req, res) => {
   }
 });
 
+const failedAttemptsMap = new Map(); // Map to store failed attempts count and lockout time
+
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -119,18 +121,40 @@ app.post('/api/login', async (req, res) => {
       return;
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      res.json({ error: 'Invalid password' });
+    const failedAttempts = failedAttemptsMap.get(username) || 0;
+    const remainingAttempts = 3 - failedAttempts;
+    const lockoutTime = failedAttempts >= 2 ? calculateLockoutTime(username) : 0;
+
+    if (failedAttempts >= 3 && lockoutTime > Date.now()) {
+      res.json({ error: 'User is locked out', remainingAttempts: 0, lockoutTime });
       return;
     }
 
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      failedAttemptsMap.set(username, failedAttempts + 1);
+      res.json({ error: 'Invalid password', remainingAttempts: 3 - failedAttempts - 1, lockoutTime });
+      return;
+    }
+
+    failedAttemptsMap.delete(username);
     res.json({ username: user.username, isAdmin: user.isAdmin });
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(500).json({ error: 'An error occurred' });
   }
 });
+
+const calculateLockoutTime = (username) => {
+  const lockoutMinutes = 5;
+  const lockoutTime = Date.now() + lockoutMinutes * 60 * 1000; // Convert minutes to milliseconds
+  failedAttemptsMap.set(username, 3); // Set failed attempts to 3 to trigger lockout
+  setTimeout(() => {
+    failedAttemptsMap.delete(username);
+  }, lockoutMinutes * 60 * 1000); // Remove lockout after lockoutMinutes
+  return lockoutTime;
+};
+
 
 
 app.get('/api/user/:username', async (req, res) => {
