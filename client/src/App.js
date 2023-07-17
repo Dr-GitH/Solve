@@ -69,19 +69,33 @@ function App() {
           draggable: true,
           progress: undefined,
           theme: "colored",
+        });
+  
+        const { remainingAttempts, lockoutTime } = user.data;
+        if (remainingAttempts === 0) {
+          const minutes = Math.ceil(lockoutTime / 60000); // Convert milliseconds to minutes
+          toast.info(`You are locked out. Please try again in 5 minutes.`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
           });
+        }
+  
         return;
       }
-
+  
       localStorage.setItem('loggedInUser', JSON.stringify(user.data));
-
+  
       setLoggedInUser(user.data);
       onSuccess();
       if (user.data.isAdmin) {
-        
         navigate('/admin');
       } else {
-        
         navigate(`/user/${username}`);
       }
     } catch (error) {
@@ -95,9 +109,10 @@ function App() {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
     }
   };
+  
 
   const handleLogout = () => {
 
