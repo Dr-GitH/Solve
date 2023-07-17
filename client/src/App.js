@@ -237,13 +237,23 @@ function AdminPortal({ loggedInUser }) {
         value={searchTerm}
         onChange={handleSearch}
       />
-      <ul>
-        {filteredUsers.map((user) => (
-          <li key={user._id}>
-            <Link to={`/admin/user/${user.username}`}>{user.username}</Link>
-          </li>
-        ))}
-      </ul>
+      <div className='users_body'>
+        <article className='leaderboard'>
+          <header>
+            <h1 className='leaderboard__title'><span className='leaderboard__title--top'>Students</span></h1>
+          </header>
+          <main className='leaderboard__profiles'>
+          {filteredUsers.map((user) => 
+              <Link to={`/admin/user/${user.username}`} key={user._id}>
+              <article className="leaderboard__profile">
+              <span className="leaderboard__name">{user.username}</span>
+              <span className="leaderboard__value">35.7</span>
+              </article>
+              </Link>
+          )}
+          </main>
+        </article>
+      </div>
     </div>
   );
 }
