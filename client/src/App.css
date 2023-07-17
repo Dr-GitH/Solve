@@ -554,6 +554,7 @@ form select {
     right:5%
   }
 
+
   .certviewcard-container{
     display: flex;
     justify-content: flex-start;
@@ -562,15 +563,56 @@ form select {
 
   .certviewcard{
     flex: 1;
-    background-color: orangered;
+    background: #fff;
     margin: 1%;
     flex: 0 0 calc(28% - 20px);
     box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
-    border-radius: 2px;
+    border-radius: 3px;
+
+    overflow: hidden;
   }
 
   .certviewcard button{
     width:100px;
     height: 30px;
     margin-bottom: 3%;
+    border: 1px solid rgb(0, 153, 170);
+    border-radius: 15px;
+    transition: all 0.3s ease-in-out;
+    color: rgb(0, 153, 170);
+    background: none;
   }
+
+  .certviewcard button:hover{
+      background: rgb(0, 153, 170);
+      color: #fff;
+  }
+
+  .certviewcard ul{
+    width: 300px;
+  }
+
+  .viewcertificatestatus {
+    float: right;
+ }
+  .viewcertificatestatus .vcbox {
+    box-sizing: border-box;
+    width: 120px;
+    height: 70px;
+    background: #f5e8df;
+    text-align: center;
+    padding-top: 28px;
+    transition: all 0.4s ease-in-out;
+ }
+  .viewcertifcatestatus .vcbox:hover {
+    background: #e1cfc2;
+    cursor: pointer;
+ }
+  .viewcertificatestatus .vcbox:nth-child(2) {
+    margin: 1px 0;
+ }
+  .viewcertificatestatus span {
+    display: block;
+ }
+
+ 
