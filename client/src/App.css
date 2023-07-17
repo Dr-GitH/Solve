@@ -5,6 +5,16 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    height: max-content;
+    height: 100%;
+    /* background-image: url(./assets/background.jpg);
+    background-size: cover; */
+    /* position: fixed; 
+    top: 0; 
+    left: 0; 
+    min-width: 100%;
+    min-height: 100%; */
+
   }
   
   .container {
@@ -18,12 +28,25 @@ body {
     background-color: #333;
     color: #fff;
     padding: 10px;
+    display: flex;
+  justify-content: space-between;
   }
-  
+  .logoutButton{
+    background-color: white;
+    color: black;
+    border: 2px solid rgb(0, 153, 170);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width: 150px;
+  }
+
   nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: inline-block;
   }
   
   nav ul li {
@@ -34,13 +57,13 @@ body {
   nav ul li a {
     color: #fff;
     text-decoration: none;
-    padding: 5px;
+    padding: 10px;
   }
   
   nav ul li a:hover {
-    text-decoration: underline;
+    background-color: rgb(0, 153, 170);;
   }
-  
+ 
   /* Page Header */
   h1 {
     font-size: 24px;
@@ -53,26 +76,48 @@ body {
   }
   
   /* Forms */
-  form {
-    margin-bottom: 20px;
+
+  /* might need to change it back to not comment */
+
+  .LoginPage {
+    /* margin-bottom: 20px; */
     margin-left: 50px;
-    margin-top: 200px;
+    /* margin-top: 200px; */
   }
+
   /*  Some Work*/
+
+  .certcard{
+    margin:100px 100px;
+    background-color: #ffffff;
+    height: 700px;
+    text-align: center;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+  }
+
+  .cert-heading{
+    font-family: "Luminari", fantasy;
+    font-size: 70px;
+    padding-top: 15px;
+  }  
 
 .CertificateForm{
   margin-bottom: 20px;
-    margin-left: 50px;
-    text-align: center;
-    margin-top: 150px;
+  text-align: left;
 }
 
 .CertificateForm input[type="text"]{
-  width: 40%;
+  /* width: 40%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid rgb(47, 115, 142);
-  border-radius: 10px;
+  border-radius: 10px; */
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000000;
+  margin-bottom: 30px;
+  width:50%;
+  margin-left: 2vh;
 }
 .CertificateForm input[type="submit"] {
   padding: 10px 20px;
@@ -83,27 +128,31 @@ body {
   cursor: pointer;
 }
 .CertificateForm select{
+  outline: none;
   width: 200px; 
-  padding: 10px; 
+  padding: 10px;
   font-size: 16px; 
   border: 1px solid rgb(47, 115, 142);
   border-radius: 10px;
   background-color: white; 
   color: #333; 
+  margin-right: 5%;
+  margin-bottom: 30px;
 }
 
 .CertificateForm input[type="date"]{
   width: 200px; 
   padding: 10px; 
-  margin-bottom: 9px;
   font-size: 16px; 
   border: 1px solid rgb(47, 115, 142);
   border-radius: 10px; 
   background-color: white; 
   color: #333; 
+  margin-bottom: 30px;
+  height: 10px;
+  margin-left: 2vh;
+  margin-top: 1vh;
 }
-
-
 
 .CertificateForm input[type="submit"]:hover {
   background-color: #23527c;
@@ -117,8 +166,80 @@ body {
 .CertificateForm form{
   padding: 50px;
 }
+
+.CertificateForm button[type="submit"]{
+  margin-top: 15%;
+  margin-left: 40%;
+  width: 300px;
+  height: 35px;
+  text-align: center;
+  background-color: #02800b;
+  border-radius: 7px;
+}
+
+.CertificateForm button[type="submit"]:hover{
+  background-color: #0c2f0b;
+}
+
+
+.card{
+  background: #0D2241;
+  height: 420px;
+  width: 310px;
+  border-radius: 9px;
+  margin: 12rem auto 8.1rem;
+  padding: 20px;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+}
+
+.card-heading{
+  text-align: center;
+  font-size: 50px;
+  color: white;
+  padding-bottom: 50px;
+}
+
+.card input{
+  border-radius:5px;
+  height:20px;
+  width: 200px;
+  padding: 5px;
+  margin-bottom: 30px;
+}
+input:focus{
+  outline: none;
+}
+
+
+/* form input[type="text"],
+form input[type="password"],
+form select {
+  width: 200px;
+  padding: 5px;
+  margin-bottom: 10px;
+} */
+
+.card button[type="submit"] {
+  padding: 10px 10px;
+  background-color: #02800b;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
+  margin-left: 55px;
+  margin-top: 10px;
+  /* display: block;
+  margin: 0 auto;
+  border-radius: 3px; */
+}
+
+.card button[type="submit"]:hover {
+  background-color: #0c2f0b;
+}
+
   
-  .LoginHead H1{
+  /* .LoginHead H1{
     font-size: 50px;
     margin-left: 60px;
     margin-top: 50px;
@@ -129,7 +250,7 @@ body {
     margin-left: 50px;
     text-align: center;
     margin-top: 200px;
-  }
+  } */
   .DropDown{
     margin-bottom: 20px;
     margin-left: 50px;
@@ -139,72 +260,115 @@ body {
   .Date{
     padding:20px;
   }
-  .portalView{
-    font-size: 50px;
-    color:grey; 
-    text-decoration: none; 
-    transition: color 0.3s;
-  }
-  .CompletePortal{
-   
-      font-family: Arial, sans-serif;
-      background-color: #f1f1f1;
-    
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    
-    
-    p {
-      font-size: 18px;
-      line-height: 1.5;
-      color: #666;
-    }
-    
-    a {
-      color: #337ab7;
-      text-decoration: none;
-    }
-  }
-  .CompletePortal h1 {
-    font-size: 32px;
-    color: #333;
-    margin: 20px 0;
-  }
-  .portalView2{
-    font-size: 50px;
-    color: grey; 
-    text-decoration: none; 
-    transition: color 0.3s;
-  }
-  .portalView:hover{
-    color:#337ab7; 
-  text-decoration: underline;
-  }
-  .portalView2:hover{
-    color:#337ab7; 
-  text-decoration: underline;
-  }
-  form input[type="text"],
-  form input[type="password"],
-  form select {
+
+  /* User Portal */
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:600,300);
+  .frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 400px;
+    margin-top: -200px;
+    margin-left: -200px;
+    border-radius: 2px;
+    box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
+    background: rgb(0, 83, 92);
+    background: -webkit-linear-gradient(bottom left, rgb(0, 153, 170) 0%, #ca7c4e 100%);
+    background: -moz-linear-gradient(bottom left, rgb(0, 153, 170) 0%, #ca7c4e 100%);
+    background: -o-linear-gradient(bottom left, rgb(0, 153, 170) 0%, #ca7c4e 100%);
+    background: linear-gradient(to top right, rgb(0, 153, 170) 0%, #ca7c4e 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EEBE6C', endColorstr='#CA7C4E',GradientType=1);
+    color: #786450;
+    font-family: 'Open Sans', Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+ }
+  .center {
+    position: absolute;
+    top: 50px;
+    left: 40px;
+    height: 299px;
+    width: 320px;
+    background: #fff;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.3);
+ }
+  .profile {
+    float: left;
     width: 200px;
-    padding: 5px;
-    margin-bottom: 10px;
-  }
+    height: 320px;
+    text-align: center;
+ }
   
-  form button[type="submit"] {
-    padding: 5px 10px;
-    background-color: #333;
+ 
+  .profile .name {
+    font-size: 25px;
+    font-weight: 600;
+    margin-top: 40px;
+    
+ }
+  .profile .job {
+    font-size: 11px;
+    line-height: 15px;
+ }
+  .profile .actions {
+    margin-top: 60px;
+ }
+  .profile .actions .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 30px;
+    margin: 10px auto 10px auto;
+    background: none;
+    border: 1px solid rgb(0, 153, 170);
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+    color: rgb(0, 153, 170);
+
+ }
+  .profile .actions .btn:hover {
+    background: rgb(0, 153, 170);
     color: #fff;
-    border: none;
+ }
+  .stats {
+    float: left;
+ }
+  .stats .box {
+    box-sizing: border-box;
+    width: 120px;
+    height: 99px;
+    background: #f5e8df;
+    text-align: center;
+    padding-top: 28px;
+    transition: all 0.4s ease-in-out;
+ }
+  .stats .box:hover {
+    background: #e1cfc2;
     cursor: pointer;
-  }
+ }
+  .stats .box:nth-child(2) {
+    margin: 1px 0;
+ }
+  .stats span {
+    display: block;
+ }
+  .stats .value {
+    font-size: 18px;
+    font-weight: 600;
+ }
+  .stats .parameter {
+    font-size: 11px;
+ }
   
-  form button[type="submit"]:hover {
-    background-color: #555;
-  }
   
+
   /* Image Upload */
   .upload-container {
     margin-top: 20px;
@@ -251,3 +415,39 @@ body {
     margin-bottom: 10px;
   }
   
+  .homeButton{
+    display: flex;
+    justify-content: center;
+  }
+
+  .link{
+    background-color: white;
+    color: black;
+    border: 2px solid rgb(0, 153, 170);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width: 150px;
+  }
+
+  .link:hover, .link:active {
+    background-color: rgb(0, 153, 170);
+    color: white;
+  }
+
+  .conditions {
+    padding-top: 10%;
+    padding-left: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: rgb(176, 174, 174);
+    font-size: 15px; /* Adjust the font size as per your preference */
+  }
+  
+  .certcard img{
+    position: absolute;
+    right:5%
+  }

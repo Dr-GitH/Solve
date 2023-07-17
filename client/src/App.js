@@ -4,8 +4,11 @@ import { useParams } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import './App.css';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import $ from 'jquery';
 import HomePage from './scenes/homePage';
+import ribbon from './assets/ribbon.png';
 
 function App() {
 
@@ -15,36 +18,65 @@ function App() {
 
   const navigate = useNavigate();
 
+
   const handleSignUp = async (username, password) => {
     try {
-      const checkUsername = await axios.post('http://localhost:5000/api/checkUsername', { username });
+      const checkUsername = await axios.post('http://localhost:3080/api/checkUsername', { username });
       if (checkUsername.data.message === 'Username already exists') {
-        alert('Username already exists');
+        toast.error('Username already exists', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
         return;
       }
 
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
-      const newUser = await axios.post('http://localhost:5000/api/signup', { username, password: hashedPassword });
+      const newUser = await axios.post('http://localhost:3080/api/signup', { username, password: hashedPassword });
       alert(newUser.data.message);
     } catch (error) {
       console.error(error);
-      alert('Error creating user');
+      toast.error('Error creating user', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   };
 
-  const handleLogin = async (username, password) => {
+  const handleLogin = async (username, password, onSuccess, onFailure) => {
     try {
-      const user = await axios.post('http://localhost:5000/api/login', { username, password });
+      const user = await axios.post('http://localhost:3080/api/login', { username, password });
       if (user.data.error) {
-        alert('User not found or invalid password');
+        onFailure();
+        toast.error('User not found or invalid password.', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
         return;
       }
 
       localStorage.setItem('loggedInUser', JSON.stringify(user.data));
 
       setLoggedInUser(user.data);
-
+      onSuccess();
       if (user.data.isAdmin) {
         
         navigate('/admin');
@@ -54,7 +86,16 @@ function App() {
       }
     } catch (error) {
       console.error(error);
-      alert('Error logging in');
+      toast.error('Error logging in', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   };
 
@@ -64,14 +105,16 @@ function App() {
 
     setLoggedInUser(null);
     navigate('/');
+    window.location.reload();
   };
 
   return (
     <div>
+      <ToastContainer/>
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">APMS</Link>
           </li>
           {loggedInUser ? (
             <>
@@ -85,19 +128,10 @@ function App() {
                 </li>
               )}
             </>
-          ) : (
-            <>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-              <li>
-                <Link to="/signup">Sign Up</Link>
-              </li>
-            </>
-          )}
+          ) : null}
         </ul>
         {loggedInUser && (
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogout} className='logoutButton'>Logout</button>
         )}
       </nav>
 
@@ -118,12 +152,25 @@ function App() {
 }
 
 function Home() {
+  const [loggedInUser] = useState(
+    JSON.parse(localStorage.getItem('loggedInUser')) || null
+  );
   return (
     <div>
       <HomePage />
+      <div className='homeButton'>
+        {!loggedInUser ? (
+          <>
+            <Link to="/login" className='link'>Login</Link>
+            <Link to="/signup" className='link'>Sign Up</Link>
+          </>
+        ) : null
+        }
+      </div>
     </div>
   );
 }
+
 
 
 function UsersPage() {
@@ -137,7 +184,7 @@ function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users');
+      const response = await axios.get('http://localhost:3080/api/users');
       const filteredUsers = response.data.users.filter((user) => !user.isAdmin);
       setUsers(filteredUsers);
       setFilteredUsers(filteredUsers);
@@ -187,7 +234,7 @@ function UserPage({ navigate, loggedInUser }) {
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/user/${username}`);
+      const response = await axios.get(`http://localhost:3080/api/user/${username}`);
       const { imageData } = response.data;
       setImages(imageData || []);
     } catch (error) {
@@ -201,16 +248,25 @@ function UserPage({ navigate, loggedInUser }) {
   };
 
   const handleImageClick = (imageName) => {
-    window.open(`http://localhost:5000/api/image/${username}/${imageName}`);
+    window.open(`http://localhost:3080/api/image/${username}/${imageName}`);
   };
 
   const handleStatusChange = async (imageName, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/user/${username}/image/${imageName}`, { status });
+      await axios.put(`http://localhost:3080/api/user/${username}/image/${imageName}`, { status });
       fetchImages(); // Fetch the updated images after status change
     } catch (error) {
       console.error(error);
-      alert('Error updating status');
+      toast.error('Error updating status', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   };
 
@@ -295,15 +351,32 @@ function UserPortal({ loggedInUser }) {
 }, [loggedInUser, navigate]);
 
   return (
-    <div className="CompletePortal">
-      
-      <h1>Welcome, {username}!</h1>
-      <h1>Please Choose</h1>
-      <div className="portalView">
-      <Link className="portalView"to={`/user/${username}/upload-certificate`}>Upload Certificate</Link>
-      <br />
-      <Link className="portalView2"to={`/user/${username}/view-certificate`}>View Certificate</Link>
-      <Outlet />
+    <div className="frame">
+      <div className="center">
+        <div className="profile">
+			    <div className="name">{username}</div>
+    			<div className="job">Student</div>
+			
+			    <div className="actions">
+				    <Link className="btn"to={`/user/${username}/upload-certificate`}>Upload</Link>
+           <Link className="btn"to={`/user/${username}/view-certificate`}>View </Link>
+			    </div>
+		    </div>
+		
+		    <div className="stats">
+			    <div className="box">
+				    <span className="value">23</span>
+				    <span className="parameter">Certificates</span>
+			    </div>
+			    <div className="box">
+				    <span className="value">20</span>
+				    <span className="parameter">Approved</span>
+			    </div>
+			    <div className="box">
+				    <span className="value">146</span>
+				    <span className="parameter">Activity Points</span>
+			    </div>
+		    </div>
       </div>
     </div>
   );
@@ -363,12 +436,30 @@ function UploadCertificate({ loggedInUser }) {
     e.preventDefault();
   
     if (!loggedInUser) {
-      alert('User not logged in');
+      toast.error('User not logged in', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       return;
     }
   
     if (!image) {
-      alert('Please select an image');
+      toast.warn('Please select an image', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       return;
     }
   
@@ -383,21 +474,42 @@ function UploadCertificate({ loggedInUser }) {
     formData.append('activityPoints', activityPoints); // Add activityPoints to form data
   
     try {
-      await axios.post('http://localhost:5000/api/uploadImage', formData, {
+
+      await axios.post('http://localhost:3080/api/uploadImage', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      alert('Image uploaded successfully');
+      toast.success('Image uploaded successfully', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       setImage(null);
     } catch (error) {
       console.error(error);
-      alert('Error uploading image');
+      toast.error('Error uploading image', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   };
   
 
   return (
-    <div className="CertificateForm"> 
-      <h3>Upload Certificate</h3>
+    <div className="certcard">
+      <img src={ribbon}/>
+      <h2 className="cert-heading">Certificate</h2>
+      <div className="CertificateForm"> 
       <form onSubmit={handleSubmit}>
       
         <select name="dropdown1" value={dropdownValues.dropdown1} onChange={handleOptionChange}>
@@ -428,17 +540,6 @@ function UploadCertificate({ loggedInUser }) {
           />
         </div>
         <div>
-          <label htmlFor="issueDate">Date:</label>
-          <input
-            type="date"
-            id="issueDate"
-            name="issueDate"
-            value={certificateData.issueDate}
-            onChange={handleCertChange}
-            required
-          />
-        </div>
-        <div>
           <label htmlFor="issuer">Issuer:</label>
           <input
             type="text"
@@ -449,11 +550,23 @@ function UploadCertificate({ loggedInUser }) {
             required
           />
         </div>
+        <div>
+          <label htmlFor="issueDate">Date:</label>
+          <input
+            type="date"
+            id="issueDate"
+            name="issueDate"
+            value={certificateData.issueDate}
+            onChange={handleCertChange}
+            required
+          />
+        </div>
         <br />
         <input type="file" accept="image/jpeg" onChange={handleImageUpload} />
         <br />
         <button type="submit">Upload</button>
       </form>
+    </div>
     </div>
   )
 };
@@ -468,7 +581,7 @@ function ViewCertificate({ loggedInUser }) {
 
   const fetchCertificate = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/user/${loggedInUser.username}`);
+      const response = await axios.get(`http://localhost:3080/api/user/${loggedInUser.username}`);
       const { imageData } = response.data;
       setImageData(imageData || []);
     } catch (error) {
@@ -478,7 +591,7 @@ function ViewCertificate({ loggedInUser }) {
   
 
   const handleImageClick = (imageName) => {
-    window.open(`http://localhost:5000/api/image/${loggedInUser.username}/${imageName}`);
+    window.open(`http://localhost:3080/api/image/${loggedInUser.username}/${imageName}`);
   };
 
   
@@ -512,18 +625,43 @@ function ViewCertificate({ loggedInUser }) {
 
 
 function LoginForm({ handleLogin }) {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [failedAttempts, setFailedAttempts] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleLogin(username, password);
+    handleLogin(username, password,handleLoginSuccess,handleLoginFailure);
+  };
+
+  const handleLoginSuccess = () => {
+    setFailedAttempts(0);
+  };
+
+  const handleLoginFailure = () => {
+    setFailedAttempts((prevAttempts) => prevAttempts + 1);
+
+    if (failedAttempts + 1 >= 3) {
+      toast.error('Maximum login attempts exceeded. Please try again later.', {
+        position: "top-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+      navigate('/');
+    }
   };
 
   return (
-       <div >
-      <div className="LoginHead">
-      <h1>Login</h1></div>
+    <div className="card" >
+      {/* <div className="LoginHead">
+        <h1>Login</h1> </div> */}
+      <h2 className="card-heading">LOGIN</h2>
       <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <br />
@@ -541,13 +679,53 @@ function SignUpForm({ handleSignUp }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (password.length < 8) {
+      toast.warn('Password must be at least 8 characters long.', {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+      return;
+    }
+    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password)) {
+      toast.warn('Password must contain at least one uppercase letter and one lowercase letter.', {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+      return;
+    }
+    if(!/(?=.*\d)/.test(password)){
+      toast.warn('Password must contain a digit.', {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+      return;
+    }
     handleSignUp(username, password);
   };
 
   return (
-    <div>
-      <div className="LoginHead">
-      <h1>Sign Up</h1></div>
+    <div className="card">
+      {/* <div className="LoginHead">
+      <h1>Sign Up</h1></div> */}
+      <h2 className="card-heading">SIGN UP</h2>
       <form className="LoginPage" onSubmit={handleSubmit}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <br />
@@ -555,6 +733,7 @@ function SignUpForm({ handleSignUp }) {
         <br />
         <button type="submit">Sign Up</button>
       </form>
+      <div className='conditions'>Password must contain 8 characters, at least one upper-case letter, one lower-case letter, and one digit.</div>
     </div>
   );
 }
