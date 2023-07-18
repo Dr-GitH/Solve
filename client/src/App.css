@@ -556,10 +556,16 @@ border-radius: 3px; */
   right: 5%;
 }
 
+/*VIEW CERTIFICATE*/
+
 .certviewcard-container {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  color: #786450;
+  font-family: "Open Sans", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .certviewcard {
@@ -587,34 +593,51 @@ border-radius: 3px; */
 .certviewcard button:hover {
   background: rgb(0, 153, 170);
   color: #fff;
+  cursor: pointer;
 }
 
 .certviewcard ul {
-  width: 300px;
+  width: 250px;
+  position: absolute;
+  font-weight: 600;
 }
 
 .viewcertificatestatus {
+  /* position: relative;
+  margin-left: 73%; */
   float: right;
+  /* position: absolute; */
 }
+
+.vcbox .value{
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.vcbox .parameter{
+  font-size: 11px;
+}
+
 .viewcertificatestatus .vcbox {
   box-sizing: border-box;
   width: 120px;
   height: 70px;
   background: #f5e8df;
   text-align: center;
-  padding-top: 28px;
+  padding-top: 10%;
   transition: all 0.4s ease-in-out;
 }
-.viewcertifcatestatus .vcbox:hover {
+.viewcertificatestatus .vcbox:hover {
   background: #e1cfc2;
-  cursor: pointer;
 }
+
 .viewcertificatestatus .vcbox:nth-child(2) {
   margin: 1px 0;
 }
 .viewcertificatestatus span {
   display: block;
 }
+
 
 /*ADMIN PORTAL*/
 
