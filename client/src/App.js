@@ -249,6 +249,8 @@ function AdminPortal({ loggedInUser }) {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [usersWithPendingImageCount, setUsersWithPendingImageCount] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -268,6 +270,20 @@ function AdminPortal({ loggedInUser }) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchUsersWithPendingImageCount();
+  }, []);
+
+  const fetchUsersWithPendingImageCount = async () => {
+    try {
+      const response = await axios.get("http://localhost:3080/api/users/pendingImageCount");
+      setUsersWithPendingImageCount(response.data.users);
+    } catch (error) {
+      console.error('Error fetching users with pending image count:', error);
+    }
+  };
+
 
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
@@ -306,7 +322,7 @@ function AdminPortal({ loggedInUser }) {
               <Link to={`/admin/user/${user.username}`} key={user._id}>
                 <article className="leaderboard__profile">
                   <span className="leaderboard__name">{user.username}</span>
-                  <span className="leaderboard__value">35.7</span>
+                  <span className="leaderboard__value">{user.pendingImageCount}</span>
                 </article>
               </Link>
             ))}
@@ -724,7 +740,7 @@ function ViewCertificate({ loggedInUser }) {
                   {image.status === "accepted" && (
                     <p>Activity Points: {image.activityPoints}</p>
                   )}
-                  <button type="View">View</button>
+                  <button type="View"  onClick={() => handleImageClick(image.imageName)} >View</button>
                 </ul>
                 <div className="viewcertificatestatus">
                   <div className="vcbox">
