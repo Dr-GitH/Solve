@@ -706,6 +706,7 @@ border-radius: 3px; */
   font-size: 20px;
   letter-spacing: 0.64px;
   margin-left: 12px;
+  text-transform: uppercase;
 }
 
 .leaderboard__value {
