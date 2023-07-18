@@ -246,10 +246,29 @@ app.post('/api/uploadImage', upload.single('image'), async (req, res) => {
 
 
 
+app.get('/api/users/pendingImageCount', async (req, res) => {
+  try {
+    const users = await User.find({ isAdmin: false }, 'username');
+    const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
+      const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
+      return { username: user.username, pendingImageCount };
+    }));
+    res.json({ users: usersWithPendingImageCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 app.get('/api/users', async (req, res) => {
   try {
     const users = await User.find({ isAdmin: false }, 'username');
-    res.json({ users });
+    const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
+      const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
+      return { username: user.username, pendingImageCount };
+    }));
+    res.json({ users: usersWithPendingImageCount });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
