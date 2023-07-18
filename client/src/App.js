@@ -1,29 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Outlet, useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-import bcrypt from 'bcryptjs';
-import axios from 'axios';
-import './App.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import $ from 'jquery'; 
-import HomePage from './scenes/homePage';
-import ribbon from './assets/ribbon.png';
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
+import { useParams } from "react-router-dom";
+import bcrypt from "bcryptjs";
+import axios from "axios";
+import "./App.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import $ from "jquery";
+import HomePage from "./scenes/homePage";
+import ribbon from "./assets/ribbon.png";
 
 function App() {
-
   const [loggedInUser, setLoggedInUser] = useState(
-    JSON.parse(localStorage.getItem('loggedInUser')) || null
+    JSON.parse(localStorage.getItem("loggedInUser")) || null
   );
 
   const navigate = useNavigate();
 
-
   const handleSignUp = async (username, password) => {
     try {
-      const checkUsername = await axios.post('http://localhost:3080/api/checkUsername', { username });
-      if (checkUsername.data.message === 'Username already exists') {
-        toast.error('Username already exists', {
+      const checkUsername = await axios.post(
+        "http://localhost:3080/api/checkUsername",
+        { username }
+      );
+      if (checkUsername.data.message === "Username already exists") {
+        toast.error("Username already exists", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -32,17 +40,20 @@ function App() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
         return;
       }
 
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
-      const newUser = await axios.post('http://localhost:3080/api/signup', { username, password: hashedPassword });
+      const newUser = await axios.post("http://localhost:3080/api/signup", {
+        username,
+        password: hashedPassword,
+      });
       alert(newUser.data.message);
     } catch (error) {
       console.error(error);
-      toast.error('Error creating user', {
+      toast.error("Error creating user", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -51,16 +62,19 @@ function App() {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
     }
   };
 
   const handleLogin = async (username, password, onSuccess, onFailure) => {
     try {
-      const user = await axios.post('http://localhost:3080/api/login', { username, password });
+      const user = await axios.post("http://localhost:3080/api/login", {
+        username,
+        password,
+      });
       if (user.data.error) {
         onFailure();
-        toast.error('User not found or invalid password.', {
+        toast.error("User not found or invalid password.", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -70,7 +84,7 @@ function App() {
           progress: undefined,
           theme: "colored",
         });
-  
+
         const { remainingAttempts, lockoutTime } = user.data;
         if (remainingAttempts === 0) {
           const minutes = Math.ceil(lockoutTime / 60000); // Convert milliseconds to minutes
@@ -85,22 +99,22 @@ function App() {
             theme: "colored",
           });
         }
-  
+
         return;
       }
-  
-      localStorage.setItem('loggedInUser', JSON.stringify(user.data));
-  
+
+      localStorage.setItem("loggedInUser", JSON.stringify(user.data));
+
       setLoggedInUser(user.data);
       onSuccess();
       if (user.data.isAdmin) {
-        navigate('/admin');
+        navigate("/admin");
       } else {
         navigate(`/user/${username}`);
       }
     } catch (error) {
       console.error(error);
-      toast.error('Error logging in', {
+      toast.error("Error logging in", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -112,60 +126,96 @@ function App() {
       });
     }
   };
-  
 
   const handleLogout = () => {
-
-    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem("loggedInUser");
 
     setLoggedInUser(null);
-    navigate('/');
+    navigate("/");
     window.location.reload();
   };
 
   return (
     <div>
-      <ToastContainer/>
-      <div className='page'>
-    <nav className="page__menu menu">
-      <div className='menu__wrapper'>
-        <ul className="menu__list r-list">
-        {loggedInUser ? null : (
-              <li className="menu__group">
-                <Link to="/" className="menu__link r-link text-underlined">APMS</Link>
-              </li>
-            )}
-            {loggedInUser ? (
+      <ToastContainer />
+      <div className="page">
+        <nav className="page__menu menu">
+          <div className="menu__wrapper">
+            <ul className="menu__list r-list">
+              {loggedInUser ? null : (
+                <li className="menu__group">
+                  <Link to="/" className="menu__link r-link text-underlined">
+                    APMS
+                  </Link>
+                </li>
+              )}
+              {loggedInUser ? (
                 <>
-                {loggedInUser.isAdmin ? (
+                  {loggedInUser.isAdmin ? (
                     <li className="menu__group">
-                        <Link to="/admin" className="menu__link r-link text-underlined">Admin Portal</Link>
+                      <Link
+                        to="/admin"
+                        className="menu__link r-link text-underlined"
+                      >
+                        Admin Portal
+                      </Link>
                     </li>
-                ) : (
+                  ) : (
                     <li className="menu__group">
-                        <Link to={`/user/${loggedInUser.username}`} className="menu__link r-link text-underlined">User Portal</Link>
+                      <Link
+                        to={`/user/${loggedInUser.username}`}
+                        className="menu__link r-link text-underlined"
+                      >
+                        User Portal
+                      </Link>
                     </li>
-                )}
+                  )}
                 </>
-            ) : null}
+              ) : null}
             </ul>
             {loggedInUser && (
-          <button onClick={handleLogout} className='menu__link r-link text-underlined logout-button'>Logout</button>
-        )}
+              <button
+                onClick={handleLogout}
+                className="menu__link r-link text-underlined logout-button"
+              >
+                Logout
+              </button>
+            )}
+          </div>
+        </nav>
       </div>
-    </nav>
-    </div>
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin/*" element={<AdminPortal loggedInUser={loggedInUser} />} />
-        <Route path="/user/:username" element={<UserPortal loggedInUser={loggedInUser} />} />
-        <Route path="/user/:username/upload-certificate" element={<UploadCertificate loggedInUser={loggedInUser} />} />
-        <Route path="/user/:username/view-certificate" element={<ViewCertificate loggedInUser={loggedInUser} />} />
-        <Route path="/login" element={<LoginForm handleLogin={handleLogin} />} />
-        <Route path="/signup" element={<SignUpForm handleSignUp={handleSignUp} />} />
-        
-        <Route path="/admin/user/:username" element={<UserPage navigate={navigate} loggedInUser={loggedInUser} />} />
+        <Route
+          path="/admin/*"
+          element={<AdminPortal loggedInUser={loggedInUser} />}
+        />
+        <Route
+          path="/user/:username"
+          element={<UserPortal loggedInUser={loggedInUser} />}
+        />
+        <Route
+          path="/user/:username/upload-certificate"
+          element={<UploadCertificate loggedInUser={loggedInUser} />}
+        />
+        <Route
+          path="/user/:username/view-certificate"
+          element={<ViewCertificate loggedInUser={loggedInUser} />}
+        />
+        <Route
+          path="/login"
+          element={<LoginForm handleLogin={handleLogin} />}
+        />
+        <Route
+          path="/signup"
+          element={<SignUpForm handleSignUp={handleSignUp} />}
+        />
+
+        <Route
+          path="/admin/user/:username"
+          element={<UserPage navigate={navigate} loggedInUser={loggedInUser} />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -174,42 +224,43 @@ function App() {
 
 function Home() {
   const [loggedInUser] = useState(
-    JSON.parse(localStorage.getItem('loggedInUser')) || null
+    JSON.parse(localStorage.getItem("loggedInUser")) || null
   );
   return (
     <div>
       <HomePage />
-      <div className='homeButton'>
+      <div className="homeButton">
         {!loggedInUser ? (
           <>
-            <Link to="/login" className='link'>Login</Link>
-            <Link to="/signup" className='link'>Sign Up</Link>
+            <Link to="/login" className="link">
+              Login
+            </Link>
+            <Link to="/signup" className="link">
+              Sign Up
+            </Link>
           </>
-        ) : null
-        }
+        ) : null}
       </div>
     </div>
   );
 }
 
-
-
 function AdminPortal({ loggedInUser }) {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!loggedInUser||!loggedInUser.isAdmin){
-      navigate('/');
+    if (!loggedInUser || !loggedInUser.isAdmin) {
+      navigate("/");
     }
     fetchUsers();
-  }, [loggedInUser,navigate]);
+  }, [loggedInUser, navigate]);
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:3080/api/users');
+      const response = await axios.get("http://localhost:3080/api/users");
       const filteredUsers = response.data.users.filter((user) => !user.isAdmin);
       setUsers(filteredUsers);
       setFilteredUsers(filteredUsers);
@@ -231,37 +282,40 @@ function AdminPortal({ loggedInUser }) {
   return (
     <div>
       <h2>Welcome, {loggedInUser.username}</h2>
-      <div className='users_body'>
-      <div className='searchBody'>
-      <div className='search__container'>
-      <input className="search__input"
-        type="text"
-        placeholder="Search User"
-        value={searchTerm}
-        onChange={handleSearch}
-      />
-      </div>
-      </div>
-        <article className='leaderboard'>
+      <div className="users_body">
+        <div className="searchBody">
+          <div className="search__container">
+            <input
+              className="search__input"
+              type="text"
+              placeholder="Search User"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+          </div>
+        </div>
+        <article className="leaderboard">
           <header>
-            <h1 className='leaderboard__title'><span className='leaderboard__title--top'>Students</span></h1>
+            <h1 className="leaderboard__title">
+              <span className="leaderboard__title--top students">Students</span>
+              <span className="leaderboard__title--top certificates">Certificates Pending</span>
+            </h1>
           </header>
-          <main className='leaderboard__profiles'>
-          {filteredUsers.map((user) => 
+          <main className="leaderboard__profiles">
+            {filteredUsers.map((user) => (
               <Link to={`/admin/user/${user.username}`} key={user._id}>
-              <article className="leaderboard__profile">
-              <span className="leaderboard__name">{user.username}</span>
-              <span className="leaderboard__value">35.7</span>
-              </article>
+                <article className="leaderboard__profile">
+                  <span className="leaderboard__name">{user.username}</span>
+                  <span className="leaderboard__value">35.7</span>
+                </article>
               </Link>
-          )}
+            ))}
           </main>
         </article>
       </div>
     </div>
   );
 }
-
 
 function UserPage({ navigate, loggedInUser }) {
   const { username } = useParams();
@@ -273,17 +327,18 @@ function UserPage({ navigate, loggedInUser }) {
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get(`http://localhost:3080/api/user/${username}`);
+      const response = await axios.get(
+        `http://localhost:3080/api/user/${username}`
+      );
       const { imageData } = response.data;
       setImages(imageData || []);
     } catch (error) {
       console.error(error);
     }
   };
-    
 
   const handleBack = () => {
-    navigate('/admin/users');
+    navigate("/admin/users");
   };
 
   const handleImageClick = (imageName) => {
@@ -292,11 +347,14 @@ function UserPage({ navigate, loggedInUser }) {
 
   const handleStatusChange = async (imageName, status) => {
     try {
-      await axios.put(`http://localhost:3080/api/user/${username}/image/${imageName}`, { status });
+      await axios.put(
+        `http://localhost:3080/api/user/${username}/image/${imageName}`,
+        { status }
+      );
       fetchImages(); // Fetch the updated images after status change
     } catch (error) {
       console.error(error);
-      toast.error('Error updating status', {
+      toast.error("Error updating status", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -305,7 +363,7 @@ function UserPage({ navigate, loggedInUser }) {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
     }
   };
 
@@ -317,7 +375,15 @@ function UserPage({ navigate, loggedInUser }) {
         <ul>
           {images.map((image, index) => (
             <li key={index}>
-              <p>Image Name: <span className="image-link" onClick={() => handleImageClick(image.imageName)}>{image.imageName}</span></p>
+              <p>
+                Image Name:{" "}
+                <span
+                  className="image-link"
+                  onClick={() => handleImageClick(image.imageName)}
+                >
+                  {image.imageName}
+                </span>
+              </p>
               <p>Dropdown 1: {image.dropdown1}</p>
               <p>Dropdown 2: {image.dropdown2}</p>
               <p>Certificate Details:</p>
@@ -325,7 +391,7 @@ function UserPage({ navigate, loggedInUser }) {
               <p>Issue Date: {image.certificateDetails.issueDate}</p>
               <p>Issuer: {image.certificateDetails.issuer}</p>
               <p>Status: {image.status}</p>
-              <p>Activity Points: {image.activityPoints}</p> 
+              <p>Activity Points: {image.activityPoints}</p>
 
               {loggedInUser && loggedInUser.isAdmin && (
                 <div>
@@ -333,7 +399,9 @@ function UserPage({ navigate, loggedInUser }) {
                   <select
                     id={`status-select-${index}`}
                     value={image.status}
-                    onChange={(e) => handleStatusChange(image.imageName, e.target.value)}
+                    onChange={(e) =>
+                      handleStatusChange(image.imageName, e.target.value)
+                    }
                   >
                     <option value="pending">Pending</option>
                     <option value="accepted">Accepted</option>
@@ -353,23 +421,26 @@ function UserPage({ navigate, loggedInUser }) {
 
 function UserPortal({ loggedInUser }) {
   const navigate = useNavigate();
-  const username = loggedInUser ? loggedInUser.username : '';
+  const username = loggedInUser ? loggedInUser.username : "";
   const [totalActivityPoints, setTotalActivityPoints] = useState(0);
   const [totalCertificates, setTotalCertificates] = useState(0);
   const [approvedCertificates, setApprovedCertificates] = useState(0);
 
   useEffect(() => {
     if (!loggedInUser || loggedInUser.isAdmin) {
-      navigate('/');
+      navigate("/");
     } else {
-      fetchUserData(); 
+      fetchUserData();
     }
   }, [loggedInUser, navigate]);
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3080/api/user/${username}/data`);
-      const { totalActivityPoints, totalCertificates, approvedCertificates } = response.data;
+      const response = await axios.get(
+        `http://localhost:3080/api/user/${username}/data`
+      );
+      const { totalActivityPoints, totalCertificates, approvedCertificates } =
+        response.data;
       setTotalActivityPoints(totalActivityPoints);
       setTotalCertificates(totalCertificates);
       setApprovedCertificates(approvedCertificates);
@@ -397,11 +468,11 @@ function UserPortal({ loggedInUser }) {
 
         <div className="stats">
           <div className="box">
-            <span className="value">{totalCertificates}</span> 
+            <span className="value">{totalCertificates}</span>
             <span className="parameter">Certificates</span>
           </div>
           <div className="box">
-            <span className="value">{approvedCertificates}</span> 
+            <span className="value">{approvedCertificates}</span>
             <span className="parameter">Approved</span>
           </div>
           <div className="box">
@@ -414,21 +485,18 @@ function UserPortal({ loggedInUser }) {
   );
 }
 
-
-
-
 function UploadCertificate({ loggedInUser }) {
   const [image, setImage] = useState(null);
   const [activityPoints, setActivityPoints] = useState(0);
 
   const [dropdownValues, setDropdownValues] = useState({
-    dropdown1: 's1',
-    dropdown2: ''
+    dropdown1: "s1",
+    dropdown2: "",
   });
   const [certificateData, setCertificateData] = useState({
-    name: '',
-    issueDate: '',
-    issuer: ''
+    name: "",
+    issueDate: "",
+    issuer: "",
   });
 
   const handleOptionChange = (event) => {
@@ -437,26 +505,26 @@ function UploadCertificate({ loggedInUser }) {
       ...prevValues,
       [name]: value,
     }));
-  
+
     let points = 0;
-    if (name === 'dropdown2') {
-      if (value === 'NCC/NSS') {
+    if (name === "dropdown2") {
+      if (value === "NCC/NSS") {
         points = 50;
-      } else if (value === 'SPORTS') {
+      } else if (value === "SPORTS") {
         points = 60;
-      } else if (value === 'MUSIC/PERFORMING ARTS') {
+      } else if (value === "MUSIC/PERFORMING ARTS") {
         points = 70;
       }
     }
-  
+
     setActivityPoints(points);
   };
-  
+
   const handleCertChange = (event) => {
     const { name, value } = event.target;
     setCertificateData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -467,51 +535,50 @@ function UploadCertificate({ loggedInUser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (!loggedInUser) {
-      toast.error('User not logged in', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        });
-      return;
-    }
-  
-    if (!image) {
-      toast.warn('Please select an image', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        });
-      return;
-    }
-  
-    const formData = new FormData();
-    formData.append('image', image);
-    formData.append('username', loggedInUser.username);
-    formData.append('dropdown1', dropdownValues.dropdown1);
-    formData.append('dropdown2', dropdownValues.dropdown2);
-    formData.append('name', certificateData.name);
-    formData.append('issueDate', certificateData.issueDate);
-    formData.append('issuer', certificateData.issuer);
-    formData.append('activityPoints', activityPoints); // Add activityPoints to form data
-  
-    try {
 
-      await axios.post('http://localhost:3080/api/uploadImage', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+    if (!loggedInUser) {
+      toast.error("User not logged in", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
       });
-      toast.success('Image uploaded successfully', {
+      return;
+    }
+
+    if (!image) {
+      toast.warn("Please select an image", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("username", loggedInUser.username);
+    formData.append("dropdown1", dropdownValues.dropdown1);
+    formData.append("dropdown2", dropdownValues.dropdown2);
+    formData.append("name", certificateData.name);
+    formData.append("issueDate", certificateData.issueDate);
+    formData.append("issuer", certificateData.issuer);
+    formData.append("activityPoints", activityPoints); // Add activityPoints to form data
+
+    try {
+      await axios.post("http://localhost:3080/api/uploadImage", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      toast.success("Image uploaded successfully", {
         position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,
@@ -520,11 +587,11 @@ function UploadCertificate({ loggedInUser }) {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
       setImage(null);
     } catch (error) {
       console.error(error);
-      toast.error('Error uploading image', {
+      toast.error("Error uploading image", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -533,77 +600,82 @@ function UploadCertificate({ loggedInUser }) {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
     }
   };
-  
 
   return (
     <div className="certcard">
-      <img src={ribbon}/>
+      <img src={ribbon} />
       <h2 className="cert-heading">Certificate</h2>
-      <div className="CertificateForm"> 
-      <form onSubmit={handleSubmit}>
-      
-        <select name="dropdown1" value={dropdownValues.dropdown1} onChange={handleOptionChange}>
-          <option value="s1">s1</option>
-          <option value="s2">s2</option>
-          <option value="s3">s3</option>
-          <option value="s4">s4</option>
-          <option value="s5">s5</option>
-          <option value="s6">s6</option>
-          <option value="s7">s7</option>
-          <option value="s8">s8</option>
-        </select>
-        <select name="dropdown2" value={dropdownValues.dropdown2} onChange={handleOptionChange}>
-          <option value="">Select an option</option>
-          <option value="NCC/NSS">NCC/NSS</option>
-          <option value="SPORTS">SPORTS</option>
-          <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option>
-        </select>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={certificateData.name}
-            onChange={handleCertChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="issuer">Issuer:</label>
-          <input
-            type="text"
-            id="issuer"
-            name="issuer"
-            value={certificateData.issuer}
-            onChange={handleCertChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="issueDate">Date:</label>
-          <input
-            type="date"
-            id="issueDate"
-            name="issueDate"
-            value={certificateData.issueDate}
-            onChange={handleCertChange}
-            required
-          />
-        </div>
-        <br />
-        <input type="file" accept="image/jpeg" onChange={handleImageUpload} />
-        <br />
-        <button type="submit">Upload</button>
-      </form>
+      <div className="CertificateForm">
+        <form onSubmit={handleSubmit}>
+          <select
+            name="dropdown1"
+            value={dropdownValues.dropdown1}
+            onChange={handleOptionChange}
+          >
+            <option value="s1">s1</option>
+            <option value="s2">s2</option>
+            <option value="s3">s3</option>
+            <option value="s4">s4</option>
+            <option value="s5">s5</option>
+            <option value="s6">s6</option>
+            <option value="s7">s7</option>
+            <option value="s8">s8</option>
+          </select>
+          <select
+            name="dropdown2"
+            value={dropdownValues.dropdown2}
+            onChange={handleOptionChange}
+          >
+            <option value="">Select an option</option>
+            <option value="NCC/NSS">NCC/NSS</option>
+            <option value="SPORTS">SPORTS</option>
+            <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option>
+          </select>
+          <div>
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={certificateData.name}
+              onChange={handleCertChange}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="issuer">Issuer:</label>
+            <input
+              type="text"
+              id="issuer"
+              name="issuer"
+              value={certificateData.issuer}
+              onChange={handleCertChange}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="issueDate">Date:</label>
+            <input
+              type="date"
+              id="issueDate"
+              name="issueDate"
+              value={certificateData.issueDate}
+              onChange={handleCertChange}
+              required
+            />
+          </div>
+          <br />
+          <input type="file" accept="image/jpeg" onChange={handleImageUpload} />
+          <br />
+          <button type="submit">Upload</button>
+        </form>
+      </div>
     </div>
-    </div>
-  )
-};
-
+  );
+}
 
 function ViewCertificate({ loggedInUser }) {
   const [imageData, setImageData] = useState([]);
@@ -614,60 +686,62 @@ function ViewCertificate({ loggedInUser }) {
 
   const fetchCertificate = async () => {
     try {
-      const response = await axios.get(`http://localhost:3080/api/user/${loggedInUser.username}`);
+      const response = await axios.get(
+        `http://localhost:3080/api/user/${loggedInUser.username}`
+      );
       const { imageData } = response.data;
       setImageData(imageData || []);
     } catch (error) {
       console.error(error);
     }
   };
-  
 
   const handleImageClick = (imageName) => {
-    window.open(`http://localhost:3080/api/image/${loggedInUser.username}/${imageName}`);
+    window.open(
+      `http://localhost:3080/api/image/${loggedInUser.username}/${imageName}`
+    );
   };
 
-  
   return (
-    <div className='viewcertificate'>
-      <center><h2>VIEW CERTIFICATE</h2></center>
+    <div className="viewcertificate">
+      <center>
+        <h2>VIEW CERTIFICATE</h2>
+      </center>
       {imageData.length ? (
         <ul>
-          <div className='certviewcard-container'>
-          {imageData.map((image, index) => (
-            <div className='certviewcard'>
-            <ul key={index}>
-              {/* <p>Image Name: <span className="image-link" onClick={() => handleImageClick(image.imageName)}>{image.imageName}</span></p> */}
-              <p>Name: {image.certificateDetails.name}</p>
-              <p>Issuer: {image.certificateDetails.issuer}</p>
-              <p>Issue Date: {image.certificateDetails.issueDate}</p>
-              {/* <p>Status: {image.status}</p>
+          <div className="certviewcard-container">
+            {imageData.map((image, index) => (
+              <div className="certviewcard">
+                <ul key={index}>
+                  {/* <p>Image Name: <span className="image-link" onClick={() => handleImageClick(image.imageName)}>{image.imageName}</span></p> */}
+                  <p>Name: {image.certificateDetails.name}</p>
+                  <p>Issuer: {image.certificateDetails.issuer}</p>
+                  <p>Issue Date: {image.certificateDetails.issueDate}</p>
+                  {/* <p>Status: {image.status}</p>
               <p>Semester: {image.dropdown1}</p>
               <p>Type: {image.dropdown2}</p> */}
 
-            
-
-              {image.status === 'accepted' && (
-              <p>Activity Points: {image.activityPoints}</p> 
-            )}
-            <button type="View">View</button>
-            </ul>
-            <div className="viewcertificatestatus">
-              <div className="vcbox">
-                <span className="value">{image.dropdown1}</span>
-                <span className="parameter">Semester</span> 
+                  {image.status === "accepted" && (
+                    <p>Activity Points: {image.activityPoints}</p>
+                  )}
+                  <button type="View">View</button>
+                </ul>
+                <div className="viewcertificatestatus">
+                  <div className="vcbox">
+                    <span className="value">{image.dropdown1}</span>
+                    <span className="parameter">Semester</span>
+                  </div>
+                  <div className="vcbox">
+                    <span className="value">{image.dropdown2}</span>
+                    <span className="parameter">Type</span>
+                  </div>
+                  <div className="vcbox">
+                    <span className="value">{image.status}</span>
+                    <span className="parameter">Status</span>
+                  </div>
+                </div>
               </div>
-              <div className="vcbox">
-                <span className="value">{image.dropdown2}</span>                
-                <span className="parameter">Type</span>
-              </div>
-              <div className="vcbox">
-                <span className="value">{image.status}</span>
-                <span className="parameter">Status</span>                
-              </div>
-            </div>
-            </div>
-          ))}
+            ))}
           </div>
         </ul>
       ) : (
@@ -677,16 +751,15 @@ function ViewCertificate({ loggedInUser }) {
   );
 }
 
-
 function LoginForm({ handleLogin }) {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [failedAttempts, setFailedAttempts] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleLogin(username, password,handleLoginSuccess,handleLoginFailure);
+    handleLogin(username, password, handleLoginSuccess, handleLoginFailure);
   };
 
   const handleLoginSuccess = () => {
@@ -697,7 +770,7 @@ function LoginForm({ handleLogin }) {
     setFailedAttempts((prevAttempts) => prevAttempts + 1);
 
     if (failedAttempts + 1 >= 3) {
-      toast.error('Maximum login attempts exceeded. Please try again later.', {
+      toast.error("Maximum login attempts exceeded. Please try again later.", {
         position: "top-right",
         autoClose: false,
         hideProgressBar: false,
@@ -706,19 +779,28 @@ function LoginForm({ handleLogin }) {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
-      navigate('/');
+      });
+      navigate("/");
     }
   };
 
   return (
-    <div className="card" >
-      
+    <div className="card">
       <h2 className="card-heading">LOGIN</h2>
       <form className="LoginPage" onSubmit={handleSubmit}>
-        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <br />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <br />
         <button type="submit">Login</button>
       </form>
@@ -727,13 +809,13 @@ function LoginForm({ handleLogin }) {
 }
 
 function SignUpForm({ handleSignUp }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password.length < 8) {
-      toast.warn('Password must be at least 8 characters long.', {
+      toast.warn("Password must be at least 8 characters long.", {
         position: "top-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -742,24 +824,27 @@ function SignUpForm({ handleSignUp }) {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
       return;
     }
     if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password)) {
-      toast.warn('Password must contain at least one uppercase letter and one lowercase letter.', {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        });
+      toast.warn(
+        "Password must contain at least one uppercase letter and one lowercase letter.",
+        {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      );
       return;
     }
-    if(!/(?=.*\d)/.test(password)){
-      toast.warn('Password must contain a digit.', {
+    if (!/(?=.*\d)/.test(password)) {
+      toast.warn("Password must contain a digit.", {
         position: "top-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -768,7 +853,7 @@ function SignUpForm({ handleSignUp }) {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
       return;
     }
     handleSignUp(username, password);
@@ -776,16 +861,28 @@ function SignUpForm({ handleSignUp }) {
 
   return (
     <div className="card">
-  
       <h2 className="card-heading">SIGN UP</h2>
       <form className="LoginPage" onSubmit={handleSubmit}>
-        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <br />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <br />
         <button type="submit">Sign Up</button>
       </form>
-      <div className='conditions'>Password must contain 8 characters, at least one upper-case letter, one lower-case letter, and one digit.</div>
+      <div className="conditions">
+        Password must contain 8 characters, at least one upper-case letter, one
+        lower-case letter, and one digit.
+      </div>
     </div>
   );
 }
