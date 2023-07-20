@@ -957,7 +957,6 @@ console.log(dropdownValues.dropdown1);
               required
             />
           </div>
-          <br />
           <input type="file" accept="image/jpeg" onChange={handleImageUpload} />
           <br />
           <button type="submit">Upload</button>
