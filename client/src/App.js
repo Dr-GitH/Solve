@@ -228,6 +228,10 @@ function App() {
           path="/admin/user/:username"
           element={<UserPage navigate={navigate} loggedInUser={loggedInUser} />}
         />
+        <Route path="/admin/newPage1" element={<NewPage1 loggedInUser={loggedInUser} />} />
+
+        <Route path="/admin/newPage2" element={<NewPage2 loggedInUser={loggedInUser} />} />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -256,6 +260,210 @@ function Home() {
     </div>
   );
 }
+
+function NewPage1({ loggedInUser }) {
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [usersWithPendingImageCount, setUsersWithPendingImageCount] = useState([]);
+  const [selectedDropdown1, setSelectedDropdown1] = useState(""); // New state for selected dropdown1 value
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loggedInUser || !loggedInUser.isAdmin) {
+      navigate("/");
+    }
+    fetchUsers();
+  }, [loggedInUser, navigate]);
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    filterUsersBySearchTerm(event.target.value, selectedDropdown1); // Pass searchTerm and selected dropdown1 value to filter
+  };
+
+  const handleDropdownChange = (event) => {
+    setSelectedDropdown1(event.target.value);
+    filterUsersBySearchTerm(searchTerm, event.target.value); // Pass searchTerm and selected dropdown1 value to filter
+  };
+
+  const filterUsersBySearchTerm = (searchTerm, dropdown1Value) => {
+    // Filter users based on searchTerm and selectedDropdown1 value
+    const filtered = users.filter((user) => {
+      const usernameMatch = user.username.toLowerCase().includes(searchTerm.toLowerCase());
+      const dropdown1Match = !dropdown1Value || user.dropdown1 === dropdown1Value;
+      return usernameMatch && dropdown1Match;
+    });
+    setFilteredUsers(filtered);
+  };
+
+  useEffect(() => {
+    fetchUsers(selectedDropdown1); // Fetch users initially and whenever the dropdown1 value changes
+  }, [selectedDropdown1]);
+
+  const fetchUsers = async (dropdown1Value) => {
+    try {
+      const response = await axios.get("http://localhost:3080/api/users1", {
+        params: { dropdown1: dropdown1Value },
+      });
+      const filteredUsers = response.data.users.filter((user) => !user.isAdmin);
+      setUsers(filteredUsers);
+      setFilteredUsers(filteredUsers);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  return (
+    <div>
+      <h2>Welcome, {loggedInUser.username}</h2>
+      <div className="search_bar">
+        <input
+          type="text"
+          placeholder="Search username..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+        <select value={selectedDropdown1} onChange={handleDropdownChange}>
+          <option value="">All</option>
+          <option value="s1">s1</option>
+          <option value="s2">s2</option>
+          <option value="s3">s3</option>
+          <option value="s4">s4</option>
+          <option value="s5">s5</option>
+          <option value="s6">s6</option>
+          <option value="s7">s7</option>
+          <option value="s8">s8</option>
+        </select>
+      </div>
+      <div className="users_body">
+        <article className="leaderboard">
+          <header>
+            <h1 className="leaderboard__title">
+              <span className="leaderboard__title--top students">Students</span>
+              <span className="leaderboard__title--top certificates">Certificates Pending</span>
+            </h1>
+          </header>
+          <main className="leaderboard__profiles">
+            {filteredUsers.map((user) => (
+              <Link to={`/admin/user/${user.username}`} key={user._id}>
+                <article className="leaderboard__profile">
+                  <span className="leaderboard__name">{user.username}</span>
+                  <span className="leaderboard__value">{user.pendingImageCount}</span>
+                </article>
+              </Link>
+            ))}
+          </main>
+        </article>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+function NewPage2({ loggedInUser }) {
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [usersWithPendingImageCount, setUsersWithPendingImageCount] = useState([]);
+  const [selectedDropdown1, setSelectedDropdown1] = useState(""); // New state for selected dropdown1 value
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loggedInUser || !loggedInUser.isAdmin) {
+      navigate("/");
+    }
+    fetchUsers();
+  }, [loggedInUser, navigate]);
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    filterUsersBySearchTerm(event.target.value, selectedDropdown1); // Pass searchTerm and selected dropdown1 value to filter
+  };
+
+  const handleDropdownChange = (event) => {
+    setSelectedDropdown1(event.target.value);
+    filterUsersBySearchTerm(searchTerm, event.target.value); // Pass searchTerm and selected dropdown1 value to filter
+  };
+
+  const filterUsersBySearchTerm = (searchTerm, dropdown1Value) => {
+    // Filter users based on searchTerm and selectedDropdown1 value
+    const filtered = users.filter((user) => {
+      const usernameMatch = user.username.toLowerCase().includes(searchTerm.toLowerCase());
+      const dropdown1Match = !dropdown1Value || user.dropdown1 === dropdown1Value;
+      return usernameMatch && dropdown1Match;
+    });
+    setFilteredUsers(filtered);
+  };
+
+  useEffect(() => {
+    fetchUsers(selectedDropdown1); // Fetch users initially and whenever the dropdown1 value changes
+  }, [selectedDropdown1]);
+
+  const fetchUsers = async (dropdown1Value) => {
+    try {
+      const response = await axios.get("http://localhost:3080/api/users2", {
+        params: { dropdown1: dropdown1Value },
+      });
+      const filteredUsers = response.data.users.filter((user) => !user.isAdmin);
+      setUsers(filteredUsers);
+      setFilteredUsers(filteredUsers);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Welcome, {loggedInUser.username}</h2>
+      <div className="search_bar">
+        <input
+          type="text"
+          placeholder="Search username..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+        <select value={selectedDropdown1} onChange={handleDropdownChange}>
+          <option value="">All</option>
+          <option value="SPORTS">SPORTS</option>
+          <option value="NCC\NSS">NCC/NSS</option>
+          <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option>
+          
+        </select>
+      </div>
+      <div className="users_body">
+        <article className="leaderboard">
+          <header>
+            <h1 className="leaderboard__title">
+              <span className="leaderboard__title--top students">Students</span>
+              <span className="leaderboard__title--top certificates">Certificates Pending</span>
+            </h1>
+          </header>
+          <main className="leaderboard__profiles">
+            {filteredUsers.map((user) => (
+              <Link to={`/admin/user/${user.username}`} key={user._id}>
+                <article className="leaderboard__profile">
+                  <span className="leaderboard__name">{user.username}</span>
+                  <span className="leaderboard__value">{user.pendingImageCount}</span>
+                </article>
+              </Link>
+            ))}
+          </main>
+        </article>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
 
 function AdminPortal({ loggedInUser }) {
   const [users, setUsers] = useState([]);
@@ -307,9 +515,14 @@ function AdminPortal({ loggedInUser }) {
     setFilteredUsers(filteredUsers);
   };
 
+  
   return (
     <div>
       <h2>Welcome, {loggedInUser.username}</h2>
+      <div>
+        <button onClick={() => navigate("/admin/newPage1")}>Search by Semester</button>
+        <button onClick={() => navigate("/admin/newPage2")}>Search by Category</button>
+      </div>
       <div className="users_body">
         <div className="searchBody">
           <div className="search__container">
@@ -344,6 +557,8 @@ function AdminPortal({ loggedInUser }) {
     </div>
   );
 }
+
+
 
 function UserPage({ navigate, loggedInUser }) {
   const { username } = useParams();
