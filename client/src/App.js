@@ -159,7 +159,19 @@ function App() {
                       >
                         Admin Portal
                       </Link>
+                      <Link
+                        to="/admin"
+                        className="menu__link r-link text-underlined"
+                      >
+                        Report Generation
+                      </Link>
+                    
+                    
+                    
                     </li>
+                     
+                  
+                  
                   ) : (
                     <li className="menu__group">
                       <Link
@@ -585,6 +597,40 @@ function UploadCertificate({ loggedInUser }) {
       });
       return;
     }
+
+    function assignValueBasedOnDate(dateValue, rangesList) {
+      let resultValue = null;
+      for (const range of rangesList) {
+        const { start, end, value } = range;
+        if (dateValue >= start && dateValue <= end) {
+          resultValue = value;
+          break;
+        }
+      }
+    
+      return resultValue;
+    }
+
+    const dateToCheck = new Date(certificateData.issueDate);
+    const rangesList = [
+      { start: new Date('2020-11-26'), end: new Date('2021-04-20'), value: "s1" },
+      { start: new Date('2021-04-21'), end: new Date('2021-11-01'), value: "s2" },
+      { start: new Date('2021-11-02'), end: new Date('2022-04-13'), value: "s3" },
+      { start: new Date('2022-05-14'), end: new Date('2022-10-20'), value: "s4" },
+      { start: new Date('2022-10-21'), end: new Date('2023-04-20'), value: "s5" },
+      { start: new Date('2023-04-21'), end: new Date('2023-08-30'), value: "s6" },
+      { start: new Date('2023-09-01'), end: new Date('2024-01-15'), value: "s7" },
+      { start: new Date('2024-01-16'), end: new Date('2024-07-10'), value: "s8" },
+      
+      // Add more ranges and corresponding values as needed
+    ];
+    
+    const newsemester = assignValueBasedOnDate(dateToCheck, rangesList);
+    console.log(newsemester);
+dropdownValues.dropdown1=newsemester;
+console.log(dropdownValues.dropdown1);
+
+
 
     const formData = new FormData();
     formData.append("image", image);
