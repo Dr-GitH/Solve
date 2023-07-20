@@ -316,17 +316,20 @@ function NewPage1({ loggedInUser }) {
 
 
   return (
-    <div>
+    <div className="adminportal">
       <h2>Welcome, {loggedInUser.username}</h2>
-      <div className="search_bar">
-        <input
+      <div className="searchBody2">
+      <div className="search__container">
+        <input className="search__input"
           type="text"
-          placeholder="Search username..."
+          placeholder="Search username"
           value={searchTerm}
           onChange={handleSearch}
-        />
+        /></div>
+      </div>
+        <div className="search_bar">
         <select value={selectedDropdown1} onChange={handleDropdownChange}>
-          <option value="">All</option>
+          <option value="">SEMESTER</option>
           <option value="s1">s1</option>
           <option value="s2">s2</option>
           <option value="s3">s3</option>
@@ -418,21 +421,24 @@ function NewPage2({ loggedInUser }) {
   };
 
   return (
-    <div>
+    <div className="adminportal">
       <h2>Welcome, {loggedInUser.username}</h2>
-      <div className="search_bar">
-        <input
+      <div className="searchBody3">
+      <div className="search__container">
+      
+        <input className="search__input"
           type="text"
-          placeholder="Search username..."
+          placeholder="Search username"
           value={searchTerm}
           onChange={handleSearch}
         />
+      </div></div>
+      <div className="search_bar">
         <select value={selectedDropdown1} onChange={handleDropdownChange}>
-          <option value="">All</option>
+          <option value="">TYPE</option>
           <option value="SPORTS">SPORTS</option>
           <option value="NCC\NSS">NCC/NSS</option>
-          <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option>
-          
+          <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option> 
         </select>
       </div>
       <div className="users_body">
@@ -519,10 +525,6 @@ function AdminPortal({ loggedInUser }) {
   return (
     <div className="adminportal">
       <h2>Welcome, {loggedInUser.username}</h2>
-      <div>
-        <button onClick={() => navigate("/admin/newPage1")}>Search by Semester</button>
-        <button onClick={() => navigate("/admin/newPage2")}>Search by Category</button>
-      </div>
       <div className="users_body">
         <div className="searchBody">
           <div className="search__container">
@@ -535,6 +537,10 @@ function AdminPortal({ loggedInUser }) {
             />
           </div>
         </div>
+        <div className="searchfilters">
+        <button onClick={() => navigate("/admin/newPage1")}>Search by Semester</button>
+        <button onClick={() => navigate("/admin/newPage2")}>Search by Category</button>
+      </div>
         <article className="leaderboard">
           <header>
             <h1 className="leaderboard__title">
