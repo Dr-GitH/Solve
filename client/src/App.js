@@ -159,7 +159,19 @@ function App() {
                       >
                         Admin Portal
                       </Link>
+                      <Link
+                        to="/admin"
+                        className="menu__link r-link text-underlined"
+                      >
+                        Report Generation
+                      </Link>
+                    
+                    
+                    
                     </li>
+                     
+                  
+                  
                   ) : (
                     <li className="menu__group">
                       <Link
@@ -505,7 +517,7 @@ function AdminPortal({ loggedInUser }) {
 
   
   return (
-    <div>
+    <div className="adminportal">
       <h2>Welcome, {loggedInUser.username}</h2>
       <div>
         <button onClick={() => navigate("/admin/newPage1")}>Search by Semester</button>
@@ -517,7 +529,7 @@ function AdminPortal({ loggedInUser }) {
             <input
               className="search__input"
               type="text"
-              placeholder="Search User"
+              placeholder="Search Student"
               value={searchTerm}
               onChange={handleSearch}
             />
@@ -528,6 +540,7 @@ function AdminPortal({ loggedInUser }) {
             <h1 className="leaderboard__title">
               <span className="leaderboard__title--top students">Students</span>
               <span className="leaderboard__title--top certificates">Certificates Pending</span>
+              <span className="leaderboard__title--top certificates">Approved</span>
             </h1>
           </header>
           <main className="leaderboard__profiles">
@@ -536,6 +549,7 @@ function AdminPortal({ loggedInUser }) {
                 <article className="leaderboard__profile">
                   <span className="leaderboard__name">{user.username}</span>
                   <span className="leaderboard__value">{user.pendingImageCount}</span>
+                  <span className="leaderboard__value2">0</span>
                 </article>
               </Link>
             ))}
@@ -599,8 +613,7 @@ function UserPage({ navigate, loggedInUser }) {
   };
   return (
     <div className="ccontainer">
-      <button onClick={handleBack}>Back</button>
-      <h2 className="user_title">User : {username}</h2>
+      <h2 className="user_title">STUDENT: {username}</h2>
       
       {images.length ? (
         <ul className="responsive-table">
@@ -801,6 +814,40 @@ function UploadCertificate({ loggedInUser }) {
       return;
     }
 
+    function assignValueBasedOnDate(dateValue, rangesList) {
+      let resultValue = null;
+      for (const range of rangesList) {
+        const { start, end, value } = range;
+        if (dateValue >= start && dateValue <= end) {
+          resultValue = value;
+          break;
+        }
+      }
+    
+      return resultValue;
+    }
+
+    const dateToCheck = new Date(certificateData.issueDate);
+    const rangesList = [
+      { start: new Date('2020-11-26'), end: new Date('2021-04-20'), value: "s1" },
+      { start: new Date('2021-04-21'), end: new Date('2021-11-01'), value: "s2" },
+      { start: new Date('2021-11-02'), end: new Date('2022-04-13'), value: "s3" },
+      { start: new Date('2022-05-14'), end: new Date('2022-10-20'), value: "s4" },
+      { start: new Date('2022-10-21'), end: new Date('2023-04-20'), value: "s5" },
+      { start: new Date('2023-04-21'), end: new Date('2023-08-30'), value: "s6" },
+      { start: new Date('2023-09-01'), end: new Date('2024-01-15'), value: "s7" },
+      { start: new Date('2024-01-16'), end: new Date('2024-07-10'), value: "s8" },
+      
+      // Add more ranges and corresponding values as needed
+    ];
+    
+    const newsemester = assignValueBasedOnDate(dateToCheck, rangesList);
+    console.log(newsemester);
+dropdownValues.dropdown1=newsemester;
+console.log(dropdownValues.dropdown1);
+
+
+
     const formData = new FormData();
     formData.append("image", image);
     formData.append("username", loggedInUser.username);
@@ -962,6 +1009,7 @@ function ViewCertificate({ loggedInUser }) {
                     <p>Activity Points: {image.activityPoints}</p>
                   )}
                   <button type="View"  onClick={() => handleImageClick(image.imageName)} >View</button>
+                  <button className="delete">Delete</button>
                 </ul>
                 <div className="viewcertificatestatus">
                   <div className="vcbox">
