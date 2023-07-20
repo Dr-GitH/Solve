@@ -276,6 +276,86 @@ app.get('/api/users', async (req, res) => {
 });
 
 
+app.get('/api/users1', async (req, res) => {
+  try {
+    const dropdown1 = req.query.dropdown1; // Get the selected dropdown1 value from the query parameters
+    console.log("Received dropdown1 value:", dropdown1);
+    if (!dropdown1) {
+      // If no dropdown1 value is provided, fetch all users (without filtering)
+      const users = await User.find({ isAdmin: false }, 'username');
+
+      const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
+        const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
+        return { username: user.username, pendingImageCount };
+      }));
+
+      res.json({ users: usersWithPendingImageCount });
+    } else {
+      // If a dropdown1 value is provided, fetch all usernames with the specified dropdown1 value
+      const usersWithMatchingImage = await Image.find({ dropdown1 }).distinct('username');
+
+      console.log("Users with Matching Image: ", usersWithMatchingImage);
+
+
+      // Fetch users with the usernames from the previous query result
+      const users = await User.find({ isAdmin: false, username: { $in: usersWithMatchingImage } }, 'username');
+
+      const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
+        const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
+        return { username: user.username, pendingImageCount };
+      }));
+
+      res.json({ users: usersWithPendingImageCount });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
+app.get('/api/users2', async (req, res) => {
+  try {
+    const dropdown2 = req.query.dropdown1; // Get the selected dropdown1 value from the query parameters
+    console.log("Received dropdown2 value:", dropdown2);
+    if (!dropdown2) {
+      // If no dropdown1 value is provided, fetch all users (without filtering)
+      const users = await User.find({ isAdmin: false }, 'username');
+
+      const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
+        const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
+        return { username: user.username, pendingImageCount };
+      }));
+
+      res.json({ users: usersWithPendingImageCount });
+    } else {
+      // If a dropdown1 value is provided, fetch all usernames with the specified dropdown1 value
+      const usersWithMatchingImage = await Image.find({ dropdown2 }).distinct('username');
+
+      console.log("Users with Matching Image: ", usersWithMatchingImage);
+
+
+      // Fetch users with the usernames from the previous query result
+      const users = await User.find({ isAdmin: false, username: { $in: usersWithMatchingImage } }, 'username');
+
+      const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
+        const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
+        return { username: user.username, pendingImageCount };
+      }));
+
+      res.json({ users: usersWithPendingImageCount });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
 app.put('/api/user/:username/image/:imageName', async (req, res) => {
   const { username, imageName } = req.params;
   const { status } = req.body;
