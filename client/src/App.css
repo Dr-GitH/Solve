@@ -590,6 +590,10 @@ border-radius: 3px; */
   background: none;
 }
 
+.certviewcard .delete {
+  margin-left: 4%;
+}
+
 .certviewcard button:hover {
   background: rgb(0, 153, 170);
   color: #fff;
@@ -641,10 +645,16 @@ border-radius: 3px; */
 
 /*ADMIN PORTAL*/
 
+.adminportal  h2{
+  text-align: center;
+}
+
 .leaderboard {
-  max-width: 490px;
+  /* max-width: 490px; */
+  max-width: 70%;
   width: 100%;
   border-radius: 12px;
+  margin-top: 1%;
 }
 .leaderboard header {
   --start: 15%;
@@ -733,6 +743,13 @@ border-radius: 3px; */
 }
 
 .leaderboard__value {
+  color: #35d8ac;
+  font-weight: 700;
+  font-size: 34px;
+  text-align: center;
+}
+
+.leaderboard__value2 {
   color: #35d8ac;
   font-weight: 700;
   font-size: 34px;

@@ -296,7 +296,7 @@ function AdminPortal({ loggedInUser }) {
   };
 
   return (
-    <div>
+    <div className="adminportal">
       <h2>Welcome, {loggedInUser.username}</h2>
       <div className="users_body">
         <div className="searchBody">
@@ -304,7 +304,7 @@ function AdminPortal({ loggedInUser }) {
             <input
               className="search__input"
               type="text"
-              placeholder="Search User"
+              placeholder="Search Student"
               value={searchTerm}
               onChange={handleSearch}
             />
@@ -315,6 +315,7 @@ function AdminPortal({ loggedInUser }) {
             <h1 className="leaderboard__title">
               <span className="leaderboard__title--top students">Students</span>
               <span className="leaderboard__title--top certificates">Certificates Pending</span>
+              <span className="leaderboard__title--top certificates">Approved</span>
             </h1>
           </header>
           <main className="leaderboard__profiles">
@@ -323,6 +324,7 @@ function AdminPortal({ loggedInUser }) {
                 <article className="leaderboard__profile">
                   <span className="leaderboard__name">{user.username}</span>
                   <span className="leaderboard__value">{user.pendingImageCount}</span>
+                  <span className="leaderboard__value2">0</span>
                 </article>
               </Link>
             ))}
@@ -384,8 +386,7 @@ function UserPage({ navigate, loggedInUser }) {
   };
   return (
     <div className="ccontainer">
-      <button onClick={handleBack}>Back</button>
-      <h2 className="user_title">User: {username}</h2>
+      <h2 className="user_title">STUDENT: {username}</h2>
       
       {images.length ? (
         <ul className="responsive-table">
@@ -747,6 +748,7 @@ function ViewCertificate({ loggedInUser }) {
                     <p>Activity Points: {image.activityPoints}</p>
                   )}
                   <button type="View"  onClick={() => handleImageClick(image.imageName)} >View</button>
+                  <button className="delete">Delete</button>
                 </ul>
                 <div className="viewcertificatestatus">
                   <div className="vcbox">
