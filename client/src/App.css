@@ -652,6 +652,7 @@ border-radius: 3px; */
 .leaderboard {
   /* max-width: 490px; */
   max-width: 70%;
+  max-width: 600px;
   width: 100%;
   border-radius: 12px;
   margin-top: 1%;
@@ -898,9 +899,9 @@ border-radius: 3px; */
   .responsive-table .table-header {
     display: none;
   }
-  .responsive-table .table-row {
+   
     
-  }
+  .responsive-table .table-row
   .responsive-table li {
     display: block;
   }
