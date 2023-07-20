@@ -319,7 +319,7 @@ function AdminPortal({ loggedInUser }) {
           </header>
           <main className="leaderboard__profiles">
             {filteredUsers.map((user) => (
-              <Link to={`/admin/user/${user.username}`} key={user._id}>
+              <Link className="link-no-underline" to={`/admin/user/${user.username}`} key={user._id}>
                 <article className="leaderboard__profile">
                   <span className="leaderboard__name">{user.username}</span>
                   <span className="leaderboard__value">{user.pendingImageCount}</span>
@@ -385,7 +385,7 @@ function UserPage({ navigate, loggedInUser }) {
   return (
     <div className="ccontainer">
       <button onClick={handleBack}>Back</button>
-      <h2 className="user_title">User: {username}</h2>
+      <h2 className="user_title">User : {username}</h2>
       
       {images.length ? (
         <ul className="responsive-table">

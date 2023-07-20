@@ -494,7 +494,7 @@ border-radius: 3px; */
   display: block;
   margin-bottom: 10px;
   color: #333;
-  text-decoration: none;
+  
 }
 
 .certificate-list a:hover {
@@ -724,7 +724,7 @@ border-radius: 3px; */
 }
 
 .leaderboard__name {
-  color: #979cb0;
+  color: #696969;
   font-weight: 600;
   font-size: 20px;
   letter-spacing: 0.64px;
@@ -750,6 +750,14 @@ border-radius: 3px; */
 
 .leaderboard {
   box-shadow: 0 0 40px -10px rgba(0, 0, 0, 0.4);
+}
+.leaderboard__name,
+.leaderboard__value {
+  text-decoration: none;
+}
+
+.link-no-underline{
+  text-decoration:none;
 }
 
 /*Search*/
@@ -821,6 +829,8 @@ border-radius: 3px; */
   font-size: 26px;
   margin: 20px 0;
   text-align: center;
+  text-transform: capitalize;
+  
 }
 .responsive-table{
   padding-left: 0px;
