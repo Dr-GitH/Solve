@@ -382,36 +382,41 @@ function UserPage({ navigate, loggedInUser }) {
       });
     }
   };
-
   return (
-    <div>
-      <h2>User: {username}</h2>
+    <div className="ccontainer">
       <button onClick={handleBack}>Back</button>
+      <h2 className="user_title">User: {username}</h2>
+      
       {images.length ? (
-        <ul>
+        <ul className="responsive-table">
+          <li className="table-header">
+            <div className="col col-1">Img Name</div>
+            <div className="col col-2">Semester</div>
+            <div className="col col-3">Organisation</div>
+            <div className="col col-4">Name</div>
+            <div className="col col-5">Issue Date</div>
+            <div className="col col-6">Issuer</div>
+            <div className="col col-7">Activity Points</div>
+            <div className="col col-8">Status</div>
+          </li>
+
           {images.map((image, index) => (
-            <li key={index}>
-              <p>
-                Image Name:{" "}
-                <span
-                  className="image-link"
+             <li className="table-row" key={index}>
+              <div className="col col-1" data-label="Img Name"
                   onClick={() => handleImageClick(image.imageName)}
                 >
                   {image.imageName}
-                </span>
-              </p>
-              <p>Dropdown 1: {image.dropdown1}</p>
-              <p>Dropdown 2: {image.dropdown2}</p>
-              <p>Certificate Details:</p>
-              <p>Name: {image.certificateDetails.name}</p>
-              <p>Issue Date: {image.certificateDetails.issueDate}</p>
-              <p>Issuer: {image.certificateDetails.issuer}</p>
-              <p>Status: {image.status}</p>
-              <p>Activity Points: {image.activityPoints}</p>
+              </div>
+              <div className="col col-2" data-label="Semester">{image.dropdown1}</div>
+              <div className="col col-3" data-label="Organisation">{image.dropdown2}</div>
+              <div className="col col-4" data-label="Name">{image.certificateDetails.name}</div>
+              <div className="col col-5" data-label="Issue Date">{image.certificateDetails.issueDate}</div>
+              <div className="col col-6" data-label="Issuer">{image.certificateDetails.issuer}</div>
+              <div className="col col-7" data-label="Activity Points">{image.activityPoints}</div>
 
               {loggedInUser && loggedInUser.isAdmin && (
-                <div>
-                  <label htmlFor={`status-select-${index}`}>Status:</label>
+                <div className="col col-8" data-label="Status">
+                  <label htmlFor={`status-select-${index}`}></label>
                   <select
                     id={`status-select-${index}`}
                     value={image.status}
@@ -434,6 +439,7 @@ function UserPage({ navigate, loggedInUser }) {
     </div>
   );
 }
+
 
 function UserPortal({ loggedInUser }) {
   const navigate = useNavigate();
