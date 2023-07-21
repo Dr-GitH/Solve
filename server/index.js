@@ -268,7 +268,19 @@ app.get('/api/users', async (req, res) => {
       const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
       const acceptedImageCount = await Image.countDocuments({ username: user.username, status: 'accepted' });
       const rejectedImageCount = await Image.countDocuments({ username: user.username, status: 'rejected' });
-      return { username: user.username, pendingImageCount,acceptedImageCount,rejectedImageCount };
+      const semester1 = await Image.countDocuments({ username: user.username, dropdown1: 's1' });
+      const semester2 = await Image.countDocuments({ username: user.username, dropdown1: 's2' });
+      const semester3 = await Image.countDocuments({ username: user.username, dropdown1: 's3' });
+      const semester4 = await Image.countDocuments({ username: user.username, dropdown1: 's4' });
+      const semester5 = await Image.countDocuments({ username: user.username, dropdown1: 's5' });
+      const semester6 = await Image.countDocuments({ username: user.username, dropdown1: 's6' });
+      const semester7 = await Image.countDocuments({ username: user.username, dropdown1: 's7' });
+      const semester8 = await Image.countDocuments({ username: user.username, dropdown1: 's8' });
+      const sports = await Image.countDocuments({ username: user.username, dropdown2: 'SPORTS' });
+      const ncc = await Image.countDocuments({ username: user.username, dropdown2: 'NCC/NSS' });
+      const music = await Image.countDocuments({ username: user.username, dropdown2: 'MUSIC/PERFORMING ARTS' });
+    
+      return { username: user.username, pendingImageCount,acceptedImageCount,rejectedImageCount,semester1,semester2,semester3,semester4,semester5,semester6,semester7,semester8,sports,ncc,music };
     }));
     res.json({ users: usersWithPendingImageCount });
   } catch (error) {
