@@ -261,28 +261,12 @@ app.get('/api/users/pendingImageCount', async (req, res) => {
 });
 
 
-
-
 app.get('/api/users', async (req, res) => {
   try {
     const users = await User.find({ isAdmin: false }, 'username');
     const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
       const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
-      const acceptedImageCount = await Image.countDocuments({ username: user.username, status: 'accepted' });
-      const rejectedImageCount = await Image.countDocuments({ username: user.username, status: 'rejected' });
-      const semester1 = await Image.countDocuments({ username: user.username, dropdown1: 's1' });
-      const semester2 = await Image.countDocuments({ username: user.username, dropdown1: 's2' });
-      const semester3 = await Image.countDocuments({ username: user.username, dropdown1: 's3' });
-      const semester4 = await Image.countDocuments({ username: user.username, dropdown1: 's4' });
-      const semester5 = await Image.countDocuments({ username: user.username, dropdown1: 's5' });
-      const semester6 = await Image.countDocuments({ username: user.username, dropdown1: 's6' });
-      const semester7 = await Image.countDocuments({ username: user.username, dropdown1: 's7' });
-      const semester8 = await Image.countDocuments({ username: user.username, dropdown1: 's8' });
-      const sports = await Image.countDocuments({ username: user.username, dropdown2: 'SPORTS' });
-      const ncc = await Image.countDocuments({ username: user.username, dropdown2: 'NCC/NSS' });
-      const music = await Image.countDocuments({ username: user.username, dropdown2: 'MUSIC/PERFORMING ARTS' });
-      
-      return { username: user.username, pendingImageCount,acceptedImageCount,rejectedImageCount,semester1,semester2,semester3,semester4,semester5,semester6,semester7,semester8,sports,ncc,music };
+      return { username: user.username, pendingImageCount };
     }));
     res.json({ users: usersWithPendingImageCount });
   } catch (error) {
@@ -290,7 +274,6 @@ app.get('/api/users', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
 
 
 app.get('/api/users1', async (req, res) => {
