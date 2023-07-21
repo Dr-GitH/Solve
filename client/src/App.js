@@ -632,6 +632,29 @@ function UserPage({ navigate, loggedInUser }) {
       });
     }
   };
+
+  const handlePointChange = async (imageName, activityPoints) => {
+    try {
+      await axios.put(
+        `http://localhost:3080/api/user/${username}/image/${imageName}`,
+        { activityPoints }
+      );
+      fetchImages(); // Fetch the updated images after point change
+    } catch (error) {
+      console.error(error);
+      toast.error("Error updating status", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  };
+
   return (
     <div className="ccontainer">
       <h2 className="user_title">STUDENT: {username}</h2>
@@ -649,6 +672,7 @@ function UserPage({ navigate, loggedInUser }) {
             <div className="col col-6">Issuer</div>
             <div className="col col-7">Activity Points</div>
             <div className="col col-8">Status</div>
+            <div className="col col-9">Update Point</div>
           </li>
 
           {images.map((image, index) => (
@@ -671,20 +695,28 @@ function UserPage({ navigate, loggedInUser }) {
 
 
 
-                <div className="col col-8" data-label="Status">
+                <><div className="col col-8" data-label="Status">
                   <label htmlFor={`status-select-${index}`}></label>
                   <select
                     id={`status-select-${index}`}
                     value={image.status}
-                    onChange={(e) =>
-                      handleStatusChange(image.imageName, e.target.value)
-                    }
+                    onChange={(e) => handleStatusChange(image.imageName, e.target.value)}
                   >
                     <option value="pending">Pending</option>
                     <option value="accepted">Accepted</option>
                     <option value="rejected">Rejected</option>
                   </select>
-                </div>
+                </div><div className="col col-9" data-label="Point">
+                    <label htmlFor={`point-select-${index}`}></label>
+                    <input
+                      type="number"
+                      id={`point-select-${index}`}
+                      value={image.activityPoints}
+                      onChange={(e) => handlePointChange(image.imageName, e.target.value)}
+                      min="0"
+                      max="100"
+                      step="1" />
+                  </div></>
               )}
             </li>
           ))}

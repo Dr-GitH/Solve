@@ -646,7 +646,7 @@ input:focus {
 
 .searchfilters button{
   width: 100px;
-  height: 30px;
+  height: 35px;
   border: 1px solid rgb(0, 153, 170);
   border-radius: 15px;
   transition: all 0.3s ease-in-out;
@@ -816,8 +816,11 @@ input:focus {
 }
 
 .search_bar select{
-  width:40vh;
-  height:20vh
+  margin-left: 70px;
+  width:30vh;
+  height:5vh;
+  border-radius: 40px;
+
 }
 
 /*Search*/
