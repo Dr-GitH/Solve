@@ -277,11 +277,6 @@ function NewPage1({ loggedInUser }) {
     fetchUsers();
   }, [loggedInUser, navigate]);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    filterUsersBySearchTerm(event.target.value, selectedDropdown1); // Pass searchTerm and selected dropdown1 value to filter
-  };
-
   const handleDropdownChange = (event) => {
     setSelectedDropdown1(event.target.value);
     filterUsersBySearchTerm(searchTerm, event.target.value); // Pass searchTerm and selected dropdown1 value to filter
@@ -295,6 +290,16 @@ function NewPage1({ loggedInUser }) {
       return usernameMatch && dropdown1Match;
     });
     setFilteredUsers(filtered);
+  };
+
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    const filteredUsers = users.filter((user) =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filteredUsers);
   };
 
   useEffect(() => {
@@ -316,17 +321,20 @@ function NewPage1({ loggedInUser }) {
 
 
   return (
-    <div>
+    <div className="adminportal">
       <h2>Welcome, {loggedInUser.username}</h2>
-      <div className="search_bar">
-        <input
+      <div className="searchBody2">
+      <div className="search__container">
+        <input className="search__input"
           type="text"
-          placeholder="Search username..."
+          placeholder="Search username"
           value={searchTerm}
           onChange={handleSearch}
-        />
+        /></div>
+      </div>
+        <div className="search_bar">
         <select value={selectedDropdown1} onChange={handleDropdownChange}>
-          <option value="">All</option>
+          <option value="">SEMESTER</option>
           <option value="s1">s1</option>
           <option value="s2">s2</option>
           <option value="s3">s3</option>
@@ -380,10 +388,16 @@ function NewPage2({ loggedInUser }) {
     fetchUsers();
   }, [loggedInUser, navigate]);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    filterUsersBySearchTerm(event.target.value, selectedDropdown1); // Pass searchTerm and selected dropdown1 value to filter
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    const filteredUsers = users.filter((user) =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filteredUsers);
   };
+
 
   const handleDropdownChange = (event) => {
     setSelectedDropdown1(event.target.value);
@@ -418,23 +432,27 @@ function NewPage2({ loggedInUser }) {
   };
 
   return (
-    <div>
+    <div className="adminportal">
       <h2>Welcome, {loggedInUser.username}</h2>
-      <div className="search_bar">
-        <input
+      <div className="searchBody3">
+      <div className="search__container">
+      
+        <input className="search__input"
           type="text"
-          placeholder="Search username..."
+          placeholder="Search username"
           value={searchTerm}
           onChange={handleSearch}
         />
+      </div></div>
+      <div className="search_bar">
         <select value={selectedDropdown1} onChange={handleDropdownChange}>
-          <option value="">All</option>
+          <option value="">TYPE</option>
           <option value="SPORTS">SPORTS</option>
           <option value="NCC\NSS">NCC/NSS</option>
-          <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option>
-          
+          <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option> 
         </select>
       </div>
+      
       <div className="users_body">
         <article className="leaderboard">
           <header>
@@ -519,10 +537,6 @@ function AdminPortal({ loggedInUser }) {
   return (
     <div className="adminportal">
       <h2>Welcome, {loggedInUser.username}</h2>
-      <div>
-        <button onClick={() => navigate("/admin/newPage1")}>Search by Semester</button>
-        <button onClick={() => navigate("/admin/newPage2")}>Search by Category</button>
-      </div>
       <div className="users_body">
         <div className="searchBody">
           <div className="search__container">
@@ -535,6 +549,11 @@ function AdminPortal({ loggedInUser }) {
             />
           </div>
         </div>
+        
+        <div className="searchfilters">
+        <button onClick={() => navigate("/admin/newPage1")}>Search by Semester</button>
+        <button onClick={() => navigate("/admin/newPage2")}>Search by Category</button>
+      </div>
         <article className="leaderboard">
           <header>
             <h1 className="leaderboard__title">
@@ -951,7 +970,6 @@ console.log(dropdownValues.dropdown1);
               required
             />
           </div>
-          <br />
           <input type="file" accept="image/jpeg" onChange={handleImageUpload} />
           <br />
           <button type="submit">Upload</button>
