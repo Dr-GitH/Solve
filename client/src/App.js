@@ -600,13 +600,12 @@ function AdminPortal({ loggedInUser }) {
     try {
       const response = await axios.get("http://localhost:3080/api/users/pendingImageCount");
       setUsersWithPendingImageCount(response.data.users);
+
     } catch (error) {
       console.error('Error fetching users with pending image count:', error);
     }
   };
-
-
-
+  
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
     setSearchTerm(searchTerm);
