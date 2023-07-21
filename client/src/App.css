@@ -808,9 +808,9 @@ input:focus {
 }
 
 .search_bar select{
-  margin-left: 70px;
+  margin-left: 3.5%;
   width:30vh;
-  height:5vh;
+  height:3vh;
   border-radius: 40px;
 
 }
