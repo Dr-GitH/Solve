@@ -277,11 +277,6 @@ function NewPage1({ loggedInUser }) {
     fetchUsers();
   }, [loggedInUser, navigate]);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    filterUsersBySearchTerm(event.target.value, selectedDropdown1); // Pass searchTerm and selected dropdown1 value to filter
-  };
-
   const handleDropdownChange = (event) => {
     setSelectedDropdown1(event.target.value);
     filterUsersBySearchTerm(searchTerm, event.target.value); // Pass searchTerm and selected dropdown1 value to filter
@@ -295,6 +290,16 @@ function NewPage1({ loggedInUser }) {
       return usernameMatch && dropdown1Match;
     });
     setFilteredUsers(filtered);
+  };
+
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    const filteredUsers = users.filter((user) =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filteredUsers);
   };
 
   useEffect(() => {
@@ -383,10 +388,16 @@ function NewPage2({ loggedInUser }) {
     fetchUsers();
   }, [loggedInUser, navigate]);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    filterUsersBySearchTerm(event.target.value, selectedDropdown1); // Pass searchTerm and selected dropdown1 value to filter
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    const filteredUsers = users.filter((user) =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filteredUsers);
   };
+
 
   const handleDropdownChange = (event) => {
     setSelectedDropdown1(event.target.value);
@@ -441,6 +452,7 @@ function NewPage2({ loggedInUser }) {
           <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option> 
         </select>
       </div>
+      
       <div className="users_body">
         <article className="leaderboard">
           <header>
@@ -537,6 +549,7 @@ function AdminPortal({ loggedInUser }) {
             />
           </div>
         </div>
+        
         <div className="searchfilters">
         <button onClick={() => navigate("/admin/newPage1")}>Search by Semester</button>
         <button onClick={() => navigate("/admin/newPage2")}>Search by Category</button>
