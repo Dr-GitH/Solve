@@ -160,7 +160,7 @@ function App() {
                         Admin Portal
                       </Link>
                       <Link
-                        to="/admin"
+                        to="/admin/report"
                         className="menu__link r-link text-underlined"
                       >
                         Report Generation
@@ -231,6 +231,8 @@ function App() {
         <Route path="/admin/newPage1" element={<NewPage1 loggedInUser={loggedInUser} />} />
 
         <Route path="/admin/newPage2" element={<NewPage2 loggedInUser={loggedInUser} />} />
+
+        <Route path="/admin/report" element={<Report loggedInUser={loggedInUser} />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -261,6 +263,88 @@ function Home() {
   );
 }
 
+
+
+function Report({loggedInUser}) {
+
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loggedInUser || !loggedInUser.isAdmin) {
+      navigate("/");
+    }
+    fetchUsers();
+  }, [loggedInUser, navigate]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3080/api/users");
+      const filteredUsers = response.data.users.filter((user) => !user.isAdmin);
+      setUsers(filteredUsers);
+      setFilteredUsers(filteredUsers);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return(
+
+    <article className="leaderboar">
+    <header>
+      <h1 className="leaderboard__title">
+        <span className="leaderboard__title--top students">Students</span>
+        <span className="leaderboard__title--top certificates">Certificates Pending</span>
+        <span className="leaderboard__title--top certificates">Approved</span>
+        <span className="leaderboard__title--top certificates">Rejected</span>
+        <span className="leaderboard__title--top certificates">Semester 1</span>
+        <span className="leaderboard__title--top certificates">Semester 2</span>
+        <span className="leaderboard__title--top certificates">Semester 3</span>
+        <span className="leaderboard__title--top certificates">Semester 4</span>
+        <span className="leaderboard__title--top certificates">Semester 5</span>
+        <span className="leaderboard__title--top certificates">Semester 6</span>
+        <span className="leaderboard__title--top certificates">Semester 7</span>
+        <span className="leaderboard__title--top certificates">Semester 8</span>
+        <span className="leaderboard__title--top certificates">Sports</span>
+        <span className="leaderboard__title--top certificates">NCC/NSS</span>
+        <span className="leaderboard__title--top certificates">Music/Performing Arts</span>
+
+      </h1>
+    </header>
+    <main className="leaderboard__profiles">
+      {filteredUsers.map((user) => (
+        <Link to={`/admin/user/${user.username}`} key={user._id}>
+          <article className="leaderboard__profil">
+            <span className="leaderboard__name">{user.username}</span>
+            <span className="leaderboard__value">{user.pendingImageCount}</span>
+            <span className="leaderboard__value2">{user.acceptedImageCount}</span>
+            <span className="leaderboard__value2">{user.rejectedImageCount}</span>
+            <span className="leaderboard__value2">{user.semester1}</span>
+            <span className="leaderboard__value2">{user.semester2}</span>
+            <span className="leaderboard__value2">{user.semester3}</span>
+            <span className="leaderboard__value2">{user.semester4}</span>
+            <span className="leaderboard__value2">{user.semester5}</span>
+            <span className="leaderboard__value2">{user.semester6}</span>
+            <span className="leaderboard__value2">{user.semester7}</span>
+            <span className="leaderboard__value2">{user.semester8}</span>
+            <span className="leaderboard__value2">{user.sports}</span>
+            <span className="leaderboard__value2">{user.ncc}</span>
+            <span className="leaderboard__value2">{user.music}</span>
+          </article>
+        </Link>
+      ))}
+    </main>
+  </article>
+    
+  );
+
+}
+
+
+
+
 function NewPage1({ loggedInUser }) {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -277,11 +361,6 @@ function NewPage1({ loggedInUser }) {
     fetchUsers();
   }, [loggedInUser, navigate]);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    filterUsersBySearchTerm(event.target.value, selectedDropdown1); // Pass searchTerm and selected dropdown1 value to filter
-  };
-
   const handleDropdownChange = (event) => {
     setSelectedDropdown1(event.target.value);
     filterUsersBySearchTerm(searchTerm, event.target.value); // Pass searchTerm and selected dropdown1 value to filter
@@ -295,6 +374,16 @@ function NewPage1({ loggedInUser }) {
       return usernameMatch && dropdown1Match;
     });
     setFilteredUsers(filtered);
+  };
+
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    const filteredUsers = users.filter((user) =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filteredUsers);
   };
 
   useEffect(() => {
@@ -383,10 +472,16 @@ function NewPage2({ loggedInUser }) {
     fetchUsers();
   }, [loggedInUser, navigate]);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    filterUsersBySearchTerm(event.target.value, selectedDropdown1); // Pass searchTerm and selected dropdown1 value to filter
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    const filteredUsers = users.filter((user) =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filteredUsers);
   };
+
 
   const handleDropdownChange = (event) => {
     setSelectedDropdown1(event.target.value);
@@ -441,6 +536,7 @@ function NewPage2({ loggedInUser }) {
           <option value="MUSIC/PERFORMING ARTS">MUSIC/PERFORMING ARTS</option> 
         </select>
       </div>
+      
       <div className="users_body">
         <article className="leaderboard">
           <header>
@@ -476,6 +572,7 @@ function AdminPortal({ loggedInUser }) {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [usersWithPendingImageCount, setUsersWithPendingImageCount] = useState([]);
+  const [usersWithAcceptedImageCount, setUsersWithAcceptedImageCount] = useState([]);
 
   const navigate = useNavigate();
 
@@ -511,6 +608,7 @@ function AdminPortal({ loggedInUser }) {
   };
 
 
+
   const handleSearch = (e) => {
     const searchTerm = e.target.value;
     setSearchTerm(searchTerm);
@@ -537,6 +635,11 @@ function AdminPortal({ loggedInUser }) {
             />
           </div>
         </div>
+
+        <div className="report">
+        
+      </div>
+        
         <div className="searchfilters">
         <button onClick={() => navigate("/admin/newPage1")}>Search by Semester</button>
         <button onClick={() => navigate("/admin/newPage2")}>Search by Category</button>
@@ -555,7 +658,7 @@ function AdminPortal({ loggedInUser }) {
                 <article className="leaderboard__profile">
                   <span className="leaderboard__name">{user.username}</span>
                   <span className="leaderboard__value">{user.pendingImageCount}</span>
-                  <span className="leaderboard__value2">0</span>
+                  <span className="leaderboard__value2">{user.acceptedImageCount}</span>
                 </article>
               </Link>
             ))}
@@ -617,9 +720,12 @@ function UserPage({ navigate, loggedInUser }) {
       });
     }
   };
+
   return (
     <div className="ccontainer">
       <h2 className="user_title">STUDENT: {username}</h2>
+
+
       
       {images.length ? (
         <ul className="responsive-table">
@@ -632,6 +738,7 @@ function UserPage({ navigate, loggedInUser }) {
             <div className="col col-6">Issuer</div>
             <div className="col col-7">Activity Points</div>
             <div className="col col-8">Status</div>
+            
           </li>
 
           {images.map((image, index) => (
@@ -649,20 +756,23 @@ function UserPage({ navigate, loggedInUser }) {
               <div className="col col-7" data-label="Activity Points">{image.activityPoints}</div>
 
               {loggedInUser && loggedInUser.isAdmin && (
-                <div className="col col-8" data-label="Status">
+
+                
+
+
+
+                <><div className="col col-8" data-label="Status">
                   <label htmlFor={`status-select-${index}`}></label>
                   <select
                     id={`status-select-${index}`}
                     value={image.status}
-                    onChange={(e) =>
-                      handleStatusChange(image.imageName, e.target.value)
-                    }
+                    onChange={(e) => handleStatusChange(image.imageName, e.target.value)}
                   >
                     <option value="pending">Pending</option>
                     <option value="accepted">Accepted</option>
                     <option value="rejected">Rejected</option>
                   </select>
-                </div>
+                </div></>
               )}
             </li>
           ))}
