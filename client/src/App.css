@@ -585,9 +585,9 @@ input:focus {
   background: none;
 }
 
-.certviewcard .delete {
+/* .certviewcard .delete {
   margin-left: 4%;
-}
+} */
 
 .certviewcard button:hover {
   background: rgb(0, 153, 170);

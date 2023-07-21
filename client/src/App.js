@@ -1121,7 +1121,7 @@ function ViewCertificate({ loggedInUser }) {
                     <p>Activity Points: {image.activityPoints}</p>
                   )}
                   <button type="View"  onClick={() => handleImageClick(image.imageName)} >View</button>
-                  <button className="delete">Delete</button>
+                  {/* <button className="delete">Delete</button> */}
                 </ul>
                 <div className="viewcertificatestatus">
                   <div className="vcbox">
