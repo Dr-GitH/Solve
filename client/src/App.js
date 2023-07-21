@@ -289,58 +289,56 @@ function Report({loggedInUser}) {
       console.error(error);
     }
   };
-
   return(
 
-    <article className="leaderboar">
-    <header>
-      <h1 className="leaderboard__title">
-        <span className="leaderboard__title--top students">Students</span>
-        <span className="leaderboard__title--top certificates">Certificates Pending</span>
-        <span className="leaderboard__title--top certificates">Approved</span>
-        <span className="leaderboard__title--top certificates">Rejected</span>
-        <span className="leaderboard__title--top certificates">Semester 1</span>
-        <span className="leaderboard__title--top certificates">Semester 2</span>
-        <span className="leaderboard__title--top certificates">Semester 3</span>
-        <span className="leaderboard__title--top certificates">Semester 4</span>
-        <span className="leaderboard__title--top certificates">Semester 5</span>
-        <span className="leaderboard__title--top certificates">Semester 6</span>
-        <span className="leaderboard__title--top certificates">Semester 7</span>
-        <span className="leaderboard__title--top certificates">Semester 8</span>
-        <span className="leaderboard__title--top certificates">Sports</span>
-        <span className="leaderboard__title--top certificates">NCC/NSS</span>
-        <span className="leaderboard__title--top certificates">Music/Performing Arts</span>
-
-      </h1>
-    </header>
-    <main className="leaderboard__profiles">
-      {filteredUsers.map((user) => (
-        <Link to={`/admin/user/${user.username}`} key={user._id}>
-          <article className="leaderboard__profil">
-            <span className="leaderboard__name">{user.username}</span>
-            <span className="leaderboard__value">{user.pendingImageCount}</span>
-            <span className="leaderboard__value2">{user.acceptedImageCount}</span>
-            <span className="leaderboard__value2">{user.rejectedImageCount}</span>
-            <span className="leaderboard__value2">{user.semester1}</span>
-            <span className="leaderboard__value2">{user.semester2}</span>
-            <span className="leaderboard__value2">{user.semester3}</span>
-            <span className="leaderboard__value2">{user.semester4}</span>
-            <span className="leaderboard__value2">{user.semester5}</span>
-            <span className="leaderboard__value2">{user.semester6}</span>
-            <span className="leaderboard__value2">{user.semester7}</span>
-            <span className="leaderboard__value2">{user.semester8}</span>
-            <span className="leaderboard__value2">{user.sports}</span>
-            <span className="leaderboard__value2">{user.ncc}</span>
-            <span className="leaderboard__value2">{user.music}</span>
-          </article>
-        </Link>
+      <div className="ccontainer">
+      <ul className="responsive-table">
+          <li className="table-header">
+          
+            <div className="col col-1">Students</div>
+            <div className="col col-2">Certificates Pending</div>
+            <div className="col col-2">Approved</div>
+            <div className="col col-2">Rejected</div>
+            <div className="col col-2">Semester 1</div>
+            <div className="col col-2">Semester 2</div>
+            <div className="col col-2">Semester 3</div>
+            <div className="col col-2">Semester 4</div>
+            <div className="col col-2">Semester 5</div>
+            <div className="col col-2">Semester 6</div>
+            <div className="col col-2">Semester 7</div>
+            <div className="col col-2">Semester 8</div>
+            <div className="col col-2">Sports</div>
+            <div className="col col-2">NCC/NSS</div>
+            <div className="col col-2">Music/Performing Arts</div>
+          </li>
+      
+          {filteredUsers.map((user) => (
+        <li className="table-row" key={user._id}>  
+            <div className="col col-1">{user.username}</div>
+            <div className="col col-2">{user.pendingImageCount}</div>
+            <div className="col col-2">{user.acceptedImageCount}</div>
+            <div className="col col-2">{user.rejectedImageCount}</div>
+            <div className="col col-2">{user.semester1}</div>
+            <div className="col col-2">{user.semester2}</div>
+            <div className="col col-2">{user.semester3}</div>
+            <div className="col col-2">{user.semester4}</div>
+            <div className="col col-2">{user.semester5}</div>
+            <div className="col col-2">{user.semester6}</div>
+            <div className="col col-2">{user.semester7}</div>
+            <div className="col col-2">{user.semester8}</div>
+            <div className="col col-2">{user.sports}</div>
+            <div className="col col-2">{user.ncc}</div>
+            <div className="col col-2">{user.music}</div>
+            </li>
       ))}
-    </main>
-  </article>
+     
+    </ul>
+  </div>
     
   );
 
 }
+
 
 
 
