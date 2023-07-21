@@ -160,7 +160,7 @@ function App() {
                         Admin Portal
                       </Link>
                       <Link
-                        to="/admin"
+                        to="/admin/report"
                         className="menu__link r-link text-underlined"
                       >
                         Report Generation
@@ -637,7 +637,7 @@ function AdminPortal({ loggedInUser }) {
         </div>
 
         <div className="report">
-        <button onClick={() => navigate("/admin/report")}>Report</button>
+        
       </div>
         
         <div className="searchfilters">
