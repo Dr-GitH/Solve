@@ -293,42 +293,42 @@ function Report({loggedInUser}) {
 
       <div className="ccontainer">
       <ul className="responsive-table">
-          <li className="table-header">
+          <li className="table-header1">
           
-            <div className="col col-1">Students</div>
-            <div className="col col-2">Certificates Pending</div>
-            <div className="col col-2">Approved</div>
-            <div className="col col-2">Rejected</div>
-            <div className="col col-2">Semester 1</div>
-            <div className="col col-2">Semester 2</div>
-            <div className="col col-2">Semester 3</div>
-            <div className="col col-2">Semester 4</div>
-            <div className="col col-2">Semester 5</div>
-            <div className="col col-2">Semester 6</div>
-            <div className="col col-2">Semester 7</div>
-            <div className="col col-2">Semester 8</div>
-            <div className="col col-2">Sports</div>
-            <div className="col col-2">NCC/NSS</div>
-            <div className="col col-2">Music/Performing Arts</div>
+            <div className="col col-11">Students</div>
+            <div className="col col-12">Certificates Pending</div>
+            <div className="col col-12">Approved</div>
+            <div className="col col-12">Rejected</div>
+            <div className="col col-12">Semester 1</div>
+            <div className="col col-12">Semester 2</div>
+            <div className="col col-12">Semester 3</div>
+            <div className="col col-12">Semester 4</div>
+            <div className="col col-12">Semester 5</div>
+            <div className="col col-12">Semester 6</div>
+            <div className="col col-12">Semester 7</div>
+            <div className="col col-12">Semester 8</div>
+            <div className="col col-12">Sports</div>
+            <div className="col col-12">NCC/NSS</div>
+            <div className="col col-12">Music/Performing Arts</div>
           </li>
       
           {filteredUsers.map((user) => (
-        <li className="table-row" key={user._id}>  
-            <div className="col col-1">{user.username}</div>
-            <div className="col col-2">{user.pendingImageCount}</div>
-            <div className="col col-2">{user.acceptedImageCount}</div>
-            <div className="col col-2">{user.rejectedImageCount}</div>
-            <div className="col col-2">{user.semester1}</div>
-            <div className="col col-2">{user.semester2}</div>
-            <div className="col col-2">{user.semester3}</div>
-            <div className="col col-2">{user.semester4}</div>
-            <div className="col col-2">{user.semester5}</div>
-            <div className="col col-2">{user.semester6}</div>
-            <div className="col col-2">{user.semester7}</div>
-            <div className="col col-2">{user.semester8}</div>
-            <div className="col col-2">{user.sports}</div>
-            <div className="col col-2">{user.ncc}</div>
-            <div className="col col-2">{user.music}</div>
+        <li className="table-row1" key={user._id}>  
+            <div className="col col-11">{user.username}</div>
+            <div className="col col-12">{user.pendingImageCount}</div>
+            <div className="col col-12">{user.acceptedImageCount}</div>
+            <div className="col col-12">{user.rejectedImageCount}</div>
+            <div className="col col-12">{user.semester1}</div>
+            <div className="col col-12">{user.semester2}</div>
+            <div className="col col-12">{user.semester3}</div>
+            <div className="col col-12">{user.semester4}</div>
+            <div className="col col-12">{user.semester5}</div>
+            <div className="col col-12">{user.semester6}</div>
+            <div className="col col-12">{user.semester7}</div>
+            <div className="col col-12">{user.semester8}</div>
+            <div className="col col-12">{user.sports}</div>
+            <div className="col col-12">{user.ncc}</div>
+            <div className="col col-12">{user.music}</div>
             </li>
       ))}
      
