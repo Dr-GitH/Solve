@@ -231,6 +231,8 @@ function App() {
         <Route path="/admin/newPage1" element={<NewPage1 loggedInUser={loggedInUser} />} />
 
         <Route path="/admin/newPage2" element={<NewPage2 loggedInUser={loggedInUser} />} />
+
+        <Route path="/admin/report" element={<Report loggedInUser={loggedInUser} />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -260,6 +262,88 @@ function Home() {
     </div>
   );
 }
+
+
+
+function Report({loggedInUser}) {
+
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loggedInUser || !loggedInUser.isAdmin) {
+      navigate("/");
+    }
+    fetchUsers();
+  }, [loggedInUser, navigate]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3080/api/users");
+      const filteredUsers = response.data.users.filter((user) => !user.isAdmin);
+      setUsers(filteredUsers);
+      setFilteredUsers(filteredUsers);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return(
+
+    <article className="leaderboar">
+    <header>
+      <h1 className="leaderboard__title">
+        <span className="leaderboard__title--top students">Students</span>
+        <span className="leaderboard__title--top certificates">Certificates Pending</span>
+        <span className="leaderboard__title--top certificates">Approved</span>
+        <span className="leaderboard__title--top certificates">Rejected</span>
+        <span className="leaderboard__title--top certificates">Semester 1</span>
+        <span className="leaderboard__title--top certificates">Semester 2</span>
+        <span className="leaderboard__title--top certificates">Semester 3</span>
+        <span className="leaderboard__title--top certificates">Semester 4</span>
+        <span className="leaderboard__title--top certificates">Semester 5</span>
+        <span className="leaderboard__title--top certificates">Semester 6</span>
+        <span className="leaderboard__title--top certificates">Semester 7</span>
+        <span className="leaderboard__title--top certificates">Semester 8</span>
+        <span className="leaderboard__title--top certificates">Sports</span>
+        <span className="leaderboard__title--top certificates">NCC/NSS</span>
+        <span className="leaderboard__title--top certificates">Music/Performing Arts</span>
+
+      </h1>
+    </header>
+    <main className="leaderboard__profiles">
+      {filteredUsers.map((user) => (
+        <Link to={`/admin/user/${user.username}`} key={user._id}>
+          <article className="leaderboard__profil">
+            <span className="leaderboard__name">{user.username}</span>
+            <span className="leaderboard__value">{user.pendingImageCount}</span>
+            <span className="leaderboard__value2">{user.acceptedImageCount}</span>
+            <span className="leaderboard__value2">{user.rejectedImageCount}</span>
+            <span className="leaderboard__value2">{user.semester1}</span>
+            <span className="leaderboard__value2">{user.semester2}</span>
+            <span className="leaderboard__value2">{user.semester3}</span>
+            <span className="leaderboard__value2">{user.semester4}</span>
+            <span className="leaderboard__value2">{user.semester5}</span>
+            <span className="leaderboard__value2">{user.semester6}</span>
+            <span className="leaderboard__value2">{user.semester7}</span>
+            <span className="leaderboard__value2">{user.semester8}</span>
+            <span className="leaderboard__value2">{user.sports}</span>
+            <span className="leaderboard__value2">{user.ncc}</span>
+            <span className="leaderboard__value2">{user.music}</span>
+          </article>
+        </Link>
+      ))}
+    </main>
+  </article>
+    
+  );
+
+}
+
+
+
 
 function NewPage1({ loggedInUser }) {
   const [users, setUsers] = useState([]);
@@ -551,6 +635,10 @@ function AdminPortal({ loggedInUser }) {
             />
           </div>
         </div>
+
+        <div className="report">
+        <button onClick={() => navigate("/admin/report")}>Report</button>
+      </div>
         
         <div className="searchfilters">
         <button onClick={() => navigate("/admin/newPage1")}>Search by Semester</button>
