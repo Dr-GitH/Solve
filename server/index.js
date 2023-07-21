@@ -261,12 +261,15 @@ app.get('/api/users/pendingImageCount', async (req, res) => {
 });
 
 
+
+
 app.get('/api/users', async (req, res) => {
   try {
     const users = await User.find({ isAdmin: false }, 'username');
     const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
       const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
-      return { username: user.username, pendingImageCount };
+      const acceptedImageCount = await Image.countDocuments({ username: user.username, status: 'accepted' });
+      return { username: user.username, pendingImageCount,acceptedImageCount };
     }));
     res.json({ users: usersWithPendingImageCount });
   } catch (error) {

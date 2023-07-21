@@ -488,6 +488,7 @@ function AdminPortal({ loggedInUser }) {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [usersWithPendingImageCount, setUsersWithPendingImageCount] = useState([]);
+  const [usersWithAcceptedImageCount, setUsersWithAcceptedImageCount] = useState([]);
 
   const navigate = useNavigate();
 
@@ -521,6 +522,7 @@ function AdminPortal({ loggedInUser }) {
       console.error('Error fetching users with pending image count:', error);
     }
   };
+
 
 
   const handleSearch = (e) => {
@@ -568,7 +570,7 @@ function AdminPortal({ loggedInUser }) {
                 <article className="leaderboard__profile">
                   <span className="leaderboard__name">{user.username}</span>
                   <span className="leaderboard__value">{user.pendingImageCount}</span>
-                  <span className="leaderboard__value2">0</span>
+                  <span className="leaderboard__value2">{user.acceptedImageCount}</span>
                 </article>
               </Link>
             ))}
@@ -633,6 +635,8 @@ function UserPage({ navigate, loggedInUser }) {
   return (
     <div className="ccontainer">
       <h2 className="user_title">STUDENT: {username}</h2>
+
+
       
       {images.length ? (
         <ul className="responsive-table">
@@ -662,6 +666,11 @@ function UserPage({ navigate, loggedInUser }) {
               <div className="col col-7" data-label="Activity Points">{image.activityPoints}</div>
 
               {loggedInUser && loggedInUser.isAdmin && (
+
+                
+
+
+
                 <div className="col col-8" data-label="Status">
                   <label htmlFor={`status-select-${index}`}></label>
                   <select
