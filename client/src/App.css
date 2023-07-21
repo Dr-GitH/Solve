@@ -548,6 +548,7 @@ input:focus {
   right: 5%;
   max-width: 100%;
   max-height: 100%;
+  height: 80vh;
 }
 
 /*VIEW CERTIFICATE*/
@@ -584,9 +585,9 @@ input:focus {
   background: none;
 }
 
-.certviewcard .delete {
+/* .certviewcard .delete {
   margin-left: 4%;
-}
+} */
 
 .certviewcard button:hover {
   background: rgb(0, 153, 170);
@@ -816,9 +817,9 @@ input:focus {
 }
 
 .search_bar select{
-  margin-left: 70px;
+  margin-left: 3.5%;
   width:30vh;
-  height:5vh;
+  height:3vh;
   border-radius: 40px;
 
 }
