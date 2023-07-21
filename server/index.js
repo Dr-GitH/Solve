@@ -300,7 +300,8 @@ app.get('/api/users1', async (req, res) => {
 
       const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
         const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
-        return { username: user.username, pendingImageCount };
+        const acceptedImageCount = await Image.countDocuments({ username: user.username, status: 'accepted' });
+        return { username: user.username, pendingImageCount,acceptedImageCount };
       }));
 
       res.json({ users: usersWithPendingImageCount });
@@ -340,7 +341,8 @@ app.get('/api/users2', async (req, res) => {
 
       const usersWithPendingImageCount = await Promise.all(users.map(async (user) => {
         const pendingImageCount = await Image.countDocuments({ username: user.username, status: 'pending' });
-        return { username: user.username, pendingImageCount };
+        const acceptedImageCount = await Image.countDocuments({ username: user.username, status: 'accepted' });
+        return { username: user.username, pendingImageCount,acceptedImageCount };
       }));
 
       res.json({ users: usersWithPendingImageCount });

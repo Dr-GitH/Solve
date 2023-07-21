@@ -541,6 +541,7 @@ function NewPage2({ loggedInUser }) {
             <h1 className="leaderboard__title">
               <span className="leaderboard__title--top students">Students</span>
               <span className="leaderboard__title--top certificates">Certificates Pending</span>
+              <span className="leaderboard__title--top certificates">Approved</span>
             </h1>
           </header>
           <main className="leaderboard__profiles">
@@ -549,6 +550,7 @@ function NewPage2({ loggedInUser }) {
                 <article className="leaderboard__profile">
                   <span className="leaderboard__name">{user.username}</span>
                   <span className="leaderboard__value">{user.pendingImageCount}</span>
+                  <span className="leaderboard__value">{user.acceptedImageCount}</span>
                 </article>
               </Link>
             ))}
