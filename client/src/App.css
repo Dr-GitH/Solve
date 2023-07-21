@@ -486,7 +486,7 @@ input:focus {
   display: block;
   margin-bottom: 10px;
   color: #333;
-  text-decoration: none;
+  
 }
 
 .certificate-list a:hover {
@@ -749,7 +749,7 @@ input:focus {
 }
 
 .leaderboard__name {
-  color: #979cb0;
+  color: #696969;
   font-weight: 600;
   font-size: 20px;
   letter-spacing: 0.64px;
@@ -782,6 +782,14 @@ input:focus {
 
 .leaderboard {
   box-shadow: 0 0 40px -10px rgba(0, 0, 0, 0.4);
+}
+.leaderboard__name,
+.leaderboard__value {
+  text-decoration: none;
+}
+
+.link-no-underline{
+  text-decoration:none;
 }
 
 .searchBody2{
@@ -885,6 +893,8 @@ input:focus {
   font-size: 26px;
   margin: 20px 0;
   text-align: center;
+  text-transform: capitalize;
+  
 }
 .responsive-table{
   padding-left: 0px;
